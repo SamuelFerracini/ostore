@@ -6,8 +6,8 @@ defineProps({
 
 <template>
   <article v-for="product in products">
-    <NuxtLink :to="`/product/${product.slug}`" class="group select-none">
-      <div class="cursor-pointer transition ease-[ease] duration-300">
+    <NuxtLink class="group select-none">
+      <div class="transition ease-[ease] duration-300">
         <div
           class="relative pb-[133%] dark:shadow-[0_8px_24px_rgba(0,0,0,.5)] rounded-2xl overflow-hidden"
         >
@@ -21,11 +21,11 @@ defineProps({
         </div>
         <div class="grid gap-0.5 pt-3 pb-4 px-1.5 text-sm font-semibold">
           <div class="flex gap-1">
-            <div v-html="product.salePrice"></div>
-            <div
+            <p>{{ product.price }} THB</p>
+            <!-- <div
               class="text-[#5f5f5f] dark:text-[#a3a3a3] line-through"
-              v-html="product.regularPrice"
-            ></div>
+              v-html="product.price"
+            ></div> -->
           </div>
           <div>{{ product.name }}</div>
           <div class="font-normal text-[#5f5f5f] dark:text-[#a3a3a3]">

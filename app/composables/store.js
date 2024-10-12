@@ -1,94 +1,57 @@
-import { LRUCache } from "lru-cache";
-import { hash as ohash } from "ohash";
-import { getProductsQuery } from "~/gql/queries/getProducts";
-import { getCategoriesQuery } from "~/gql/queries/getCategories";
-import { getSearchProductsQuery } from "~/gql/queries/getSearchProducts";
-import { getProductQuery } from "~/gql/queries/getProduct";
-import { addToCartMutation } from "~/gql/mutations/addToCart";
-import { updateItemQuantitiesMutation } from "~/gql/mutations/updateItemQuantities";
-import { checkoutMutation } from "~/gql/mutations/checkout";
+const products = [];
 
-const promiseCache = new LRUCache({
-  max: 500,
-  ttl: 2000 * 60 * 60,
-});
-
-async function _fetchGraphQL(query, variables = {}) {
-  const { $graphql } = useNuxtApp();
-  const session = localStorage.getItem("woocommerce-session");
-
-  if (!session) {
-    const response = await $graphql.default.rawRequest(query, variables);
-    localStorage.setItem(
-      "woocommerce-session",
-      `Session ${response.headers.get("woocommerce-session")}`
-    );
-    return response.data;
+export async function loadProducts() {
+  if (products.length > 0) {
+    return products;
   }
 
-  return await $graphql.default.request(query, variables, {
-    "woocommerce-session": session,
-  });
-}
+  const categories = listCategories();
 
-export function fetchGraphQL(query, variables) {
-  const hash = ohash([query, variables]);
-  const state = useState(hash, () => null);
-  const cacheEntry = promiseCache.get(hash);
+  for (const category of categories) {
+    try {
+      const url = `products/${category.id}.json`;
+      const response = await fetch(url);
 
-  if (cacheEntry) {
-    const isStale = Date.now() - cacheEntry.timestamp >= 2000 * 60 * 60;
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
 
-    if (!isStale) {
-      _fetchGraphQL(query, variables)
-        .then((res) => {
-          if (JSON.stringify(res) !== JSON.stringify(cacheEntry.data)) {
-            state.value = res;
-            promiseCache.set(hash, {
-              data: Promise.resolve(res),
-              timestamp: Date.now(),
-            });
-          }
-        })
-        .catch((e) => {
-          console.error("Error while revalidating:", e);
-        });
+      const data = await response.json();
 
-      return cacheEntry.data;
+      products.push(...data);
+    } catch (err) {
+      console.error(err);
     }
   }
 
-  const fetchPromise = _fetchGraphQL(query, variables)
-    .then((res) => {
-      state.value = res;
-      promiseCache.set(hash, {
-        data: Promise.resolve(res),
-        timestamp: Date.now(),
-      });
-      return res;
-    })
-    .catch((e) => {
-      promiseCache.delete(hash);
-      throw e;
-    });
-
-  promiseCache.set(hash, { data: fetchPromise, timestamp: Date.now() });
-  return fetchPromise;
+  return products;
 }
 
-//Query functions
+export async function searchProducts({
+  category,
+  search,
+  page = 1,
+  perPage = 25,
+} = {}) {
+  let filteredProducts = [...products];
 
-export function listProducts(variables) {
-  return [
-    {
-      id: "sku",
-      url: "https://au.pandora.net/dw/image/v2/BKNF_PRD/on/demandware.static/-/Sites-pandora-master-catalog/default/dw0ecd5965/productimages/singlepackshot/790065C05_RGB.jpg?sw=440&sh=440&sm=fit&sfrm=png&bgcolor=F5F5F5",
-      salePrice: "1445.50 THB",
-      regularPrice: "1445.50 THB",
-      name: "October Crystal Birthstone Eternity Circle Charm",
-      category: "Charm",
-    },
-  ];
+  if (category) {
+    filteredProducts = filteredProducts.filter((p) => p.category === category);
+  }
+
+  if (search) {
+    filteredProducts = filteredProducts.filter((item) =>
+      item.name.toLowerCase().includes(search.toLowerCase())
+    );
+  }
+
+  const start = (page - 1) * perPage;
+  const end = start + perPage;
+
+  console.log({ page, perPage });
+  console.log({ start, end });
+
+  return filteredProducts.slice(start, end);
 }
 
 export function listCategories() {
@@ -108,31 +71,18 @@ export function listCategories() {
   ];
 }
 
-export function searchProducts(search) {
-  return [];
-}
-
 export function getProduct(slug, sku) {
-  return fetchGraphQL(getProductQuery, { slug, sku });
-}
-
-//Mutation functions
-
-async function fetchGraphQLMutation(query, variables = {}) {
-  const { $graphql } = useNuxtApp();
-  return await $graphql.default.request(query, variables, {
-    "woocommerce-session": localStorage.getItem("woocommerce-session"),
-  });
+  return {};
 }
 
 export function addToCart(input) {
-  return fetchGraphQLMutation(addToCartMutation, { input });
+  return {};
 }
 
 export function updateItemQuantities(input) {
-  return fetchGraphQLMutation(updateItemQuantitiesMutation, { input });
+  return {};
 }
 
 export function checkout(input) {
-  return fetchGraphQLMutation(checkoutMutation, { input });
+  return {};
 }

@@ -93,10 +93,10 @@ onBeforeUnmount(() => {
         <div
           v-for="(category, i) in categories"
           :key="category.id"
-          @click="setCategory(category.name)"
+          @click="setCategory(category.id)"
           :class="[
             'card text-black transition cat-button-bezel',
-            route.query.category === category.name
+            route.query.category === category.id
               ? 'selected'
               : getCategoryClass(i),
           ]"

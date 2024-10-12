@@ -19,7 +19,7 @@ const search = () => {
 
 async function fetch() {
   try {
-    searchResults.value = await searchProducts(searchQuery.value);
+    searchResults.value = await searchProducts({ search: searchQuery.value });
   } finally {
     isLoading.value = false;
   }
@@ -107,7 +107,7 @@ const colorModeIcon = computed(() =>
                 class="w-full bg-transparent py-2 outline-none placeholder:text-[#757575] placeholder:dark:text-neutral-400"
                 type="text"
                 v-model="searchQuery"
-                @keyup.enter="search"
+                @input="search"
                 :placeholder="
                   route.query.category
                     ? `Search in ${route.query.category}...`
@@ -160,7 +160,7 @@ const colorModeIcon = computed(() =>
       </button>
     </div>
   </div>
-  <div
+  <!-- <div
     v-if="suggestionMenu"
     ref="onClickOutsideRef"
     class="fixed top-[72px] lg:top-20 left-0 right-0 z-50 bg-white/85 dark:bg-black/85 backdrop-blur-sm dark:backdrop-blur-lg lg:rounded-b-3xl w-full"
@@ -168,7 +168,6 @@ const colorModeIcon = computed(() =>
     <div
       class="max-h-[calc(100vh-72px)] lg:max-h-[calc(100vh-80px)] overflow-auto"
     >
-      <!-- Loading State -->
       <div v-if="isLoading" class="flex items-center justify-center h-80">
         <div
           class="bg-black/10 dark:bg-white/20 flex rounded-full w-12 h-12 items-center justify-center skeleton"
@@ -180,7 +179,6 @@ const colorModeIcon = computed(() =>
           />
         </div>
       </div>
-      <!-- Empty State -->
       <div
         v-else-if="!searchResults.length"
         class="w-full items-center flex flex-col justify-center text-center p-8"
@@ -203,7 +201,6 @@ const colorModeIcon = computed(() =>
           or trying a more general keyword.
         </div>
       </div>
-      <!-- Results State-->
       <div v-else class="mx-auto p-3 lg:p-4 max-w-screen-2xl">
         <h2 v-if="!searchQuery" class="text-2xl font-bold tracking-tight">
           New Products
@@ -266,13 +263,13 @@ const colorModeIcon = computed(() =>
         </button>
       </div>
     </div>
-  </div>
-  <div
+  </div> -->
+  <!-- <div
     v-if="suggestionMenu || cartModal"
     :class="['fixed inset-0 ', cartModal ? 'z-40' : 'z-30']"
   >
     <div class="w-full h-full bg-black/30 backdrop-blur-lg"></div>
-  </div>
+  </div> -->
   <button
     v-if="cartModal"
     class="hover:bg-white/65 dark:hover:bg-white/10 transition shadow-2xl mt-3 lg:mt-4 mx-3 lg:mx-5 items-center justify-center min-w-12 min-h-12 rounded-[2rem] right-0 fixed flex z-50 bg-white/85 dark:bg-black/30 dark:border dark:border-white/10 cart-button-bezel backdrop-blur-lg"

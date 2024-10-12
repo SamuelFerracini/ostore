@@ -1,23 +1,11 @@
-import pkg from './package.json';
+import pkg from "./package.json";
 
 export default defineNuxtConfig({
   devtools: { enabled: false },
 
-  modules: ['nuxt-graphql-request', '@vueuse/nuxt', '@nuxt/ui', '@nuxt/image', 'notivue/nuxt'],
+  modules: ["@vueuse/nuxt", "@nuxt/ui", "@nuxt/image"],
 
   future: { compatibilityVersion: 4 },
-
-  notivue: {
-    position: 'top-center',
-    limit: 3,
-    notifications: {
-      global: {
-        duration: 3000,
-      },
-    },
-  },
-
-  css: ['notivue/notification.css', 'notivue/animations.css'],
 
   runtimeConfig: {
     public: {
@@ -25,13 +13,5 @@ export default defineNuxtConfig({
     },
   },
 
-  graphql: {
-    clients: {
-      default: {
-        endpoint: process.env.GQL_HOST || '',
-      },
-    },
-  },
-
-  compatibilityDate: '2024-08-03',
+  compatibilityDate: "2024-08-03",
 });

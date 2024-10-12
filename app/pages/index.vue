@@ -3,40 +3,72 @@ const route = useRoute();
 const productsData = ref([]);
 const isLoading = ref(false);
 const hasFetched = ref(false);
+const loadingMoreProducts = ref(false);
 const tailEl = ref(null);
-const pageInfo = ref({ hasNextPage: true, endCursor: null });
+const page = ref(1);
+const loadMore = ref(null);
 
 const variables = computed(() => ({
   search: route.query.q,
-  order: route.query.orderby?.toUpperCase() || "DESC",
-  field: route.query.fieldby?.toUpperCase() || "DATE",
   category: route.query.category,
-  after: pageInfo.value.endCursor,
+  perPage: 10,
 }));
 
 async function fetch() {
-  if (isLoading.value || !pageInfo.value.hasNextPage) return;
+  if (isLoading.value) return;
   isLoading.value = true;
   try {
-    const response = await listProducts(variables.value);
+    const response = await searchProducts({
+      ...variables.value,
+      page: page.value,
+    });
     productsData.value.push(...response);
-    // pageInfo.value = response.products.pageInfo;
     hasFetched.value = true;
   } finally {
     isLoading.value = false;
   }
 }
 
-onMounted(fetch);
+onMounted(async () => {
+  await loadProducts();
+  await fetch();
+  setupObserver();
+});
 
 watch(
   () => route.query,
   () => {
+    console.log(123);
+
+    page.value = 1;
     productsData.value = [];
-    pageInfo.value = { hasNextPage: true, endCursor: null };
     fetch();
   }
 );
+
+watch(page, () => {
+  fetch();
+});
+
+const setupObserver = () => {
+  const observer = new IntersectionObserver(async (entries) => {
+    entries.forEach(async (entry) => {
+      if (
+        entry.isIntersecting &&
+        !isLoading.value &&
+        !loadingMoreProducts.value
+      ) {
+        console.log("Next page");
+
+        page.value = page.value + 1;
+      }
+    });
+  });
+
+  if (loadMore.value) {
+    observer.observe(loadMore.value);
+  }
+};
 
 const products = computed(() => productsData.value);
 const productsEmpty = computed(
@@ -53,6 +85,8 @@ const productsEmpty = computed(
     class="grid grid-cols-1 xs:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 3xl:grid-cols-7 gap-3 lg:gap-5 p-3 lg:p-5"
   >
     <ProductCard :products="products" />
+    <!-- Trigger for loading more products -->
+    <div ref="loadMore" class="h-16"></div>
     <ProductsSkeleton
       v-if="(!products.length || isLoading) && !productsEmpty"
     />
