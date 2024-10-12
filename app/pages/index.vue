@@ -11,7 +11,7 @@ const loadMore = ref(null);
 const variables = computed(() => ({
   search: route.query.q,
   category: route.query.category,
-  perPage: 10,
+  perPage: 50,
 }));
 
 async function fetch() {
@@ -38,8 +38,6 @@ onMounted(async () => {
 watch(
   () => route.query,
   () => {
-    console.log(123);
-
     page.value = 1;
     productsData.value = [];
     fetch();
@@ -58,8 +56,6 @@ const setupObserver = () => {
         !isLoading.value &&
         !loadingMoreProducts.value
       ) {
-        console.log("Next page");
-
         page.value = page.value + 1;
       }
     });

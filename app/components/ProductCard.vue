@@ -29,7 +29,7 @@ defineProps({
           </div>
           <div>{{ product.name }}</div>
           <div class="font-normal text-[#5f5f5f] dark:text-[#a3a3a3]">
-            {{ product.category }}
+            {{ getCategoryName(product?.category) }}
           </div>
         </div>
       </div>

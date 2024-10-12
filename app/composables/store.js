@@ -48,9 +48,6 @@ export async function searchProducts({
   const start = (page - 1) * perPage;
   const end = start + perPage;
 
-  console.log({ page, perPage });
-  console.log({ start, end });
-
   return filteredProducts.slice(start, end);
 }
 
@@ -69,6 +66,14 @@ export function listCategories() {
       name: "Charms and Bracelets",
     },
   ];
+}
+
+export function getCategory(id) {
+  return listCategories().find((e) => e.id === id);
+}
+
+export function getCategoryName(id) {
+  return getCategory(id)?.name ?? id;
 }
 
 export function getProduct(slug, sku) {

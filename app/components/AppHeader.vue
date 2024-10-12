@@ -110,7 +110,9 @@ const colorModeIcon = computed(() =>
                 @input="search"
                 :placeholder="
                   route.query.category
-                    ? `Search in ${route.query.category}...`
+                    ? `Search in ${getCategoryName(
+                        route.query.category
+                      ).toLowerCase()}...`
                     : 'Search...'
                 "
               />
