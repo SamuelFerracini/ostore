@@ -1,7 +1,6 @@
 export default defineAppConfig({
-  siteName: 'NuxtCommerce',
+  siteName: "Pandora with Nonlapan",
   ui: {
-    primary: 'red',
-    gray: 'neutral',
+    primary: "purple",
   },
 });
