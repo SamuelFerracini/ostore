@@ -13,27 +13,35 @@ const isDragging = ref(false);
 const dragThreshold = 10;
 let startX, scrollLeft;
 
-const colors = ['bg-[#dad5ff]', 'bg-[#ffe2eb]', 'bg-[#ffe4c2]', 'bg-[#fffd92]', 'bg-[#cfffcb]', 'bg-[#dbfff6]', 'bg-[#d7edff]'];
+const colors = [
+  "bg-[#dad5ff]",
+  "bg-[#ffe2eb]",
+  "bg-[#ffe4c2]",
+  "bg-[#fffd92]",
+  "bg-[#cfffcb]",
+  "bg-[#dbfff6]",
+  "bg-[#d7edff]",
+];
 
-const setCategory = category => {
-  if (!isDragging.value && (route.query.category || '') !== category) {
+const setCategory = (category) => {
+  if (!isDragging.value && (route.query.category || "") !== category) {
     router.push({ query: { ...route.query, category: category || undefined } });
   }
 };
 
-const getCategoryClass = index => {
+const getCategoryClass = (index) => {
   return `${colors[index % colors.length]} hover:brightness-90`;
 };
 
-const initializeDrag = e => {
+const initializeDrag = (e) => {
   isDragging.value = false;
   startX = e.pageX - cardsSlider.value.getBoundingClientRect().left;
   scrollLeft = cardsSlider.value.scrollLeft;
-  document.addEventListener('mousemove', handleDragging);
-  document.addEventListener('mouseup', endDrag);
+  document.addEventListener("mousemove", handleDragging);
+  document.addEventListener("mouseup", endDrag);
 };
 
-const handleDragging = e => {
+const handleDragging = (e) => {
   const xPos = e.pageX - cardsSlider.value.getBoundingClientRect().left;
   const walk = (xPos - startX) * 1.5;
   cardsSlider.value.scrollLeft = scrollLeft - walk;
@@ -41,8 +49,8 @@ const handleDragging = e => {
 };
 
 const endDrag = () => {
-  document.removeEventListener('mousemove', handleDragging);
-  document.removeEventListener('mouseup', endDrag);
+  document.removeEventListener("mousemove", handleDragging);
+  document.removeEventListener("mouseup", endDrag);
 };
 
 const updateButtonVisibility = () => {
@@ -52,13 +60,13 @@ const updateButtonVisibility = () => {
 };
 
 onMounted(() => {
-  cardsSlider.value.addEventListener('mousedown', initializeDrag);
+  cardsSlider.value.addEventListener("mousedown", initializeDrag);
   updateButtonVisibility();
 });
 
 onBeforeUnmount(() => {
-  document.removeEventListener('mousemove', handleDragging);
-  document.removeEventListener('mouseup', endDrag);
+  document.removeEventListener("mousemove", handleDragging);
+  document.removeEventListener("mouseup", endDrag);
 });
 </script>
 
@@ -66,25 +74,40 @@ onBeforeUnmount(() => {
   <div class="slider-container">
     <div v-if="showPrev" class="slider-btn prev-btn"></div>
     <div class="slider-wrapper">
-      <div ref="cardsSlider" class="cards-slider" @scroll="updateButtonVisibility">
+      <div
+        ref="cardsSlider"
+        class="cards-slider"
+        @scroll="updateButtonVisibility"
+      >
         <div
           @click="setCategory('')"
           :class="[
             'card ml-2 lg:ml-4 transition',
-            !route.query.category ? 'selected' : 'bg-[#efefef] hover:bg-[#e2e2e2] dark:bg-[#262626] hover:dark:bg-[#333] text-black dark:text-white',
-          ]">
+            !route.query.category
+              ? 'selected'
+              : 'bg-[#efefef] hover:bg-[#e2e2e2] dark:bg-[#262626] hover:dark:bg-[#333] text-black dark:text-white',
+          ]"
+        >
           <div class="px-3.5">All Categories</div>
         </div>
         <div
           v-for="(category, i) in categories"
           :key="category.id"
           @click="setCategory(category.name)"
-          :class="['card text-black transition cat-button-bezel', route.query.category === category.name ? 'selected' : getCategoryClass(i)]">
+          :class="[
+            'card text-black transition cat-button-bezel',
+            route.query.category === category.name
+              ? 'selected'
+              : getCategoryClass(i),
+          ]"
+        >
           <NuxtImg
+            v-if="category.image"
             :alt="category.name"
             loading="lazy"
-            :src="category.image?.sourceUrl"
-            class="w-[38px] h-[38px] rounded-full object-cover border border-transparent dark:bg-black/15 bg-white/30" />
+            :src="category.image"
+            class="w-[38px] h-[38px] rounded-full object-cover border border-transparent dark:bg-black/15 bg-white/30"
+          />
           <div class="px-3.5">{{ category.name }}</div>
         </div>
       </div>
@@ -94,14 +117,15 @@ onBeforeUnmount(() => {
 
 <style lang="postcss">
 .cat-button-bezel {
-  box-shadow: inset 0 -1px 1px 0 rgba(0, 0, 0, 0.05), inset 0 1px 0 0 rgba(255, 255, 255, 0.15);
+  box-shadow: inset 0 -1px 1px 0 rgba(0, 0, 0, 0.05),
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.15);
 }
 img {
   @apply pointer-events-none;
 }
 
 .selected {
-  @apply bg-red-600 lg:hover:bg-red-700 text-white dark:bg-alizarin-crimson-700 lg:hover:dark:bg-alizarin-crimson-800;
+  @apply bg-purple-600 lg:hover:bg-purple-700 text-white dark:bg-purple-700 lg:hover:dark:bg-purple-800;
 }
 
 .slider-container {
@@ -148,7 +172,7 @@ img {
 
 .next-btn::before {
   position: absolute;
-  content: '';
+  content: "";
   right: 56px;
   width: 56px;
   height: 100%;
@@ -158,7 +182,7 @@ img {
 .slider-wrapper::before,
 .slider-wrapper::after {
   @apply absolute h-full top-0 w-2 lg:w-4 z-10;
-  content: '';
+  content: "";
   pointer-events: none;
 }
 

@@ -15,27 +15,19 @@ const variables = computed(() => ({
 }));
 
 async function fetch() {
-  // if (isLoading.value || !pageInfo.value.hasNextPage) return;
-  // isLoading.value = true;
-  // try {
-  //   const response = await listProducts(variables.value);
-  //   productsData.value.push(...response);
-  //   // pageInfo.value = response.products.pageInfo;
-  //   hasFetched.value = true;
-  // } finally {
-  //   isLoading.value = false;
-  // }
+  if (isLoading.value || !pageInfo.value.hasNextPage) return;
+  isLoading.value = true;
+  try {
+    const response = await listProducts(variables.value);
+    productsData.value.push(...response);
+    // pageInfo.value = response.products.pageInfo;
+    hasFetched.value = true;
+  } finally {
+    isLoading.value = false;
+  }
 }
 
 onMounted(fetch);
-
-useIntervalFn(() => {
-  if (!tailEl.value || isLoading.value) return;
-  const { top } = tailEl.value.getBoundingClientRect();
-  if (top - window.innerHeight < 400) {
-    fetch();
-  }
-}, 500);
 
 watch(
   () => route.query,
@@ -54,7 +46,6 @@ const productsEmpty = computed(
 
 <template>
   <div class="flex items-center pl-3 lg:pl-5">
-    <ButtonSortBy />
     <ButtonSelectCategory />
   </div>
   <div

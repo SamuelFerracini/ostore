@@ -81,28 +81,35 @@ export function fetchGraphQL(query, variables) {
 export function listProducts(variables) {
   return [
     {
-      slug: "slug",
-      sku: "sku",
-      name: "name",
-      name: "name",
-      galleryImages: "galleryImages",
-      name: "name",
-      name: "name",
-      image: "image",
-      salePrice: "salePrice",
-      allPaStyle: "allPaStyle",
-      regularPrice: "regularPrice",
-      name: "name",
+      id: "sku",
+      url: "https://au.pandora.net/dw/image/v2/BKNF_PRD/on/demandware.static/-/Sites-pandora-master-catalog/default/dw0ecd5965/productimages/singlepackshot/790065C05_RGB.jpg?sw=440&sh=440&sm=fit&sfrm=png&bgcolor=F5F5F5",
+      salePrice: "1445.50 THB",
+      regularPrice: "1445.50 THB",
+      name: "October Crystal Birthstone Eternity Circle Charm",
+      category: "Charm",
     },
   ];
 }
 
 export function listCategories() {
-  return fetchGraphQL(getCategoriesQuery);
+  return [
+    {
+      id: "charms",
+      name: "Charms",
+    },
+    {
+      id: "rings",
+      name: "Rings",
+    },
+    {
+      id: "charms-and-bracelets",
+      name: "Charms and Bracelets",
+    },
+  ];
 }
 
 export function searchProducts(search) {
-  return fetchGraphQL(getSearchProductsQuery, { search });
+  return [];
 }
 
 export function getProduct(slug, sku) {

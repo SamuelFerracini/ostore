@@ -15,15 +15,8 @@ defineProps({
             :alt="product.name"
             loading="lazy"
             :title="product.name"
-            :src="''"
-            class="absolute h-full w-full dark:bg-neutral-800 bg-neutral-200 object-cover"
-          />
-          <NuxtImg
-            :alt="product.name"
-            loading="lazy"
-            :title="product.name"
-            :src="product.image.sourceUrl"
-            class="absolute h-full w-full dark:bg-neutral-800 bg-neutral-200 object-cover transition-opacity duration-300 group-hover:opacity-0"
+            :src="product.url"
+            class="absolute h-full w-full dark:bg-neutral-800 bg-neutral-200 object-cover transition-opacity duration-300 group-hover:opacity-50"
           />
         </div>
         <div class="grid gap-0.5 pt-3 pb-4 px-1.5 text-sm font-semibold">
@@ -36,7 +29,7 @@ defineProps({
           </div>
           <div>{{ product.name }}</div>
           <div class="font-normal text-[#5f5f5f] dark:text-[#a3a3a3]">
-            {{ "product.allPaStyle.nodes[0].name" }}
+            {{ product.category }}
           </div>
         </div>
       </div>
