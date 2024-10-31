@@ -1,5 +1,5 @@
 <script setup>
-import { useWebsiteStore } from "~~/stores/website";
+import websiteStore from "~~/stores/website";
 
 const router = useRouter();
 const route = useRoute();
@@ -67,11 +67,9 @@ onBeforeUnmount(() => {
   document.removeEventListener("mouseup", endDrag);
 });
 
-const websiteStore = useWebsiteStore();
-
 const handleSetShop = (shop) => {
   setCategory(shop.categories[0].id);
-  websiteStore.selectShop(shop);
+  websiteStore.dispatch("selectShop", shop);
   router.push({ query: { ...route.query, shop: shop.id } });
 };
 </script>
@@ -79,12 +77,12 @@ const handleSetShop = (shop) => {
 <template>
   <div class="slider-container">
     <div v-if="showPrev" class="slider-btn prev-btn"></div>
-    <div v-for="shop in websiteStore.shops" :key="shop.id" class="mr-3">
+    <div v-for="shop in websiteStore.getters.shops" :key="shop.id" class="mr-3">
       <div
         @click="handleSetShop(shop)"
         :class="[
           'card transition',
-          websiteStore.selectedShop.id === shop.id
+          websiteStore.getters.selectedShop.id === shop.id
             ? 'selected'
             : 'hover:bg-[#e2e2e2] dark:bg-[#262626] hover:dark:bg-[#333]',
           'bg-[#efefef]  text-black dark:text-white',
@@ -111,7 +109,7 @@ const handleSetShop = (shop) => {
           <div class="px-3.5">All Categories</div>
         </div>
         <div
-          v-for="(category, i) in websiteStore.selectedShop.categories"
+          v-for="(category, i) in websiteStore.getters.selectedShop.categories"
           :key="category.id"
           @click="setCategory(category.id)"
           :class="[

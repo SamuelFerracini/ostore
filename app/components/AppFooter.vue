@@ -1,5 +1,5 @@
 <script setup>
-import { useWebsiteStore } from "~~/stores/website";
+import websiteStore from "~~/stores/website";
 
 const config = useRuntimeConfig();
 const colorMode = useColorMode();
@@ -13,21 +13,19 @@ const colorModeIcon = computed(() =>
     ? "i-iconamoon-mode-dark-fill"
     : "i-iconamoon-mode-light-fill"
 );
-
-const websiteStore = useWebsiteStore();
 </script>
 
 <template>
   <div
     class="flex bottom-0 w-full flex-row items-center px-3 lg:px-5 h-[72px] lg:h-20 z-40 fixed bg-white/85 dark:bg-black/85 backdrop-blur-sm dark:backdrop-blur-lg"
     :class="[
-      websiteStore.selectedShop.id === 'pandora'
+      websiteStore.getters.selectedShop.id === 'pandora'
         ? 'justify-between'
         : 'justify-end',
     ]"
   >
     <div
-      v-if="websiteStore.selectedShop.id === 'pandora'"
+      v-if="websiteStore.getters.selectedShop.id === 'pandora'"
       class="flex flex-col gap-1 text-sm md:text-base flex-1"
     >
       <p>ช็อปออสเตรเลีย ราคารวมทุกอย่างพร้อมกล่องและถุง 💖</p>

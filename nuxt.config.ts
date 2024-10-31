@@ -3,11 +3,7 @@ import pkg from "./package.json";
 export default defineNuxtConfig({
   devtools: { enabled: false },
 
-  modules: ["@vueuse/nuxt", "@nuxt/ui", "@nuxt/image", "@pinia/nuxt"],
-
-  build: {
-    transpile: ["pinia"],
-  },
+  modules: ["@vueuse/nuxt", "@nuxt/ui", "@nuxt/image"],
 
   future: { compatibilityVersion: 4 },
 

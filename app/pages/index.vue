@@ -1,5 +1,5 @@
 <script setup>
-import { useWebsiteStore } from "~~/stores/website";
+import websiteStore from "~~/stores/website";
 
 const route = useRoute();
 const productsData = ref([]);
@@ -10,12 +10,10 @@ const tailEl = ref(null);
 const page = ref(1);
 const loadMore = ref(null);
 
-const websiteStore = useWebsiteStore();
-
 const variables = computed(() => ({
   search: route.query.q,
   category: route.query.category,
-  shop: websiteStore.selectedShop.id,
+  shop: websiteStore.getters.selectedShop.id,
   perPage: 50,
 }));
 
