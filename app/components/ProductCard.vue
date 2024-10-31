@@ -31,6 +31,7 @@ defineProps({
             ></div> -->
           </div>
           <div>{{ product.name }}</div>
+          <p class="text-blue-500">{{ product.promotion }}</p>
           <div class="font-normal text-[#5f5f5f] dark:text-[#a3a3a3]">
             {{ getCategoryName(product?.category) }}
           </div>
