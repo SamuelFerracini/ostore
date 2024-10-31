@@ -1,4 +1,6 @@
 <script setup>
+import { useWebsiteStore } from "~~/stores/website";
+
 const config = useRuntimeConfig();
 const colorMode = useColorMode();
 
@@ -11,19 +13,29 @@ const colorModeIcon = computed(() =>
     ? "i-iconamoon-mode-dark-fill"
     : "i-iconamoon-mode-light-fill"
 );
+
+const websiteStore = useWebsiteStore();
 </script>
 
 <template>
   <div
-    class="flex justify-between bottom-0 w-full flex-row items-center px-3 lg:px-5 h-[72px] lg:h-20 z-40 fixed bg-white/85 dark:bg-black/85 backdrop-blur-sm dark:backdrop-blur-lg"
+    class="flex bottom-0 w-full flex-row items-center px-3 lg:px-5 h-[72px] lg:h-20 z-40 fixed bg-white/85 dark:bg-black/85 backdrop-blur-sm dark:backdrop-blur-lg"
+    :class="[
+      websiteStore.selectedShop.id === 'pandora'
+        ? 'justify-between'
+        : 'justify-end',
+    ]"
   >
-    <div class="flex flex-col gap-1 text-sm md:text-base">
+    <div
+      v-if="websiteStore.selectedShop.id === 'pandora'"
+      class="flex flex-col gap-1 text-sm md:text-base flex-1"
+    >
       <p>ช็อปออสเตรเลีย ราคารวมทุกอย่างพร้อมกล่องและถุง 💖</p>
       <p>
         อาจเปลี่ยนแปลงตามโปรช่วงนั้นนะคะ ถ้าต้องการใบเสร็จทักสอบถามได้นะคะ 🙏🏼
       </p>
     </div>
-    <a href="https://www.facebook.com/nonlapan.smpt">
+    <a class="float-end" href="https://www.facebook.com/nonlapan.smpt">
       <UIcon
         class="text-[#5f5f5f] dark:text-[#b7b7b7] min-w-12 min-h-12 flex items-center justify-center rounded-full cursor-pointer relative"
         name="i-ic:baseline-facebook"

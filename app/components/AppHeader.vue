@@ -76,7 +76,7 @@ const colorModeIcon = computed(() =>
       >
         <div class="flex flex-col items-center text-lg font-sans span">
           <span>
-            <p class="font-sans font-semibold">Pandora</p>
+            <p class="font-sans font-semibold">Shopping</p>
             <p class="italic text-sm">with Nonlapan</p>
           </span>
         </div>

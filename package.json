@@ -10,11 +10,13 @@
     "generate": "nuxt generate",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
-    "release": "bumpp"
+    "release": "bumpp",
+    "deploy": "npm run build && vercel --prod"
   },
   "dependencies": {
     "@nuxt/image": "^1.8.1",
     "@nuxt/ui": "^2.18.7",
+    "@pinia/nuxt": "^0.6.0",
     "nuxt": "^3.13.2",
     "swiper": "^11.1.14",
     "vue": "latest"

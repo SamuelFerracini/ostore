@@ -1,30 +1,22 @@
-const products = [];
+let data = {};
 
 export async function loadProducts() {
-  if (products.length > 0) {
-    return products;
+  console.log("Loading products...");
+
+  if (Object.keys(data).length > 0) {
+    return data;
   }
 
-  const categories = listCategories();
+  const url = `/products.json`;
+  const response = await fetch(url);
 
-  for (const category of categories) {
-    try {
-      const url = `products/${category.id}.json`;
-      const response = await fetch(url);
-
-      if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
-      }
-
-      const data = await response.json();
-
-      products.push(...data);
-    } catch (err) {
-      console.error(err);
-    }
+  if (!response.ok) {
+    throw new Error(`HTTP error! Status: ${response.status}`);
   }
 
-  return products;
+  data = await response.json();
+
+  return data;
 }
 
 export async function searchProducts({
@@ -32,11 +24,20 @@ export async function searchProducts({
   search,
   page = 1,
   perPage = 25,
+  shop,
 } = {}) {
-  let filteredProducts = [...products];
+  if (!data[shop]) {
+    return [];
+  }
+
+  let filteredProducts = Object.values(data[shop]).flat();
 
   if (category) {
-    filteredProducts = filteredProducts.filter((p) => p.category === category);
+    filteredProducts = data[shop][category];
+  }
+
+  if (!filteredProducts) {
+    return [];
   }
 
   if (search) {

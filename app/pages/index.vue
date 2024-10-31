@@ -1,4 +1,6 @@
 <script setup>
+import { useWebsiteStore } from "~~/stores/website";
+
 const route = useRoute();
 const productsData = ref([]);
 const isLoading = ref(false);
@@ -8,15 +10,19 @@ const tailEl = ref(null);
 const page = ref(1);
 const loadMore = ref(null);
 
+const websiteStore = useWebsiteStore();
+
 const variables = computed(() => ({
   search: route.query.q,
   category: route.query.category,
+  shop: websiteStore.selectedShop.id,
   perPage: 50,
 }));
 
 async function fetch() {
   if (isLoading.value) return;
   isLoading.value = true;
+
   try {
     const response = await searchProducts({
       ...variables.value,
