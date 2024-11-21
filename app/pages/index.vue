@@ -6,7 +6,6 @@ const productsData = ref([]);
 const isLoading = ref(false);
 const hasFetched = ref(false);
 const loadingMoreProducts = ref(false);
-const tailEl = ref(null);
 const page = ref(1);
 const loadMore = ref(null);
 
@@ -90,7 +89,7 @@ const productsEmpty = computed(
     <ProductsSkeleton
       v-if="(!products.length || isLoading) && !productsEmpty"
     />
-    <br ref="tailEl" />
+    <div class="col-span-full mt-10"></div>
   </div>
   <ProductsEmpty v-else />
 </template>

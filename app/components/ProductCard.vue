@@ -6,10 +6,10 @@ defineProps({
 
 <template>
   <article v-for="product in products">
-    <NuxtLink class="group select-none">
+    <NuxtLink>
       <div class="transition ease-[ease] duration-300">
         <div
-          class="relative pb-[133%] dark:shadow-[0_8px_24px_rgba(0,0,0,.5)] rounded-2xl overflow-hidden"
+          class="relative pb-[133%] dark:shadow-[0_8px_24px_rgba(0,0,0,.5)] rounded-2xl overflow-hidden group select-none"
         >
           <NuxtImg
             :alt="product.name"
@@ -36,13 +36,17 @@ defineProps({
           <div class="flex gap-1">
             <p>{{ product.price }} THB</p>
             <div
-              v-if="product.priceBefore"
+              v-if="
+                product.priceBefore && product.price !== product.priceBefore
+              "
               class="text-[#5f5f5f] dark:text-[#a3a3a3] line-through"
               v-html="`${product.priceBefore} THB`"
             ></div>
           </div>
-          <div>{{ product.name }}</div>
-          <p class="text-blue-500">{{ product.promotion }}</p>
+          <p>{{ product.name }}</p>
+          <p class="text-blue-500">
+            {{ product.promotion }}
+          </p>
           <div class="font-normal text-[#5f5f5f] dark:text-[#a3a3a3]">
             {{ getCategoryName(product?.category) }}
           </div>
