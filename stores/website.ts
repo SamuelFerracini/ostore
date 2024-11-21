@@ -14,8 +14,10 @@ const GNOCE = {
   id: "gnoce",
   name: "Gnoce",
   categories: [
-    { id: "charms", name: "Charms" },
+    { id: "charm", name: "Charms" },
     { id: "bracelets", name: "Bracelets" },
+    { id: "necklaces", name: "Necklaces" },
+    { id: "rings", name: "Rings" },
     { id: "earrings", name: "Earrings" },
   ],
 };

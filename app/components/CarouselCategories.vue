@@ -70,7 +70,7 @@ onBeforeUnmount(() => {
 const handleSetShop = (shop) => {
   setCategory(shop.categories[0].id);
   websiteStore.dispatch("selectShop", shop);
-  router.push({ query: { ...route.query, shop: shop.id } });
+  router.push({ query: { shop: shop.id } });
 };
 </script>
 

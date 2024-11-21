@@ -15,11 +15,21 @@ defineProps({
             :alt="product.name"
             loading="lazy"
             :title="product.name"
-            :src="product.url"
+            :src="product.image2 ?? product.image ?? product.url"
+            class="absolute h-full w-full dark:bg-neutral-800 bg-neutral-200 object-cover"
             :class="
               product.shop === 'gnoce' ? 'dark:bg-white' : 'dark:bg-neutral-800'
             "
-            class="absolute h-full w-full bg-neutral-200 object-cover transition-opacity duration-300 group-hover:opacity-50"
+          />
+          <NuxtImg
+            :alt="product.name"
+            loading="lazy"
+            :title="product.name"
+            :src="product.image ?? product.url"
+            class="absolute h-full w-full dark:bg-neutral-800 bg-neutral-200 object-cover transition-opacity duration-300 group-hover:opacity-0"
+            :class="
+              product.shop === 'gnoce' ? 'dark:bg-white' : 'dark:bg-neutral-800'
+            "
           />
         </div>
         <div class="grid gap-0.5 pt-3 pb-4 px-1.5 text-sm font-semibold">
