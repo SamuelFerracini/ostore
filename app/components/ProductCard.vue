@@ -35,10 +35,11 @@ defineProps({
         <div class="grid gap-0.5 pt-3 pb-4 px-1.5 text-sm font-semibold">
           <div class="flex gap-1">
             <p>{{ product.price }} THB</p>
-            <!-- <div
+            <div
+              v-if="product.priceBefore"
               class="text-[#5f5f5f] dark:text-[#a3a3a3] line-through"
-              v-html="product.price"
-            ></div> -->
+              v-html="`${product.priceBefore} THB`"
+            ></div>
           </div>
           <div>{{ product.name }}</div>
           <p class="text-blue-500">{{ product.promotion }}</p>

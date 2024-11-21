@@ -1,3 +1,5 @@
+import website from "../stores/website.ts";
+
 let data = {};
 
 export async function loadProducts() {
@@ -19,6 +21,26 @@ export async function loadProducts() {
   return data;
 }
 
+function orderObjectKeys(obj, order) {
+  const orderedObject = {};
+
+  // Add keys in the specified order
+  for (const key of order) {
+    if (key in obj) {
+      orderedObject[key] = obj[key];
+    }
+  }
+
+  // Add remaining keys that are not in the order list
+  for (const key in obj) {
+    if (!order.includes(key)) {
+      orderedObject[key] = obj[key];
+    }
+  }
+
+  return orderedObject;
+}
+
 export async function searchProducts({
   category,
   search,
@@ -30,7 +52,12 @@ export async function searchProducts({
     return [];
   }
 
-  let filteredProducts = Object.values(data[shop]).flat();
+  let ordered = orderObjectKeys(
+    data[shop],
+    website.getters.selectedShop.categories.map((e) => e.id)
+  );
+
+  let filteredProducts = Object.values(ordered).flat();
 
   if (category) {
     filteredProducts = data[shop][category];

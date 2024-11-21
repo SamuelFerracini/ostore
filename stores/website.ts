@@ -4,9 +4,13 @@ const PANDORA = {
   id: "pandora",
   name: "Pandora",
   categories: [
-    { id: "charms", name: "Charms" },
+    { id: "charm", name: "Charms" },
+    { id: "bracelets", name: "Bracelets" },
+    { id: "necklaces", name: "Necklaces" },
     { id: "rings", name: "Rings" },
-    { id: "charms-and-bracelets", name: "Charms and Bracelets" },
+    { id: "earrings", name: "Earrings" },
+    { id: "gift-sets", name: "Gift Sets" },
+    { id: "accessories", name: "Accessories" },
   ],
 };
 
