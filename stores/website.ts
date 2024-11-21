@@ -26,12 +26,12 @@ const GNOCE = {
   ],
 };
 
-const shops = [GNOCE, PANDORA];
+const shops = [PANDORA, GNOCE];
 
 const store = createStore({
   state() {
     return {
-      selectedShop: GNOCE,
+      selectedShop: shops[0],
       shops,
     };
   },
