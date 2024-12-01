@@ -4,6 +4,7 @@ const PANDORA = {
   id: "pandora",
   name: "Pandora",
   categories: [
+    { id: "40_off", name: "40% OFF" },
     { id: "charm", name: "Charms" },
     { id: "bracelets", name: "Bracelets" },
     { id: "necklaces", name: "Necklaces" },
