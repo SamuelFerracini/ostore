@@ -86,6 +86,10 @@ export function listCategories() {
       name: "Charms",
     },
     {
+      id: "charm",
+      name: "Charms",
+    },
+    {
       id: "rings",
       name: "Rings",
     },
