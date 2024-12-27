@@ -50,6 +50,19 @@ defineProps({
           <div class="font-normal text-[#5f5f5f] dark:text-[#a3a3a3]">
             {{ getCategoryName(product?.category) }}
           </div>
+          <!-- {{ product.sizes.length >  }} -->
+          <div
+            v-if="product.name.includes('Ring')"
+            class="grid gap-1 grid-cols-4"
+          >
+            <div
+              v-for="(size, idx) in product.sizes"
+              :key="idx"
+              class="flex-1 text-center p-1 shadow border rounded-lg text-black w dark:text-gray-200 dark:border-gray-200"
+            >
+              {{ size }}
+            </div>
+          </div>
         </div>
       </div>
     </NuxtLink>
