@@ -11,7 +11,7 @@
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
     "release": "bumpp",
-    "deploy": "npm run build && vercel --prod"
+    "deploy": "npm run build && vercel --prod --force --debug"
   },
   "dependencies": {
     "@nuxt/image": "^1.8.1",

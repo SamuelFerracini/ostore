@@ -33,7 +33,13 @@ const colorModeIcon = computed(() =>
         อาจเปลี่ยนแปลงตามโปรช่วงนั้นนะคะ ถ้าต้องการใบเสร็จทักสอบถามได้นะคะ 🙏🏼
       </p>
     </div>
-    <a class="float-end" href="https://www.facebook.com/nonlapan.smpt">
+    <div
+      v-if="websiteStore.getters.selectedShop.id === 'gnoce'"
+      class="flex flex-col gap-1 text-sm md:text-base flex-1"
+    >
+      <p>สินค้าส่งตรงถึงบ้าน ไม่ต้อองจ่ายภาษีและค่าส่งเพิ่มนะคะ</p>
+    </div>
+    <a class="float-end" href="https://www.facebook.com/nonlapan.ssw">
       <UIcon
         class="text-[#5f5f5f] dark:text-[#b7b7b7] min-w-12 min-h-12 flex items-center justify-center rounded-full cursor-pointer relative"
         name="i-ic:baseline-facebook"
