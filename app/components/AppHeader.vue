@@ -57,6 +57,8 @@ const toggleDark = () => {
   colorMode.preference = colorMode.value === "dark" ? "light" : "dark";
 };
 
+colorMode.preference = "dark";
+
 const colorModeIcon = computed(() =>
   colorMode.preference === "dark"
     ? "i-iconamoon-mode-dark-fill"
@@ -143,6 +145,7 @@ const showSearch = computed(() => {
         </div>
       </div>
       <button
+        v-if="false"
         class="hover:bg-black/5 hover:dark:bg-white/15 max-lg:dark:bg-white/15 max-lg:bg-black/5 max-lg:hover:bg-black/10 max-lg:hover:dark:bg-white/20 min-w-12 min-h-12 flex items-center justify-center rounded-full cursor-pointer relative"
         @click="toggleDark"
       >
