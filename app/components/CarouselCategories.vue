@@ -77,7 +77,7 @@ const handleSetShop = (shop) => {
 <template>
   <div class="slider-container">
     <div v-if="showPrev" class="slider-btn prev-btn"></div>
-    <div v-for="shop in websiteStore.getters.shops" :key="shop.id" class="mr-3">
+    <!-- <div v-for="shop in websiteStore.getters.shops" :key="shop.id" class="mr-3">
       <div
         @click="handleSetShop(shop)"
         :class="[
@@ -90,7 +90,7 @@ const handleSetShop = (shop) => {
       >
         <div class="px-3.5">{{ shop.name }}</div>
       </div>
-    </div>
+    </div> -->
     <div class="slider-wrapper">
       <div
         ref="cardsSlider"

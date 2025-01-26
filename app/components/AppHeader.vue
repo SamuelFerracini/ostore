@@ -62,6 +62,10 @@ const colorModeIcon = computed(() =>
     ? "i-iconamoon-mode-dark-fill"
     : "i-iconamoon-mode-light-fill"
 );
+
+const showSearch = computed(() => {
+  return route.path === "/products";
+});
 </script>
 
 <template>
@@ -85,6 +89,7 @@ const colorModeIcon = computed(() =>
         class="flex flex-shrink flex-grow flex-col text-sm font-semibold text-[#111] dark:text-[#eee] mr-2"
       >
         <div
+          v-if="showSearch"
           :class="[
             'flex h-12 flex-grow rounded-full  pl-4 pr-3 transition-all hover:bg-black/10 hover:dark:bg-white/20',
             suggestionMenu

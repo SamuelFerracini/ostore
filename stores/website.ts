@@ -1,8 +1,9 @@
 import { createStore } from "vuex";
 
-const PANDORA = {
+export const PANDORA = {
   id: "pandora",
   name: "Pandora",
+  logo: "https://cdn.worldvectorlogo.com/logos/pandora-logo.svg",
   categories: [
     { id: "charm", name: "Charms" },
     { id: "bracelets", name: "Bracelets" },
@@ -12,9 +13,10 @@ const PANDORA = {
   ],
 };
 
-const GNOCE = {
+export const GNOCE = {
   id: "gnoce",
   name: "Gnoce",
+  logo: "https://www.gnoce.com/media/logo/websites/1/logo.svg",
   categories: [
     { id: "charm", name: "Charms" },
     { id: "bracelets", name: "Bracelets" },
@@ -24,7 +26,7 @@ const GNOCE = {
   ],
 };
 
-const shops = [PANDORA, GNOCE];
+export const shops = [PANDORA, GNOCE];
 
 const store = createStore({
   state() {

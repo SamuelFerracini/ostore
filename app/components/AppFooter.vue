@@ -39,7 +39,11 @@ const colorModeIcon = computed(() =>
     >
       <p>สินค้าส่งตรงถึงบ้าน ไม่ต้อองจ่ายภาษีและค่าส่งเพิ่มนะคะ</p>
     </div>
-    <a class="float-end" href="https://www.facebook.com/nonlapan.ssw">
+    <a
+      class="float-end"
+      href="https://www.facebook.com/nonlapan.ssw"
+      target="_blank"
+    >
       <UIcon
         class="text-[#5f5f5f] dark:text-[#b7b7b7] min-w-12 min-h-12 flex items-center justify-center rounded-full cursor-pointer relative"
         name="i-ic:baseline-facebook"
