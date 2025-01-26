@@ -11,7 +11,7 @@ const { cart } = useCart();
 
 const search = () => {
   router.push({
-    path: "/",
+    path: "/products",
     query: { ...route.query, q: searchQuery.value || undefined },
   });
   suggestionMenu.value = false;
