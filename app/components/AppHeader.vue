@@ -66,7 +66,7 @@ const colorModeIcon = computed(() =>
 );
 
 const showSearch = computed(() => {
-  return route.path === "/products";
+  return route.path === "/products" || route.path === "/products/";
 });
 </script>
 
