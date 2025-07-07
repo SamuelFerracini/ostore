@@ -33,6 +33,7 @@ defineProps({
           />
         </div>
         <div class="grid gap-0.5 pt-3 pb-4 px-1.5 text-sm font-semibold">
+          <div v-if="product.image2">คลิกที่รูปเพื่อดูรูปเพิ่มเติม</div>
           <div class="flex gap-1">
             <p>{{ product.price }} THB</p>
             <div
