@@ -11,7 +11,7 @@ const shops = computed(() => {
 
 const handleShopClick = (shop) => {
   websiteStore.dispatch("selectShop", shop);
-  router.push("/products");
+  router.push(`/products?shop=${shop.id}`);
 };
 
 const handleOpenFacebook = () => {
@@ -30,14 +30,7 @@ const handleOpenFacebook = () => {
       >
         <ShopLogo :shop="shop.id" />
       </button>
-      <button
-        class="w-72 border-2 border-blue-400 dark:border-blue-200 p-4 rounded-full"
-        @click="router.push('/tracking')"
-      >
-        <p class="text-4xl font-medium text-blue-400 dark:text-blue-200">
-          Tracking
-        </p>
-      </button>
+
       <button
         class="w-72 border-2 border-purple-400 dark:border-purple-200 p-4 rounded-full"
         @click="handleOpenFacebook"

@@ -33,6 +33,14 @@ async function fetch() {
 }
 
 onMounted(async () => {
+  if (route.query.shop) {
+    const shop = websiteStore.getters.shops.find(
+      (e) => e.id === route.query.shop
+    );
+
+    websiteStore.dispatch("selectShop", shop);
+  }
+
   await loadProducts();
   await fetch();
   setupObserver();
