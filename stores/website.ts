@@ -18,8 +18,9 @@ export const GNOCE = {
   name: "Gnoce",
   logo: "https://www.gnoce.com/media/logo/websites/1/logo.svg",
   categories: [
-    { id: "charm", name: "Charms" },
+    { id: "charms", name: "Charms" },
     { id: "bracelets", name: "Bracelets" },
+    { id: "basic-bracelets", name: "Basic Bracelets" },
     { id: "necklaces", name: "Necklaces" },
     { id: "rings", name: "Rings" },
     { id: "earrings", name: "Earrings" },
