@@ -56,6 +56,23 @@ const isInCart = (productId) => {
             "
           />
 
+          <!-- Link Button -->
+          <a
+            v-if="product.link"
+            :href="product.link"
+            target="_blank"
+            rel="noopener noreferrer"
+            @click.stop
+            class="absolute bottom-3 left-3 flex items-center justify-center w-10 h-10 rounded-full transition-all active:scale-95 shadow-lg bg-blue-600 hover:bg-blue-700"
+            aria-label="Open product link"
+          >
+            <UIcon
+              name="i-iconamoon-link-external-bold"
+              class="text-white"
+              size="20"
+            />
+          </a>
+
           <!-- Cart Button -->
           <button
             @click.prevent="
