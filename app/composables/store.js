@@ -132,3 +132,55 @@ export function updateItemQuantities(input) {
 export function checkout(input) {
   return {};
 }
+
+export async function productExists(productId, shop = null) {
+  try {
+    const products = await loadProducts();
+    
+    // If shop is specified, only check that shop
+    if (shop && products[shop]) {
+      return Object.values(products[shop])
+        .flat()
+        .some(product => product.id === productId);
+    }
+    
+    // Otherwise check all shops
+    for (const shopKey in products) {
+      const shopProducts = Object.values(products[shopKey]).flat();
+      if (shopProducts.some(product => product.id === productId)) {
+        return true;
+      }
+    }
+    
+    return false;
+  } catch (error) {
+    console.error('Error checking if product exists:', error);
+    return false;
+  }
+}
+
+export async function getProductById(productId, shop = null) {
+  try {
+    const products = await loadProducts();
+    
+    // If shop is specified, only check that shop
+    if (shop && products[shop]) {
+      const shopProducts = Object.values(products[shop]).flat();
+      return shopProducts.find(product => product.id === productId) || null;
+    }
+    
+    // Otherwise check all shops
+    for (const shopKey in products) {
+      const shopProducts = Object.values(products[shopKey]).flat();
+      const product = shopProducts.find(product => product.id === productId);
+      if (product) {
+        return product;
+      }
+    }
+    
+    return null;
+  } catch (error) {
+    console.error('Error getting product by ID:', error);
+    return null;
+  }
+}

@@ -12,6 +12,14 @@ const cartModal = ref(false);
 const { cart } = useCart();
 
 const cartCount = computed(() => cartStore.getters.cartCount);
+const cartCountAnimating = ref(false);
+
+watch(cartCount, () => {
+  cartCountAnimating.value = true;
+  setTimeout(() => {
+    cartCountAnimating.value = false;
+  }, 500);
+});
 
 const search = () => {
   router.push({
@@ -156,26 +164,32 @@ const showSearch = computed(() => {
       </div>
       <NuxtLink
         to="/cart"
-        class="hover:bg-black/5 hover:dark:bg-white/15 max-lg:dark:bg-white/15 max-lg:bg-black/5 max-lg:hover:bg-black/10 max-lg:hover:dark:bg-white/20 min-w-12 min-h-12 flex items-center justify-center rounded-full cursor-pointer relative"
+        class="hover:bg-black/5 hover:dark:bg-white/15 max-lg:dark:bg-white/15 max-lg:bg-black/5 max-lg:hover:bg-black/10 max-lg:hover:dark:bg-white/20 min-w-12 min-h-12 flex items-center justify-center rounded-full cursor-pointer relative transition-all"
+        :class="cartCountAnimating ? 'cart-icon-shake' : ''"
       >
         <UIcon
-          class="text-[#5f5f5f] dark:text-[#b7b7b7]"
+          class="text-[#5f5f5f] dark:text-[#b7b7b7] transition-transform duration-200"
+          :class="cartCountAnimating ? 'scale-110' : ''"
           name="i-iconamoon-shopping-bag-bold"
           size="26"
         />
-        <span
-          v-if="cartCount > 0"
-          class="absolute top-1 right-1 flex h-[18px] w-[18px]"
-        >
+        <Transition name="badge">
           <span
-            class="animate-ping absolute inline-flex h-full w-full rounded-full bg-purple-400 opacity-75"
-          ></span>
-          <span
-            class="relative inline-flex rounded-full h-[18px] w-[18px] bg-purple-600 text-[10px] items-center justify-center shadow font-semibold text-white"
+            v-if="cartCount > 0"
+            class="absolute top-1 right-1 flex h-[18px] w-[18px]"
           >
-            {{ cartCount }}
+            <span
+              v-if="cartCountAnimating"
+              class="animate-ping absolute inline-flex h-full w-full rounded-full bg-purple-400 opacity-75"
+            ></span>
+            <span
+              class="relative inline-flex rounded-full h-[18px] w-[18px] bg-purple-600 text-[10px] items-center justify-center shadow font-semibold text-white transition-all"
+              :class="cartCountAnimating ? 'badge-pulse' : ''"
+            >
+              {{ cartCount }}
+            </span>
           </span>
-        </span>
+        </Transition>
       </NuxtLink>
     </div>
   </div>
@@ -314,5 +328,57 @@ const showSearch = computed(() => {
 ::-webkit-scrollbar-thumb {
   @apply bg-black/15 dark:bg-white/15 rounded-full border-solid border-white dark:border-black;
   border-width: 5px;
+}
+
+/* Cart icon shake animation */
+@keyframes cartShake {
+  0%,
+  100% {
+    transform: rotate(0deg);
+  }
+  25% {
+    transform: rotate(-10deg);
+  }
+  75% {
+    transform: rotate(10deg);
+  }
+}
+
+.cart-icon-shake {
+  animation: cartShake 0.5s ease-in-out;
+}
+
+/* Badge pulse animation */
+@keyframes badgePulse {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+}
+
+.badge-pulse {
+  animation: badgePulse 0.5s ease-in-out;
+}
+
+/* Badge transition */
+.badge-enter-active {
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.badge-leave-active {
+  transition: all 0.2s ease-in;
+}
+
+.badge-enter-from {
+  opacity: 0;
+  transform: scale(0);
+}
+
+.badge-leave-to {
+  opacity: 0;
+  transform: scale(0);
 }
 </style>

@@ -12,6 +12,51 @@ export interface CartItem {
   quantity: number;
 }
 
+// Helper function to load and validate cart items against products.json
+const validateCartItems = async (items: CartItem[]): Promise<CartItem[]> => {
+  if (items.length === 0) return items;
+
+  try {
+    const response = await fetch("/products.json");
+    if (!response.ok) {
+      console.error("Failed to load products.json for validation");
+      return items;
+    }
+
+    const productsData = await response.json();
+    
+    // Create a Set of all valid product IDs for fast lookup
+    const validProductIds = new Set<string>();
+    
+    Object.keys(productsData).forEach((shop) => {
+      Object.keys(productsData[shop]).forEach((category) => {
+        productsData[shop][category].forEach((product: any) => {
+          validProductIds.add(product.id);
+        });
+      });
+    });
+
+    // Filter cart items to only include valid products
+    const validItems = items.filter((item) => {
+      const isValid = validProductIds.has(item.id);
+      if (!isValid) {
+        console.warn(`Removing invalid product from cart: ${item.name} (ID: ${item.id})`);
+      }
+      return isValid;
+    });
+
+    // If items were removed, update localStorage
+    if (validItems.length !== items.length) {
+      console.log(`Removed ${items.length - validItems.length} invalid items from cart`);
+    }
+
+    return validItems;
+  } catch (error) {
+    console.error("Error validating cart items:", error);
+    return items; // Return original items if validation fails
+  }
+};
+
 // Helper functions for localStorage
 const saveToLocalStorage = (items: CartItem[]) => {
   if (typeof window !== "undefined") {
@@ -40,6 +85,7 @@ const store = createStore({
   state() {
     return {
       items: loadFromLocalStorage(),
+      validationComplete: false,
     };
   },
 
@@ -85,6 +131,16 @@ const store = createStore({
     LOAD_CART(state) {
       state.items = loadFromLocalStorage();
     },
+
+    VALIDATE_CART(state, validatedItems: CartItem[]) {
+      state.items = validatedItems;
+      state.validationComplete = true;
+      saveToLocalStorage(state.items);
+    },
+
+    SET_VALIDATION_COMPLETE(state, value: boolean) {
+      state.validationComplete = value;
+    },
   },
 
   actions: {
@@ -107,8 +163,13 @@ const store = createStore({
       commit("CLEAR_CART");
     },
 
-    loadCart({ commit }) {
+    async loadCart({ commit, state }) {
       commit("LOAD_CART");
+      // Validate cart items against products.json
+      const validatedItems = await validateCartItems(state.items);
+      if (validatedItems.length !== state.items.length) {
+        commit("VALIDATE_CART", validatedItems);
+      }
     },
   },
 
@@ -130,6 +191,10 @@ const store = createStore({
 
     isInCart: (state) => (productId: string) => {
       return state.items.some((item) => item.id === productId);
+    },
+
+    isValidationComplete(state) {
+      return state.validationComplete;
     },
   },
 });

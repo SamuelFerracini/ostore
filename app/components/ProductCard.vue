@@ -5,23 +5,41 @@ defineProps({
   products: Object,
 });
 
+const animatingItems = ref(new Set());
+
 const addToCart = (product) => {
   cartStore.dispatch("addToCart", product);
+  triggerAnimation(product.id);
 };
 
 const removeFromCart = (productId) => {
   cartStore.dispatch("removeFromCart", productId);
+  triggerAnimation(productId);
 };
 
 const isInCart = (productId) => {
   return cartStore.getters.isInCart(productId);
+};
+
+const triggerAnimation = (productId) => {
+  animatingItems.value.add(productId);
+  setTimeout(() => {
+    animatingItems.value.delete(productId);
+  }, 600);
+};
+
+const isAnimating = (productId) => {
+  return animatingItems.value.has(productId);
 };
 </script>
 
 <template>
   <article v-for="product in products">
     <NuxtLink>
-      <div class="transition ease-[ease] duration-300">
+      <div
+        class="transition-all ease-[ease] duration-300"
+        :class="isAnimating(product.id) ? 'product-card-animate' : ''"
+      >
         <div
           class="relative pb-[133%] dark:shadow-[0_8px_24px_rgba(0,0,0,.5)] rounded-2xl overflow-hidden group select-none"
         >
@@ -70,12 +88,15 @@ const isInCart = (productId) => {
                 ? removeFromCart(product.id)
                 : addToCart(product)
             "
-            class="absolute bottom-3 right-3 flex items-center justify-center w-10 h-10 rounded-full transition-all active:scale-95 shadow-lg"
-            :class="
+            class="absolute bottom-3 right-3 flex items-center justify-center w-10 h-10 rounded-full transition-all duration-300 shadow-lg"
+            :class="[
               isInCart(product.id)
                 ? 'bg-red-600 hover:bg-red-700'
-                : 'bg-purple-600 hover:bg-purple-700'
-            "
+                : 'bg-purple-600 hover:bg-purple-700',
+              isAnimating(product.id)
+                ? 'cart-button-animate'
+                : 'hover:scale-110 active:scale-95',
+            ]"
             :aria-label="
               isInCart(product.id) ? 'Remove from cart' : 'Add to cart'
             "
@@ -86,7 +107,8 @@ const isInCart = (productId) => {
                   ? 'i-iconamoon-trash-bold'
                   : 'i-iconamoon-shopping-bag-bold'
               "
-              class="text-white"
+              class="text-white transition-transform duration-200"
+              :class="isAnimating(product.id) ? 'scale-110' : ''"
               size="20"
             />
           </button>
@@ -129,3 +151,55 @@ const isInCart = (productId) => {
     </NuxtLink>
   </article>
 </template>
+
+<style scoped>
+@keyframes cartButtonPulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.2);
+    box-shadow: 0 0 0 8px rgba(147, 51, 234, 0.3);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.cart-button-animate {
+  animation: cartButtonPulse 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes productCardPulse {
+  0% {
+    transform: scale(1);
+  }
+  25% {
+    transform: scale(0.98);
+  }
+  50% {
+    transform: scale(1.02);
+  }
+  75% {
+    transform: scale(0.99);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes glowPulse {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgba(147, 51, 234, 0);
+  }
+  50% {
+    box-shadow: 0 0 20px 4px rgba(147, 51, 234, 0.4);
+  }
+}
+
+.product-card-animate {
+  animation: productCardPulse 0.6s cubic-bezier(0.4, 0, 0.2, 1),
+    glowPulse 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+</style>

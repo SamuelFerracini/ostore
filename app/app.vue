@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import cartStore from "~~/stores/cart";
+
 const { siteName } = useAppConfig();
 
 useHead({
@@ -30,6 +32,8 @@ const scrollToTop = () => {
 
 onMounted(() => {
   window.addEventListener("scroll", handleScroll);
+  // Validate cart items against products.json
+  cartStore.dispatch("loadCart");
 });
 
 onBeforeUnmount(() => {
