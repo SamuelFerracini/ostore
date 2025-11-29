@@ -1,4 +1,6 @@
 <script setup>
+import cartStore from "~~/stores/cart";
+
 const router = useRouter();
 const route = useRoute();
 const searchQuery = ref((route.query.q || "").toString());
@@ -8,6 +10,8 @@ const suggestionMenu = ref(false);
 const onClickOutsideRef = ref(null);
 const cartModal = ref(false);
 const { cart } = useCart();
+
+const cartCount = computed(() => cartStore.getters.cartCount);
 
 const search = () => {
   router.push({
@@ -150,30 +154,29 @@ const showSearch = computed(() => {
           </div>
         </div>
       </div>
-      <button
-        v-if="false"
+      <NuxtLink
+        to="/cart"
         class="hover:bg-black/5 hover:dark:bg-white/15 max-lg:dark:bg-white/15 max-lg:bg-black/5 max-lg:hover:bg-black/10 max-lg:hover:dark:bg-white/20 min-w-12 min-h-12 flex items-center justify-center rounded-full cursor-pointer relative"
-        @click="toggleDark"
       >
         <UIcon
           class="text-[#5f5f5f] dark:text-[#b7b7b7]"
-          :name="colorModeIcon"
+          name="i-iconamoon-shopping-bag-bold"
           size="26"
         />
         <span
-          v-if="cart.length"
+          v-if="cartCount > 0"
           class="absolute top-1 right-1 flex h-[18px] w-[18px]"
         >
           <span
-            class="animate-ping absolute inline-flex h-full w-full rounded-full bg-alizarin-crimson-400 opacity-75"
+            class="animate-ping absolute inline-flex h-full w-full rounded-full bg-purple-400 opacity-75"
           ></span>
           <span
-            class="relative inline-flex rounded-full h-[18px] w-[18px] bg-alizarin-crimson-700 text-[10px] items-center justify-center shadow font-semibold text-white"
+            class="relative inline-flex rounded-full h-[18px] w-[18px] bg-purple-600 text-[10px] items-center justify-center shadow font-semibold text-white"
           >
-            {{ cart.length }}
+            {{ cartCount }}
           </span>
         </span>
-      </button>
+      </NuxtLink>
     </div>
   </div>
   <!-- <div

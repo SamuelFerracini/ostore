@@ -1,7 +1,31 @@
 <script setup>
+import cartStore from "~~/stores/cart";
+
 defineProps({
   products: Object,
 });
+
+const addToCart = (product) => {
+  cartStore.dispatch("addToCart", {
+    id: product.id,
+    name: product.name,
+    price: parseFloat(product.price),
+    originalPrice: product.originalPrice
+      ? parseFloat(product.originalPrice)
+      : undefined,
+    primaryImage: product.primaryImage,
+    category: product.category,
+    shop: product.shop,
+  });
+};
+
+const removeFromCart = (productId) => {
+  cartStore.dispatch("removeFromCart", productId);
+};
+
+const isInCart = (productId) => {
+  return cartStore.getters.isInCart(productId);
+};
 </script>
 
 <template>
@@ -31,6 +55,34 @@ defineProps({
               product.shop === 'gnoce' ? 'dark:bg-white' : 'dark:bg-neutral-800'
             "
           />
+
+          <!-- Cart Button -->
+          <button
+            @click.prevent="
+              isInCart(product.id)
+                ? removeFromCart(product.id)
+                : addToCart(product)
+            "
+            class="absolute bottom-3 right-3 flex items-center justify-center w-10 h-10 rounded-full transition-all active:scale-95 shadow-lg"
+            :class="
+              isInCart(product.id)
+                ? 'bg-red-600 hover:bg-red-700'
+                : 'bg-purple-600 hover:bg-purple-700'
+            "
+            :aria-label="
+              isInCart(product.id) ? 'Remove from cart' : 'Add to cart'
+            "
+          >
+            <UIcon
+              :name="
+                isInCart(product.id)
+                  ? 'i-iconamoon-trash-bold'
+                  : 'i-iconamoon-shopping-bag-bold'
+              "
+              class="text-white"
+              size="20"
+            />
+          </button>
         </div>
         <div class="grid gap-0.5 pt-3 pb-4 px-1.5 text-sm font-semibold">
           <div v-if="product.image2">คลิกที่รูปเพื่อดูรูปเพิ่มเติม</div>

@@ -39,7 +39,7 @@ onBeforeUnmount(() => {
 
 <template>
   <AppHeader />
-  <div class="pt-[80px] lg:pt-20 min-h-[calc(100vh-72px)]">
+  <div class="pt-[80px] pb-20 lg:pt-20 min-h-[calc(100vh-72px)]">
     <NuxtPage />
   </div>
   <AppFooter />
