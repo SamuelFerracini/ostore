@@ -83,7 +83,7 @@ const showSearch = computed(() => {
 
 <template>
   <div
-    class="flex w-full flex-row items-center px-3 lg:px-5 h-[72px] lg:h-20 z-40 fixed bg-white/85 dark:bg-black/85 backdrop-blur-sm dark:backdrop-blur-lg"
+    class="flex w-full flex-row items-center px-3 lg:px-5 h-[80px] lg:h-20 z-40 fixed bg-white/85 dark:bg-black/85 backdrop-blur-sm dark:backdrop-blur-lg"
   >
     <div class="flex flex-row w-full flex-nowrap items-center">
       <NuxtLink
