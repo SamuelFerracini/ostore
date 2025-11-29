@@ -39,6 +39,17 @@ watch(
   }
 );
 
+// Clear search when category changes
+watch(
+  () => route.query.category,
+  () => {
+    if (searchQuery.value) {
+      searchQuery.value = "";
+      router.push({ query: { ...route.query, q: undefined } });
+    }
+  }
+);
+
 const clearSearch = () => {
   suggestionMenu.value = false;
   searchQuery.value = "";
@@ -80,12 +91,7 @@ const showSearch = computed(() => {
         class="flex items-center justify-center min-w-[52px] min-h-[52px] max-lg:min-w-12 max-lg:min-h-12 rounded-2xl max-lg:rounded-full transition active:scale-95 px-3"
         to="/"
       >
-        <div class="flex flex-col items-center text-lg font-sans span">
-          <span>
-            <p class="font-sans font-semibold">Shopping</p>
-            <p class="italic text-sm">with Nonlapan</p>
-          </span>
-        </div>
+        <img src="/logo.png" alt="Nonlapan" class="w-16" />
       </NuxtLink>
       <div
         class="flex flex-shrink flex-grow flex-col text-sm font-semibold text-[#111] dark:text-[#eee] mr-2"

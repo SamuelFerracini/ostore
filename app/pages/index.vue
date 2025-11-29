@@ -20,8 +20,8 @@ const handleOpenFacebook = () => {
 </script>
 
 <template>
-  <div class="flex justify-center">
-    <div class="grid md:grid-cols-2 gap-16 items-center justify-center pt-20">
+  <div class="flex flex-col items-center pt-20">
+    <div class="flex flex-wrap justify-center gap-16 mb-12">
       <button
         @click="handleShopClick(shop)"
         v-for="(shop, idx) in shops"
@@ -30,15 +30,14 @@ const handleOpenFacebook = () => {
       >
         <ShopLogo :shop="shop.id" />
       </button>
-
-      <button
-        class="w-72 border-2 border-purple-400 dark:border-purple-200 p-4 rounded-full"
-        @click="handleOpenFacebook"
-      >
-        <p class="text-4xl font-medium text-purple-400 dark:text-purple-200">
-          Contact Us
-        </p>
-      </button>
     </div>
+    <button
+      class="w-72 border-2 border-purple-400 dark:border-purple-200 p-4 rounded-full"
+      @click="handleOpenFacebook"
+    >
+      <p class="text-4xl font-medium text-purple-400 dark:text-purple-200">
+        Contact Us
+      </p>
+    </button>
   </div>
 </template>

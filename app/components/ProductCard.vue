@@ -15,7 +15,7 @@ defineProps({
             :alt="product.name"
             loading="lazy"
             :title="product.name"
-            :src="product.image2 ?? product.image ?? product.url"
+            :src="product.hoverImage ?? product.primaryImage"
             class="absolute h-full w-full dark:bg-neutral-800 bg-neutral-200 object-cover"
             :class="
               product.shop === 'gnoce' ? 'dark:bg-white' : 'dark:bg-neutral-800'
@@ -25,7 +25,7 @@ defineProps({
             :alt="product.name"
             loading="lazy"
             :title="product.name"
-            :src="product.image ?? product.url"
+            :src="product.primaryImage"
             class="absolute h-full w-full dark:bg-neutral-800 bg-neutral-200 object-cover transition-opacity duration-300 group-hover:opacity-0"
             :class="
               product.shop === 'gnoce' ? 'dark:bg-white' : 'dark:bg-neutral-800'
@@ -34,19 +34,20 @@ defineProps({
         </div>
         <div class="grid gap-0.5 pt-3 pb-4 px-1.5 text-sm font-semibold">
           <div v-if="product.image2">คลิกที่รูปเพื่อดูรูปเพิ่มเติม</div>
-          <div class="flex gap-1">
-            <p>{{ product.price }} THB</p>
+          <div class="flex flex-col gap-1">
+            <p class="text-lg">{{ product.price_normalised }}</p>
             <div
               v-if="
-                product.priceBefore && product.price !== product.priceBefore
+                product.originalPrice_normalised &&
+                product.price_normalised !== product.originalPrice_normalised
               "
               class="text-[#5f5f5f] dark:text-[#a3a3a3] line-through"
-              v-html="`${product.priceBefore} THB`"
+              v-html="`${product.originalPrice_normalised}`"
             ></div>
           </div>
           <p>{{ product.name }}</p>
           <p class="text-blue-500">
-            {{ product.promotion }}
+            {{ product.discount }}
           </p>
           <div class="font-normal text-[#5f5f5f] dark:text-[#a3a3a3]">
             {{ getCategoryName(product?.category) }}
