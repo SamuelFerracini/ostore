@@ -67,6 +67,15 @@ export async function searchProducts({
     return [];
   }
 
+  // Remove duplicates based on product id
+  const uniqueProducts = new Map();
+  filteredProducts.forEach((product) => {
+    if (!uniqueProducts.has(product.id)) {
+      uniqueProducts.set(product.id, product);
+    }
+  });
+  filteredProducts = Array.from(uniqueProducts.values());
+
   if (search) {
     filteredProducts = filteredProducts.filter((item) =>
       item.name.toLowerCase().includes(search.toLowerCase())
