@@ -6,17 +6,7 @@ defineProps({
 });
 
 const addToCart = (product) => {
-  cartStore.dispatch("addToCart", {
-    id: product.id,
-    name: product.name,
-    price: parseFloat(product.price),
-    originalPrice: product.originalPrice
-      ? parseFloat(product.originalPrice)
-      : undefined,
-    primaryImage: product.primaryImage,
-    category: product.category,
-    shop: product.shop,
-  });
+  cartStore.dispatch("addToCart", product);
 };
 
 const removeFromCart = (productId) => {

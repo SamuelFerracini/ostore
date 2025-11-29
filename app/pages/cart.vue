@@ -28,13 +28,11 @@ const copyToClipboard = async () => {
 
   cartItems.value.forEach((item, index) => {
     text += `${index + 1}. ${item.name}\n`;
-    text += `   Price: $${item.price.toFixed(2)}`;
-    if (item.originalPrice && item.originalPrice > item.price) {
-      text += ` (was $${item.originalPrice.toFixed(2)})`;
-    }
-    text += `\n`;
+    text += `   Price: ${item.price_normalised} THB`;
     text += `   Quantity: ${item.quantity}\n`;
-    text += `   Subtotal: $${(item.price * item.quantity).toFixed(2)}\n`;
+    text += `   Subtotal: ${
+      Number(item.price_normalised) * item.quantity
+    } THB\n`;
     if (item.category) {
       text += `   Category: ${getCategoryName(item.category)}\n`;
     }
@@ -43,7 +41,7 @@ const copyToClipboard = async () => {
   });
 
   text += `Total Items: ${cartCount.value}\n`;
-  text += `Total Amount: $${cartTotal.value.toFixed(2)}\n`;
+  text += `Total Amount: ${cartTotal.value} THB\n`;
 
   try {
     await navigator.clipboard.writeText(text);
@@ -118,15 +116,17 @@ const copyToClipboard = async () => {
                 {{ item.name }}
               </h3>
               <div class="flex items-center gap-2 mb-2">
-                <span class="text-lg font-bold"
-                  >${{ item.price.toFixed(2) }}</span
-                >
-                <span
-                  v-if="item.originalPrice && item.originalPrice > item.price"
-                  class="text-sm text-[#5f5f5f] dark:text-[#a3a3a3] line-through"
-                >
-                  ${{ item.originalPrice.toFixed(2) }}
-                </span>
+                <div class="flex flex-col gap-1">
+                  <p class="text-lg">{{ item.price_normalised }} THB</p>
+                  <div
+                    v-if="
+                      item.originalPrice_normalised &&
+                      item.price_normalised !== item.originalPrice_normalised
+                    "
+                    class="text-[#5f5f5f] dark:text-[#a3a3a3] line-through"
+                    v-html="`${item.originalPrice_normalised} THB`"
+                  ></div>
+                </div>
               </div>
               <div
                 v-if="item.category"
@@ -215,7 +215,7 @@ const copyToClipboard = async () => {
             <div class="border-t border-black/10 dark:border-white/10 pt-3">
               <div class="flex justify-between text-lg font-bold">
                 <span>Total</span>
-                <span>${{ cartTotal.toFixed(2) }}</span>
+                <span>{{ cartTotal }} THB</span>
               </div>
             </div>
           </div>

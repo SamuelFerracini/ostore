@@ -123,7 +123,7 @@ const store = createStore({
 
     cartTotal(state) {
       return state.items.reduce(
-        (total, item) => total + item.price * item.quantity,
+        (total, item) => total + Number(item.price_normalised) * item.quantity,
         0
       );
     },
