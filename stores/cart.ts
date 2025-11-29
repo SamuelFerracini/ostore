@@ -24,10 +24,10 @@ const validateCartItems = async (items: CartItem[]): Promise<CartItem[]> => {
     }
 
     const productsData = await response.json();
-    
+
     // Create a Set of all valid product IDs for fast lookup
     const validProductIds = new Set<string>();
-    
+
     Object.keys(productsData).forEach((shop) => {
       Object.keys(productsData[shop]).forEach((category) => {
         productsData[shop][category].forEach((product: any) => {
@@ -40,14 +40,18 @@ const validateCartItems = async (items: CartItem[]): Promise<CartItem[]> => {
     const validItems = items.filter((item) => {
       const isValid = validProductIds.has(item.id);
       if (!isValid) {
-        console.warn(`Removing invalid product from cart: ${item.name} (ID: ${item.id})`);
+        console.warn(
+          `Removing invalid product from cart: ${item.name} (ID: ${item.id})`
+        );
       }
       return isValid;
     });
 
     // If items were removed, update localStorage
     if (validItems.length !== items.length) {
-      console.log(`Removed ${items.length - validItems.length} invalid items from cart`);
+      console.log(
+        `Removed ${items.length - validItems.length} invalid items from cart`
+      );
     }
 
     return validItems;
