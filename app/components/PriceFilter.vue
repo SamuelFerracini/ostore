@@ -3,15 +3,15 @@ const route = useRoute();
 const router = useRouter();
 
 const minPrice = ref(route.query.minPrice ? Number(route.query.minPrice) : 0);
-const maxPrice = ref(route.query.maxPrice ? Number(route.query.maxPrice) : 20000);
+const maxPrice = ref(route.query.maxPrice ? Number(route.query.maxPrice) : 2000000);
 
 const priceRanges = [
-  { label: 'All Prices', min: 0, max: 20000 },
-  { label: 'Under 1,000 THB', min: 0, max: 2000 },
+  { label: 'All Prices', min: 0, max: 2000000 },
+  { label: 'Under 1,000 THB', min: 0, max: 1000 },
   { label: '2,000 - 3,000 THB', min: 2000, max: 3000 },
   { label: '3,000 - 4,000 THB', min: 3000, max: 4000 },
   { label: '4,000 - 6,000 THB', min: 4000, max: 6000 },
-  { label: 'Over 6,000 THB', min: 6000, max: 20000 },
+  { label: 'Over 6,000 THB', min: 6000, max: 2000000 },
 ];
 
 const selectedRange = computed(() => {

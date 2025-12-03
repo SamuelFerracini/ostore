@@ -47,7 +47,7 @@ const isAnimating = (productId) => {
             :alt="product.name"
             loading="lazy"
             :title="product.name"
-            :src="product.hoverImage ?? product.primaryImage"
+            :src="product.hoverImage?.length > 0 ? product.hoverImage : product.primaryImage"
             class="absolute h-full w-full dark:bg-neutral-800 bg-neutral-200 object-cover"
             :class="
               product.shop === 'gnoce' ? 'dark:bg-white' : 'dark:bg-neutral-800'
