@@ -47,6 +47,8 @@ export async function searchProducts({
   page = 1,
   perPage = 25,
   shop,
+  minPrice,
+  maxPrice,
 } = {}) {
   if (!data[shop]) {
     return [];
@@ -67,7 +69,6 @@ export async function searchProducts({
     return [];
   }
 
-  // Remove duplicates based on product id
   const uniqueProducts = new Map();
   filteredProducts.forEach((product) => {
     if (!uniqueProducts.has(product.id)) {
@@ -80,6 +81,18 @@ export async function searchProducts({
     filteredProducts = filteredProducts.filter((item) =>
       item.name.toLowerCase().includes(search.toLowerCase())
     );
+  }
+
+  if (minPrice !== undefined || maxPrice !== undefined) {
+    filteredProducts = filteredProducts.filter((item) => {
+      const price = parseFloat(item.price_normalised);
+      if (isNaN(price)) return true;
+
+      const meetsMin = minPrice === undefined || price >= minPrice;
+      const meetsMax = maxPrice === undefined || price <= maxPrice;
+
+      return meetsMin && meetsMax;
+    });
   }
 
   const start = (page - 1) * perPage;

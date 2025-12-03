@@ -66,8 +66,12 @@ onBeforeUnmount(() => {
 </template>
 
 <style lang="postcss">
+body {
+  @apply bg-white dark:bg-black;
+}
+
 .dark {
-  @apply bg-black text-neutral-100;
+  @apply text-neutral-100;
   color-scheme: dark;
 }
 .dropdown-enter-active {

@@ -162,6 +162,17 @@ const showSearch = computed(() => {
           </div>
         </div>
       </div>
+      <button
+        @click="toggleDark"
+        class="hover:bg-black/5 hover:dark:bg-white/15 max-lg:dark:bg-white/15 max-lg:bg-black/5 max-lg:hover:bg-black/10 max-lg:hover:dark:bg-white/20 min-w-12 min-h-12 flex items-center justify-center rounded-full cursor-pointer transition-all active:scale-95 mr-2"
+        aria-label="Toggle dark mode"
+      >
+        <UIcon
+          :name="colorModeIcon"
+          class="text-[#5f5f5f] dark:text-[#b7b7b7] transition-all duration-300"
+          size="24"
+        />
+      </button>
       <NuxtLink
         to="/cart"
         class="hover:bg-black/5 hover:dark:bg-white/15 max-lg:dark:bg-white/15 max-lg:bg-black/5 max-lg:hover:bg-black/10 max-lg:hover:dark:bg-white/20 min-w-12 min-h-12 flex items-center justify-center rounded-full cursor-pointer relative transition-all"

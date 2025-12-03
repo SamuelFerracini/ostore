@@ -5,17 +5,8 @@ export const PANDORA = {
   name: "Pandora",
   logo: "https://cdn.worldvectorlogo.com/logos/pandora-logo.svg",
   categories: [
-    { id: "cyber-weekend", name: "Cyber Weekend" },
+    { id: "promotions", name: "Promotions" },
     { id: "new-in", name: "New In" },
-    { id: "charms", name: "Charms" },
-    { id: "bracelets", name: "Bracelets" },
-    { id: "rings", name: "Rings" },
-    { id: "necklaces", name: "Necklaces" },
-    { id: "earrings", name: "Earrings" },
-    { id: "engravable", name: "Engravable" },
-    { id: "gifts", name: "Gifts" },
-    { id: "lab-grown-diamonds", name: "Lab-grown Diamonds" },
-    { id: "christmas", name: "Christmas" },
   ],
 };
 

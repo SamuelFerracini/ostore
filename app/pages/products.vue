@@ -20,7 +20,16 @@ const variables = computed(() => ({
   category: route.query.category,
   shop: websiteStore.getters.selectedShop.id,
   perPage: 50,
+  minPrice: route.query.minPrice ? Number(route.query.minPrice) : undefined,
+  maxPrice: route.query.maxPrice ? Number(route.query.maxPrice) : undefined,
 }));
+
+const activeFiltersCount = computed(() => {
+  let count = 0;
+  if (route.query.category) count++;
+  if (route.query.minPrice || route.query.maxPrice) count++;
+  return count;
+});
 
 const checkIfMobile = () => {
   isMobile.value = window.innerWidth < 1024; // lg breakpoint
@@ -196,12 +205,14 @@ const productsEmpty = computed(
     <!-- Desktop: Always visible -->
     <div v-if="!isMobile" class="pt-1 pb-2">
       <ButtonSelectCategory />
+      <PriceFilter />
     </div>
 
     <!-- Mobile: Toggleable -->
     <Transition v-if="isMobile" name="filter-content">
       <div v-if="showFilters" class="filter-content-wrapper pt-1">
         <ButtonSelectCategory />
+        <PriceFilter />
         <div class="flex justify-end items-center px-3 lg:px-5 pb-2 pt-1">
           <button
             @click="toggleFilters"
@@ -243,6 +254,12 @@ const productsEmpty = computed(
             class="text-xs font-semibold text-[#5f5f5f] dark:text-[#b7b7b7]"
           >
             Show filters
+          </span>
+          <span
+            v-if="activeFiltersCount > 0"
+            class="flex items-center justify-center min-w-[18px] h-[18px] px-1 rounded-full bg-purple-600 text-white text-[10px] font-bold"
+          >
+            {{ activeFiltersCount }}
           </span>
           <UIcon
             name="i-iconamoon-arrow-down-2-bold"

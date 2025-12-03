@@ -59,7 +59,7 @@ const copyToClipboard = async () => {
 <template>
   <div class="max-w-screen-xl mx-auto p-3 lg:p-5">
     <div class="flex items-center justify-between mb-6">
-      <h1 class="text-3xl font-bold">Shopping Cart</h1>
+      <h1 class="text-3xl font-bold text-black dark:text-white">Shopping Cart</h1>
       <div class="text-lg font-semibold text-[#5f5f5f] dark:text-[#b7b7b7]">
         {{ cartCount }} {{ cartCount === 1 ? "item" : "items" }}
       </div>
@@ -79,7 +79,7 @@ const copyToClipboard = async () => {
           size="48"
         />
       </div>
-      <h2 class="text-2xl font-bold mb-4">Your cart is empty</h2>
+      <h2 class="text-2xl font-bold mb-4 text-black dark:text-white">Your cart is empty</h2>
       <p class="text-[#5f5f5f] dark:text-[#b7b7b7] mb-8">
         Add some products to get started
       </p>
@@ -112,12 +112,12 @@ const copyToClipboard = async () => {
           <!-- Product Details -->
           <div class="flex-1 flex flex-col justify-between">
             <div>
-              <h3 class="font-semibold text-base line-clamp-2 mb-1">
+              <h3 class="font-semibold text-base line-clamp-2 mb-1 text-black dark:text-white">
                 {{ item.name }}
               </h3>
               <div class="flex items-center gap-2 mb-2">
                 <div class="flex flex-col gap-1">
-                  <p class="text-lg">{{ item.price_normalised }} THB</p>
+                  <p class="text-lg text-black dark:text-white">{{ item.price_normalised }} THB</p>
                   <div
                     v-if="
                       item.originalPrice_normalised &&
@@ -141,7 +141,7 @@ const copyToClipboard = async () => {
               <div class="flex items-center gap-2">
                 <button
                   @click="updateQuantity(item.id, item.quantity - 1)"
-                  class="w-8 h-8 flex items-center justify-center rounded-full bg-black/5 dark:bg-white/10 hover:bg-black/10 hover:dark:bg-white/15 transition active:scale-95"
+                  class="w-8 h-8 flex items-center justify-center rounded-full bg-black/5 dark:bg-white/10 hover:bg-black/10 hover:dark:bg-white/15 transition active:scale-95 text-black dark:text-white"
                   :disabled="item.quantity <= 1"
                 >
                   <svg
@@ -160,12 +160,12 @@ const copyToClipboard = async () => {
                     />
                   </svg>
                 </button>
-                <span class="w-8 text-center font-semibold">{{
+                <span class="w-8 text-center font-semibold text-black dark:text-white">{{
                   item.quantity
                 }}</span>
                 <button
                   @click="updateQuantity(item.id, item.quantity + 1)"
-                  class="w-8 h-8 flex items-center justify-center rounded-full bg-black/5 dark:bg-white/10 hover:bg-black/10 hover:dark:bg-white/15 transition active:scale-95"
+                  class="w-8 h-8 flex items-center justify-center rounded-full bg-black/5 dark:bg-white/10 hover:bg-black/10 hover:dark:bg-white/15 transition active:scale-95 text-black dark:text-white"
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -201,7 +201,7 @@ const copyToClipboard = async () => {
         <div
           class="bg-white dark:bg-neutral-900 p-6 rounded-2xl shadow-sm border border-black/5 dark:border-white/10 sticky top-24"
         >
-          <h2 class="text-xl font-bold mb-4">Order Summary</h2>
+          <h2 class="text-xl font-bold mb-4 text-black dark:text-white">Order Summary</h2>
 
           <div class="space-y-3 mb-6">
             <!-- <div class="flex justify-between text-sm">
@@ -213,7 +213,7 @@ const copyToClipboard = async () => {
               <span class="font-semibold">Calculated at checkout</span>
             </div> -->
             <div class="border-t border-black/10 dark:border-white/10 pt-3">
-              <div class="flex justify-between text-lg font-bold">
+              <div class="flex justify-between text-lg font-bold text-black dark:text-white">
                 <span>Total</span>
                 <span>{{ cartTotal }} THB</span>
               </div>
@@ -235,7 +235,7 @@ const copyToClipboard = async () => {
 
           <button
             @click="clearCart"
-            class="w-full py-3 bg-black/5 dark:bg-white/10 hover:bg-black/10 hover:dark:bg-white/15 rounded-full font-semibold transition active:scale-95"
+            class="w-full py-3 bg-black/5 dark:bg-white/10 hover:bg-black/10 hover:dark:bg-white/15 rounded-full font-semibold transition active:scale-95 text-black dark:text-white"
           >
             Clear Cart
           </button>

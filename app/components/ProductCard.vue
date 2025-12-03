@@ -116,7 +116,7 @@ const isAnimating = (productId) => {
         <div class="grid gap-0.5 pt-3 pb-4 px-1.5 text-sm font-semibold">
           <div v-if="product.image2">คลิกที่รูปเพื่อดูรูปเพิ่มเติม</div>
           <div class="flex flex-col gap-1">
-            <p class="text-lg">{{ product.price_normalised }} THB</p>
+            <p class="text-lg text-black dark:text-white">{{ product.price_normalised }} THB</p>
             <div
               v-if="
                 product.originalPrice_normalised &&
@@ -126,8 +126,8 @@ const isAnimating = (productId) => {
               v-html="`${product.originalPrice_normalised} THB`"
             ></div>
           </div>
-          <p>{{ product.name }}</p>
-          <p class="text-blue-500">
+          <p class="text-black dark:text-white">{{ product.name }}</p>
+          <p class="text-blue-600 dark:text-blue-500">
             {{ product.discount }}
           </p>
           <div class="font-normal text-[#5f5f5f] dark:text-[#a3a3a3]">
