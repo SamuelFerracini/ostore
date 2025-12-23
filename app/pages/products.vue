@@ -42,6 +42,8 @@ const checkIfMobile = () => {
   measureContentHeight();
 };
 
+const filtersFullyExpanded = ref(false);
+
 const measureContentHeight = () => {
   nextTick(() => {
     if (filterBarRef.value) {
@@ -50,7 +52,7 @@ const measureContentHeight = () => {
           ".filter-content-wrapper"
         );
         if (content) {
-          filterContentHeight.value = `${content.scrollHeight}px`;
+          filterContentHeight.value = `${content.offsetHeight}px`;
         }
       } else if (!isMobile.value) {
         // Measure desktop height
@@ -72,12 +74,16 @@ const toggleFilters = () => {
   if (!isMobile.value) return;
 
   showFilters.value = !showFilters.value;
-  // Track if user manually opened filters
+
   if (showFilters.value) {
     manuallyOpened.value = true;
     measureContentHeight();
+    // Wait for transition to finish
+    setTimeout(() => {
+      filtersFullyExpanded.value = true;
+    }, 450);
   } else {
-    // Reset manual flag when manually closed
+    filtersFullyExpanded.value = false;
     manuallyOpened.value = false;
   }
 };
@@ -96,12 +102,16 @@ const handleScroll = () => {
   ) {
     // Scrolling down
     showFilters.value = false;
+    filtersFullyExpanded.value = false;
   }
 
   // Reset manual flag if scrolling back to top
   if (currentScrollY < 150) {
     manuallyOpened.value = false;
     showFilters.value = true;
+    setTimeout(() => {
+      filtersFullyExpanded.value = true;
+    }, 450);
   }
 
   lastScrollY.value = currentScrollY;
@@ -142,6 +152,9 @@ onMounted(async () => {
   // Measure height after a short delay to ensure DOM is rendered
   setTimeout(() => {
     measureContentHeight();
+    if (showFilters.value) {
+        filtersFullyExpanded.value = true;
+    }
   }, 100);
 
   window.addEventListener("scroll", handleScroll);
@@ -195,7 +208,11 @@ const productsEmpty = computed(
   <!-- Fixed filter bar -->
   <div
     ref="filterBarRef"
-    class="fixed top-[80px] lg:top-20 left-0 right-0 z-30 bg-white/85 dark:bg-black/85 backdrop-blur-sm dark:backdrop-blur-lg border-b border-black/5 dark:border-white/10 transition-all duration-400 ease-out overflow-y-hidden lg:overflow-visible"
+    class="fixed top-[80px] lg:top-20 left-0 right-0 z-30 bg-white/85 dark:bg-black/85 backdrop-blur-sm dark:backdrop-blur-lg border-b border-black/5 dark:border-white/10 transition-all duration-400 ease-out"
+    :class="{
+        'overflow-y-hidden': !filtersFullyExpanded && isMobile,
+         'overflow-visible': filtersFullyExpanded || !isMobile
+    }"
     :style="{
       maxHeight: !isMobile
         ? 'none'
@@ -290,7 +307,7 @@ const productsEmpty = computed(
 
   <div
     v-if="!productsEmpty"
-    class="grid grid-cols-1 xs:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 3xl:grid-cols-7 gap-3 lg:gap-5 p-3 lg:p-5"
+    class="grid grid-cols-1 xs:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 3xl:grid-cols-7 gap-3 lg:gap-5 p-3 lg:p-5 lg:mt-10"
   >
     <ProductCard :products="products" />
     <!-- Trigger for loading more products -->
