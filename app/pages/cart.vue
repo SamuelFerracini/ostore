@@ -239,6 +239,18 @@ const copyToClipboard = async () => {
           >
             Clear Cart
           </button>
+
+          <div class="mt-6 text-center space-y-2">
+            <p class="text-black dark:text-white font-medium">แคปหน้าจอแล้วทักแม่ค้าได้เลยยยย</p>
+            <a 
+              href="https://www.facebook.com/share/1AmvwsRi18/?mibextid=wwXIfr"
+              target="_blank"
+              rel="noopener" 
+              class="text-blue-600 hover:text-blue-700 block"
+            >
+              Facebook
+            </a>
+          </div>
         </div>
       </div>
     </div>

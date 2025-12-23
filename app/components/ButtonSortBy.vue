@@ -3,20 +3,16 @@ const router = useRouter();
 const route = useRoute();
 
 const selectedSort = ref(
-  !route.query.orderby && !route.query.fieldby ? 'Newest' : route.query.orderby === 'DESC' && route.query.fieldby === 'PRICE' ? 'Price: High to Low' : 'Price: Low to High'
+  !route.query.orderby && !route.query.fieldby ? 'Price: Low to High' : route.query.orderby === 'DESC' && route.query.fieldby === 'PRICE' ? 'Price: High to Low' : 'Price: Low to High'
 );
 
-const options = reactive([{ value: 'Newest' }, { value: 'Price: High to Low' }, { value: 'Price: Low to High' }]);
+const options = reactive([{ value: 'Price: Low to High' }, { value: 'Price: High to Low' }]);
 
 const setSort = value => {
   selectedSort.value = value;
   const query = { ...route.query };
 
   switch (value) {
-    case 'Newest':
-      delete query.orderby;
-      delete query.fieldby;
-      break;
     case 'Price: High to Low':
       query.orderby = 'DESC';
       query.fieldby = 'PRICE';
@@ -38,12 +34,13 @@ onClickOutside(dropdownRef, event => (isDropdownVisible.value = false));
 <template>
   <div class="relative cursor-pointer select-none items-center justify-center text-base font-semibold" ref="dropdownRef" @click="isDropdownVisible = !isDropdownVisible">
     <div
-      class="box-border flex items-center rounded-full p-3.5 transition-all active:scale-95"
+      class="box-border flex items-center gap-1.5 rounded-full px-3 py-1.5 transition-all active:scale-95"
       :class="{
         'bg-black text-white hover:bg-black dark:bg-white dark:text-black hover:dark:bg-white': isDropdownVisible,
         'bg-[#efefef] hover:bg-[#e2e2e2] dark:bg-[#262626] hover:dark:bg-[#333]': !isDropdownVisible,
       }">
-      <UIcon name="i-iconamoon-options-duotone" size="22" />
+      <UIcon name="i-iconamoon-options-duotone" size="16" />
+      <span class="text-xs font-semibold">Sort</span>
     </div>
     <Transition name="dropdown">
       <div

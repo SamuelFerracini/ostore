@@ -57,31 +57,29 @@ watch(
 </script>
 
 <template>
-  <div class="px-3 lg:px-5 pb-2 pt-2">
-    <div class="flex items-center gap-2 flex-wrap">
-      <button
-        v-for="range in priceRanges"
-        :key="range.label"
-        @click="applyPriceFilter(range.min, range.max)"
-        :class="[
-          'px-3 py-1.5 rounded-full text-xs font-semibold transition-all active:scale-95',
-          selectedRange === range.label
-            ? 'bg-purple-600 hover:bg-purple-700 text-white dark:bg-purple-700 hover:dark:bg-purple-800'
-            : 'bg-black/5 dark:bg-white/10 hover:bg-black/10 hover:dark:bg-white/15 text-[#5f5f5f] dark:text-[#b7b7b7]',
-        ]"
-      >
-        {{ range.label }}
-      </button>
+  <div class="flex items-center gap-2 flex-wrap">
+    <button
+      v-for="range in priceRanges"
+      :key="range.label"
+      @click="applyPriceFilter(range.min, range.max)"
+      :class="[
+        'px-3 py-1.5 rounded-full text-xs font-semibold transition-all active:scale-95',
+        selectedRange === range.label
+          ? 'bg-purple-600 hover:bg-purple-700 text-white dark:bg-purple-700 hover:dark:bg-purple-800'
+          : 'bg-black/5 dark:bg-white/10 hover:bg-black/10 hover:dark:bg-white/15 text-[#5f5f5f] dark:text-[#b7b7b7]',
+      ]"
+    >
+      {{ range.label }}
+    </button>
 
-      <button
-        v-if="minPrice !== 0 || maxPrice !== 10000"
-        @click="clearFilter"
-        class="px-3 py-1.5 rounded-full text-xs font-semibold transition-all active:scale-95 bg-red-500 hover:bg-red-600 text-white flex items-center gap-1.5"
-        aria-label="Clear price filter"
-      >
-        <UIcon name="i-iconamoon-close-bold" size="14" />
-        Clear
-      </button>
-    </div>
+    <button
+      v-if="minPrice !== 0 || maxPrice !== 10000"
+      @click="clearFilter"
+      class="px-3 py-1.5 rounded-full text-xs font-semibold transition-all active:scale-95 bg-red-500 hover:bg-red-600 text-white flex items-center gap-1.5"
+      aria-label="Clear price filter"
+    >
+      <UIcon name="i-iconamoon-close-bold" size="14" />
+      Clear
+    </button>
   </div>
 </template>

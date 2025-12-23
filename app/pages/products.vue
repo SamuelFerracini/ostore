@@ -22,6 +22,8 @@ const variables = computed(() => ({
   perPage: 50,
   minPrice: route.query.minPrice ? Number(route.query.minPrice) : undefined,
   maxPrice: route.query.maxPrice ? Number(route.query.maxPrice) : undefined,
+  orderby: route.query.orderby || 'ASC',
+  fieldby: route.query.fieldby || 'PRICE',
 }));
 
 const activeFiltersCount = computed(() => {
@@ -193,7 +195,7 @@ const productsEmpty = computed(
   <!-- Fixed filter bar -->
   <div
     ref="filterBarRef"
-    class="fixed top-[80px] lg:top-20 left-0 right-0 z-30 bg-white/85 dark:bg-black/85 backdrop-blur-sm dark:backdrop-blur-lg border-b border-black/5 dark:border-white/10 transition-all duration-400 ease-out overflow-y-hidden"
+    class="fixed top-[80px] lg:top-20 left-0 right-0 z-30 bg-white/85 dark:bg-black/85 backdrop-blur-sm dark:backdrop-blur-lg border-b border-black/5 dark:border-white/10 transition-all duration-400 ease-out overflow-y-hidden lg:overflow-visible"
     :style="{
       maxHeight: !isMobile
         ? 'none'
@@ -205,14 +207,20 @@ const productsEmpty = computed(
     <!-- Desktop: Always visible -->
     <div v-if="!isMobile" class="pt-1 pb-2">
       <ButtonSelectCategory />
-      <PriceFilter />
+      <div class="px-3 lg:px-5 pb-2 pt-2 flex items-center gap-2 flex-wrap">
+        <ButtonSortBy />
+        <PriceFilter />
+      </div>
     </div>
 
     <!-- Mobile: Toggleable -->
     <Transition v-if="isMobile" name="filter-content">
       <div v-if="showFilters" class="filter-content-wrapper pt-1">
         <ButtonSelectCategory />
-        <PriceFilter />
+        <div class="px-3 lg:px-5 pb-2 pt-2 flex items-center gap-2 flex-wrap">
+          <ButtonSortBy />
+          <PriceFilter />
+        </div>
         <div class="flex justify-end items-center px-3 lg:px-5 pb-2 pt-1">
           <button
             @click="toggleFilters"

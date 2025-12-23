@@ -49,6 +49,8 @@ export async function searchProducts({
   shop,
   minPrice,
   maxPrice,
+  orderby,
+  fieldby,
 } = {}) {
   if (!data[shop]) {
     return [];
@@ -92,6 +94,20 @@ export async function searchProducts({
       const meetsMax = maxPrice === undefined || price <= maxPrice;
 
       return meetsMin && meetsMax;
+    });
+  }
+
+  if (fieldby === "PRICE" && orderby) {
+    filteredProducts.sort((a, b) => {
+      const priceA = parseFloat(a.price_normalised);
+      const priceB = parseFloat(b.price_normalised);
+
+      if (orderby === "ASC") {
+        return priceA - priceB;
+      } else if (orderby === "DESC") {
+        return priceB - priceA;
+      }
+      return 0;
     });
   }
 
