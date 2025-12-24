@@ -116,14 +116,14 @@ const isAnimating = (productId) => {
         <div class="grid gap-0.5 pt-3 pb-4 px-1.5 text-sm font-semibold">
           <div v-if="product.image2">คลิกที่รูปเพื่อดูรูปเพิ่มเติม</div>
           <div class="flex flex-col gap-1">
-            <p class="text-lg text-black dark:text-white">{{ product.price_normalised }} THB</p>
+            <p class="text-lg text-black dark:text-white">{{ Math.round(product.price_normalised) }} THB</p>
             <div
               v-if="
                 product.originalPrice_normalised &&
                 product.price_normalised !== product.originalPrice_normalised
               "
               class="text-[#5f5f5f] dark:text-[#a3a3a3] line-through"
-              v-html="`${product.originalPrice_normalised} THB`"
+              v-html="`${Math.round(product.originalPrice_normalised)} THB`"
             ></div>
           </div>
           <p class="text-black dark:text-white">{{ product.name }}</p>

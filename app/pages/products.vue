@@ -14,6 +14,8 @@ const manuallyOpened = ref(false);
 const isMobile = ref(false);
 const filterBarRef = ref(null);
 const filterContentHeight = ref("auto");
+let observer = null;
+
 
 const variables = computed(() => ({
   search: route.query.q,
@@ -162,6 +164,7 @@ onMounted(async () => {
 });
 
 onBeforeUnmount(() => {
+  if (observer) observer.disconnect();
   window.removeEventListener("scroll", handleScroll);
   window.removeEventListener("resize", checkIfMobile);
 });
@@ -173,6 +176,7 @@ watch(
     productsData.value = [];
     fetch();
     measureContentHeight();
+    window.scrollTo(0, 0);
   }
 );
 
@@ -181,7 +185,11 @@ watch(page, () => {
 });
 
 const setupObserver = () => {
-  const observer = new IntersectionObserver(async (entries) => {
+  if (observer) observer.disconnect();
+
+  if (!loadMore.value) return;
+
+  observer = new IntersectionObserver(async (entries) => {
     entries.forEach(async (entry) => {
       if (
         entry.isIntersecting &&
@@ -193,10 +201,12 @@ const setupObserver = () => {
     });
   });
 
-  if (loadMore.value) {
-    observer.observe(loadMore.value);
-  }
+  observer.observe(loadMore.value);
 };
+
+watch(loadMore, () => {
+  setupObserver();
+});
 
 const products = computed(() => productsData.value);
 const productsEmpty = computed(
