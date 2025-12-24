@@ -6,6 +6,16 @@ defineProps({
 });
 
 const animatingItems = ref(new Set());
+const loadedImages = ref(new Set());
+
+const onImageLoad = (productId) => {
+  loadedImages.value.add(productId);
+};
+
+const isImageLoaded = (productId) => {
+  return loadedImages.value.has(productId);
+};
+
 
 const addToCart = (product) => {
   cartStore.dispatch("addToCart", product);
@@ -43,6 +53,17 @@ const isAnimating = (productId) => {
         <div
           class="relative pb-[133%] dark:shadow-[0_8px_24px_rgba(0,0,0,.5)] rounded-2xl overflow-hidden group select-none"
         >
+          <div
+            v-if="!isImageLoaded(product.id)"
+            class="absolute inset-0 z-10 animate-pulse bg-gray-200 dark:bg-gray-700 flex items-center justify-center"
+          >
+            <UIcon
+              name="i-heroicons-photo"
+              class="text-gray-400 dark:text-gray-600"
+              size="32"
+            />
+          </div>
+
           <NuxtImg
             :alt="product.name"
             loading="lazy"
@@ -58,7 +79,9 @@ const isAnimating = (productId) => {
             loading="lazy"
             :title="product.name"
             :src="product.primaryImage"
+            @load="onImageLoad(product.id)"
             class="absolute h-full w-full dark:bg-neutral-800 bg-neutral-200 object-cover transition-opacity duration-300 group-hover:opacity-0"
+
             :class="
               product.shop === 'gnoce' ? 'dark:bg-white' : 'dark:bg-neutral-800'
             "
@@ -71,7 +94,7 @@ const isAnimating = (productId) => {
             target="_blank"
             rel="noopener noreferrer"
             @click.stop
-            class="absolute bottom-3 left-3 flex items-center justify-center w-10 h-10 rounded-full transition-all active:scale-95 shadow-lg bg-blue-600 hover:bg-blue-700"
+            class="absolute bottom-3 left-3 flex items-center justify-center w-10 h-10 rounded-full transition-all active:scale-95 shadow-lg bg-blue-600 hover:bg-blue-700 z-20"
             aria-label="Open product link"
           >
             <UIcon
@@ -88,7 +111,7 @@ const isAnimating = (productId) => {
                 ? removeFromCart(product.id)
                 : addToCart(product)
             "
-            class="absolute bottom-3 right-3 flex items-center justify-center w-10 h-10 rounded-full transition-all duration-300 shadow-lg"
+            class="absolute bottom-3 right-3 flex items-center justify-center w-10 h-10 rounded-full transition-all duration-300 shadow-lg z-20"
             :class="[
               isInCart(product.id)
                 ? 'bg-red-600 hover:bg-red-700'
