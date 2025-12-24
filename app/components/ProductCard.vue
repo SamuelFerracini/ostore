@@ -16,7 +16,6 @@ const isImageLoaded = (productId) => {
   return loadedImages.value.has(productId);
 };
 
-
 const addToCart = (product) => {
   cartStore.dispatch("addToCart", product);
   triggerAnimation(product.id);
@@ -68,7 +67,11 @@ const isAnimating = (productId) => {
             :alt="product.name"
             loading="lazy"
             :title="product.name"
-            :src="product.hoverImage?.length > 0 ? product.hoverImage : product.primaryImage"
+            :src="
+              product.hoverImage?.length > 0
+                ? product.hoverImage
+                : product.primaryImage
+            "
             class="absolute h-full w-full dark:bg-neutral-800 bg-neutral-200 object-cover"
             :class="
               product.shop === 'gnoce' ? 'dark:bg-white' : 'dark:bg-neutral-800'
@@ -81,7 +84,6 @@ const isAnimating = (productId) => {
             :src="product.primaryImage"
             @load="onImageLoad(product.id)"
             class="absolute h-full w-full dark:bg-neutral-800 bg-neutral-200 object-cover transition-opacity duration-300 group-hover:opacity-0"
-
             :class="
               product.shop === 'gnoce' ? 'dark:bg-white' : 'dark:bg-neutral-800'
             "
@@ -139,7 +141,9 @@ const isAnimating = (productId) => {
         <div class="grid gap-0.5 pt-3 pb-4 px-1.5 text-sm font-semibold">
           <div v-if="product.image2">คลิกที่รูปเพื่อดูรูปเพิ่มเติม</div>
           <div class="flex flex-col gap-1">
-            <p class="text-lg text-black dark:text-white">{{ Math.round(product.price_normalised) }} THB</p>
+            <p class="text-lg text-black dark:text-white">
+              {{ Math.round(product.price_normalised) }} THB
+            </p>
             <div
               v-if="
                 product.originalPrice_normalised &&
