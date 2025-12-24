@@ -5,6 +5,9 @@ defineProps({
   products: Object,
 });
 
+const route = useRoute();
+const showDownloadButton = computed(() => route.query.download === "true");
+
 const animatingItems = ref(new Set());
 const loadedImages = ref(new Set());
 
@@ -148,6 +151,7 @@ const downloadImage = (product, event) => {
 
           <!-- Download Button -->
           <button
+            v-if="showDownloadButton"
             @click.prevent="downloadImage(product, $event)"
             class="absolute top-3 right-3 flex items-center justify-center w-10 h-10 rounded-full transition-all duration-300 shadow-lg bg-green-600 hover:bg-green-700 hover:scale-110 active:scale-95 z-20"
             aria-label="Download product image"
