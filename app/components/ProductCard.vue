@@ -40,6 +40,13 @@ const triggerAnimation = (productId) => {
 const isAnimating = (productId) => {
   return animatingItems.value.has(productId);
 };
+
+const downloadImage = (product, event) => {
+  event.preventDefault();
+  event.stopPropagation();
+  // Open image in a new tab
+  window.open(product.primaryImage, "_blank");
+};
 </script>
 
 <template>
@@ -78,6 +85,7 @@ const isAnimating = (productId) => {
             "
           />
           <NuxtImg
+            :id="`primary-image-${product.id}`"
             :alt="product.name"
             loading="lazy"
             :title="product.name"
@@ -134,6 +142,19 @@ const isAnimating = (productId) => {
               "
               class="text-white transition-transform duration-200"
               :class="isAnimating(product.id) ? 'scale-110' : ''"
+              size="20"
+            />
+          </button>
+
+          <!-- Download Button -->
+          <button
+            @click.prevent="downloadImage(product, $event)"
+            class="absolute top-3 right-3 flex items-center justify-center w-10 h-10 rounded-full transition-all duration-300 shadow-lg bg-green-600 hover:bg-green-700 hover:scale-110 active:scale-95 z-20"
+            aria-label="Download product image"
+          >
+            <UIcon
+              name="i-iconamoon-download-bold"
+              class="text-white"
               size="20"
             />
           </button>
