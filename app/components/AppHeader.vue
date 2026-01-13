@@ -51,11 +51,18 @@ watch(
   }
 );
 
+watch(
+  () => route.query.q,
+  (newVal) => {
+    searchQuery.value = (newVal || "").toString();
+  }
+);
+
 // Clear search when category changes
 watch(
   () => route.query.category,
-  () => {
-    if (searchQuery.value) {
+  (newVal) => {
+    if (newVal && searchQuery.value) {
       searchQuery.value = "";
       router.push({ query: { ...route.query, q: undefined } });
     }

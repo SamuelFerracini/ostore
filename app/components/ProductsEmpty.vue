@@ -5,6 +5,10 @@ const router = useRouter();
 const resetSearch = () => {
   router.push({ query: { ...route.query, q: undefined } });
 };
+
+const checkAllTabs = () => {
+  router.push({ query: { ...route.query, category: undefined } });
+}
 </script>
 
 <template>
@@ -29,8 +33,15 @@ const resetSearch = () => {
       <br />
       with different terms.
     </div>
-    <button @click="resetSearch" class="px-4 py-2 bg-black/40 hover:bg-black/60 dark:bg-white/10 hover:dark:bg-white/20 text-white rounded-full active:scale-95 transition">
-      Reset Search
-    </button>
+    <div class="flex flex-row items-center justify-center gap-2">
+      <button @click="resetSearch"
+        class="px-4 py-2 bg-black/5 hover:bg-black/10 dark:bg-white/10 hover:dark:bg-white/20 text-neutral-800 dark:text-white rounded-full active:scale-95 transition text-sm font-semibold">
+        Reset Search
+      </button>
+      <button v-if="route.query.category && route.query.q" @click="checkAllTabs"
+        class="px-4 py-2 bg-black/80 hover:bg-black/100 dark:bg-white/10 hover:dark:bg-white/20 text-white dark:text-white rounded-full active:scale-95 transition text-sm font-semibold">
+        Check all tabs
+      </button>
+    </div>
   </div>
 </template>
