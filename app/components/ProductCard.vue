@@ -191,7 +191,7 @@ const downloadImage = (product, event) => {
             class="grid gap-1 grid-cols-4"
           >
             <div
-              v-for="(size, idx) in product.sizes.filter(s => s.available)"
+              v-for="(size, idx) in product?.sizes?.filter((s) => s.available)"
               :key="idx"
               class="flex-1 text-center p-1 shadow border rounded-lg text-black w dark:text-gray-200 dark:border-gray-200"
             >
