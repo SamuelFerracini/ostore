@@ -1,4 +1,5 @@
 import pkg from "./package.json";
+import storefrontConfig from "./storefront.config.js";
 
 import Aura from "@primevue/themes/aura";
 
@@ -20,6 +21,7 @@ export default defineNuxtConfig({
   runtimeConfig: {
     public: {
       version: pkg.version,
+      promotionsPaused: storefrontConfig.promotionsPaused,
       public: {
         NUXT_API_URL: process.env.NUXT_API_URL,
       },

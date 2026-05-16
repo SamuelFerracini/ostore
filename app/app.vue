@@ -2,6 +2,17 @@
 import cartStore from "~~/stores/cart";
 
 const { siteName } = useAppConfig();
+const runtimeConfig = useRuntimeConfig();
+
+function readPromotionsPaused(value: unknown): boolean {
+  if (value === true) return true;
+  if (typeof value === "string") return value.toLowerCase() === "true";
+  return false;
+}
+
+const promotionsPaused = computed(() =>
+  readPromotionsPaused(runtimeConfig.public.promotionsPaused),
+);
 
 useHead({
   htmlAttrs: {
@@ -31,38 +42,43 @@ const scrollToTop = () => {
 };
 
 onMounted(() => {
+  if (promotionsPaused.value) return;
   window.addEventListener("scroll", handleScroll);
   // Validate cart items against products.json
   cartStore.dispatch("loadCart");
 });
 
 onBeforeUnmount(() => {
+  if (promotionsPaused.value) return;
   window.removeEventListener("scroll", handleScroll);
 });
 </script>
 
 <template>
-  <AppHeader />
-  <div class="pt-[80px] pb-20 lg:pt-20 min-h-[calc(100vh-72px)]">
-    <NuxtPage />
-  </div>
-  <AppFooter />
+  <PromotionsPaused v-if="promotionsPaused" />
+  <template v-else>
+    <AppHeader />
+    <div class="pt-[80px] pb-20 lg:pt-20 min-h-[calc(100vh-72px)]">
+      <NuxtPage />
+    </div>
+    <AppFooter />
 
-  <!-- Scroll to top button -->
-  <Transition name="scroll-button">
-    <button
-      v-if="showScrollToTop"
-      @click="scrollToTop"
-      class="fixed bottom-20 right-6 z-50 flex items-center justify-center w-12 h-12 lg:w-14 lg:h-14 rounded-full bg-white/85 dark:bg-black/85 backdrop-blur-sm dark:backdrop-blur-lg shadow-lg hover:bg-white/95 hover:dark:bg-black/95 transition-all active:scale-95 border border-black/5 dark:border-white/10"
-      aria-label="Scroll to top"
-    >
-      <UIcon
-        name="i-iconamoon-arrow-up-2-bold"
-        class="text-[#5f5f5f] dark:text-[#b7b7b7]"
-        size="24"
-      />
-    </button>
-  </Transition>
+    <!-- Scroll to top button -->
+    <Transition name="scroll-button">
+      <button
+        v-if="showScrollToTop"
+        @click="scrollToTop"
+        class="fixed bottom-20 right-6 z-50 flex items-center justify-center w-12 h-12 lg:w-14 lg:h-14 rounded-full bg-white/85 dark:bg-black/85 backdrop-blur-sm dark:backdrop-blur-lg shadow-lg hover:bg-white/95 hover:dark:bg-black/95 transition-all active:scale-95 border border-black/5 dark:border-white/10"
+        aria-label="Scroll to top"
+      >
+        <UIcon
+          name="i-iconamoon-arrow-up-2-bold"
+          class="text-[#5f5f5f] dark:text-[#b7b7b7]"
+          size="24"
+        />
+      </button>
+    </Transition>
+  </template>
 </template>
 
 <style lang="postcss">
