@@ -5,7 +5,8 @@ export const PANDORA = {
   name: "Pandora",
   logo: "https://cdn.worldvectorlogo.com/logos/pandora-logo.svg",
   categories: [
-    { id: "new-in", name: "New In" },
+    { id: "all-sale", name: "All Sales" },
+    { id: "clearance", name: "Clearance" },
     { id: "charms", name: "Charms" },
     { id: "bracelets", name: "Bracelets" },
     { id: "rings", name: "Rings" },

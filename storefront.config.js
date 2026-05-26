@@ -3,5 +3,5 @@
  */
 export default {
   /** When true, visitors only see the “no promotions” page (no shop UI). */
-  promotionsPaused: true,
+  promotionsPaused: false,
 };
