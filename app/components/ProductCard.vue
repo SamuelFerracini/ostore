@@ -169,14 +169,14 @@ const downloadImage = (product, event) => {
             <p class="text-lg text-black dark:text-white">
               {{ Math.round(product.price_normalised) }} THB
             </p>
-            <!-- <div
+            <div
               v-if="
-                product.originalPrice_normalised &&
-                product.price_normalised !== product.originalPrice_normalised
+                product.market_thb &&
+                product.market_thb > product.price_normalised
               "
-              class="text-[#5f5f5f] dark:text-[#a3a3a3] line-through"
-              v-html="`${Math.round(product.originalPrice_normalised)} THB`"
-            ></div> -->
+              class="text-[#5f5f5f] dark:text-[#a3a3a3]"
+              v-html="`ราคาที่ช็อปไทย ${Math.round(product.market_thb)} บาท`"
+            ></div>
           </div>
           <p class="text-black dark:text-white">{{ product.name }}</p>
           <p class="text-blue-600 dark:text-blue-500">
