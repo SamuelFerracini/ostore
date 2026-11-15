@@ -1,22 +1,30 @@
 <script setup>
 const props = defineProps({
   product: Object,
+  size: { type: String, default: 'md' },
 });
 
-const { isWishlisted, toggleWishlist } = useWishlist(props.product);
+const { isWishlisted, toggleWishlist } = useWishlist();
+const active = computed(() => isWishlisted(props.product));
 </script>
 
 <template>
-  <button @click="toggleWishlist(props.product)" class="active:scale-95 transition">
+  <button
+    type="button"
+    :aria-pressed="active"
+    :aria-label="active ? 'ลบออกจากรายการโปรด' : 'เพิ่มในรายการโปรด'"
+    class="active:scale-95 transition"
+    @click.prevent.stop="toggleWishlist(product)">
     <div
       :class="[
-        'w-12 h-12 rounded-full ml-3 flex justify-center items-center',
-        isWishlisted ? 'bg-alizarin-crimson-100 dark:bg-alizarin-crimson-950' : 'bg-neutral-200 dark:bg-neutral-800',
+        'rounded-full flex justify-center items-center shadow-sm',
+        size === 'sm' ? 'w-10 h-10' : 'w-12 h-12 ml-3',
+        active ? 'bg-mist dark:bg-midnight-surface' : 'bg-white/90 dark:bg-midnight-surface/90',
       ]">
       <UIcon
-        :name="isWishlisted ? 'i-iconamoon-heart-fill' : 'i-iconamoon-heart'"
-        size="26"
-        :class="isWishlisted ? 'text-alizarin-crimson-400 dark:text-alizarin-crimson-700 pulse-heart' : 'text-neutral-900 dark:text-neutral-200'" />
+        :name="active ? 'i-iconamoon-heart-fill' : 'i-iconamoon-heart'"
+        :size="size === 'sm' ? 22 : 26"
+        :class="active ? 'text-royal dark:text-periwinkle' : 'text-navy dark:text-night-text'" />
     </div>
   </button>
 </template>
