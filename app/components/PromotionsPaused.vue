@@ -4,27 +4,28 @@ const { siteName } = useAppConfig();
 
 <template>
   <div
-    class="min-h-[100dvh] flex flex-col items-center justify-center px-6 py-16 bg-white dark:bg-black text-center"
+    class="min-h-[100dvh] flex flex-col items-center justify-center px-6 py-16 bg-ivory dark:bg-midnight text-center"
   >
+    <div class="h-1 w-16 rounded-full bg-gold" aria-hidden="true"></div>
     <p
-      class="text-sm font-medium uppercase tracking-wide text-purple-600 dark:text-purple-400"
+      class="mt-6 font-display text-2xl font-semibold text-navy dark:text-night-text"
     >
       {{ siteName }}
     </p>
     <h1
-      class="mt-4 text-2xl md:text-3xl font-semibold text-neutral-800 dark:text-neutral-100 max-w-lg leading-snug"
+      class="mt-4 font-display-th text-2xl md:text-3xl font-semibold text-navy dark:text-night-text max-w-lg leading-snug"
     >
       รับหิ้วรอบต่อไป สิ้นเดือนพฤษภาค่ะ
     </h1>
     <p
-      class="mt-4 text-lg text-[#5f5f5f] dark:text-[#b7b7b7] max-w-md leading-relaxed"
+      class="mt-4 text-lg text-muted dark:text-night-muted max-w-md leading-relaxed"
     >
       เข้ากลุ่มไลน์ติดตามโปรหน้าได้เลยยยคับบบ ❤️
     </p>
     <img
       src="/qrcode.jpeg"
-      alt="LINE group QR code"
-      class="mt-8 w-56 max-w-full rounded-2xl shadow-lg border border-black/5 dark:border-white/10"
+      alt="QR code กลุ่มไลน์"
+      class="mt-8 w-56 max-w-full rounded-2xl border border-gold-line bg-white p-2 dark:border-midnight-line"
       width="224"
       height="224"
     />

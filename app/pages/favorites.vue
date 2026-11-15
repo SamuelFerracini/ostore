@@ -1,39 +1,67 @@
 <script setup>
 const { wishlist } = useWishlist();
+
+// Only items saved from the product list (products.json shape).
+const items = computed(() =>
+  wishlist.value.filter((item) => item && item.primaryImage)
+);
 </script>
 
 <template>
-  <div class="max-w-screen-2xl m-auto p-3 lg:p-5">
-    <template v-if="wishlist.length">
-      <div class="flex items-baseline gap-3 px-1 lg:mt-6">
-        <h1 class="font-display-th text-3xl font-semibold text-navy dark:text-night-text">รายการโปรด</h1>
-        <span class="text-sm text-muted">{{ wishlist.length }} ชิ้น</span>
+  <div class="mx-auto max-w-[1440px] px-4 lg:px-8">
+    <div class="pt-6 pb-5 lg:pt-9 lg:pb-7">
+      <h1
+        class="font-display-th text-[26px] lg:text-[34px] font-semibold leading-tight text-navy dark:text-night-text"
+      >
+        รายการโปรด
+      </h1>
+      <p v-if="items.length" class="mt-1 text-[15px] text-muted dark:text-night-muted">
+        {{ items.length }} ชิ้น
+      </p>
+    </div>
+
+    <div v-if="items.length" class="favorites-grid pb-10">
+      <ProductCard :products="items" />
+    </div>
+    <div
+      v-else
+      class="flex min-h-[50vh] flex-col items-center justify-center px-5 pb-16 text-center"
+    >
+      <div
+        class="flex h-24 w-24 items-center justify-center rounded-full border border-gold-line bg-gold-soft dark:border-gold/30 dark:bg-gold/10"
+      >
+        <UIcon
+          name="i-iconamoon-heart"
+          class="h-12 w-12 text-gold-text dark:text-night-gold"
+        />
       </div>
-      <div class="product-grid pb-10 mt-4 lg:mt-6">
-        <ProductCard :products="wishlist" />
-      </div>
-    </template>
-    <div v-else class="flex flex-col items-center justify-center text-center px-5 min-h-[60vh]">
-      <UIcon name="i-iconamoon-heart" class="w-14 h-14 text-gold-line" />
-      <h1 class="font-display-th text-2xl font-semibold text-navy dark:text-night-text mt-4">ยังไม่มีรายการโปรด</h1>
+      <p
+        class="mt-6 font-display-th text-2xl font-semibold text-navy dark:text-night-text"
+      >
+        ยังไม่มีรายการโปรด
+      </p>
+      <p class="mt-2 text-[15px] text-muted dark:text-night-muted">
+        กดหัวใจที่รูปสินค้าเพื่อเก็บไว้ดูทีหลัง
+      </p>
       <NuxtLink
         to="/products"
-        class="mt-6 inline-flex items-center rounded-full bg-gold px-6 py-2.5 text-sm font-medium text-navy hover:bg-gold-light transition active:scale-95">
+        class="mt-6 inline-flex min-h-[46px] items-center rounded-full bg-gold px-6 text-[15px] font-semibold text-navy hover:bg-gold-light transition"
+      >
         เลือกซื้อสินค้า
       </NuxtLink>
     </div>
   </div>
 </template>
 
-<style lang="postcss" scoped>
-.product-grid {
+<style scoped>
+.favorites-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 28px 12px;
 }
 
 @media (min-width: 640px) {
-  .product-grid {
+  .favorites-grid {
     grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
     gap: 40px 24px;
   }
