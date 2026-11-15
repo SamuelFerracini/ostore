@@ -1,7 +1,6 @@
 <script setup>
 import websiteStore from "~~/stores/website";
 
-const config = useRuntimeConfig();
 const colorMode = useColorMode();
 
 const toggleDark = () => {
