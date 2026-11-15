@@ -113,14 +113,14 @@ Clicking a product card (image or name) calls `useProductModal().open(product)`.
 
 ## Done when
 
-- [ ] No purple, red or default-blue UI colours remain in the files you own; the tokens and fonts above are in place.
+- [x] No purple, red or default-blue UI colours remain in the files you own; the tokens and fonts above are in place.
 
 - [ ] The cards match the spec, and prices and CTAs line up across each row.
 
-- [ ] Ring CTAs open the modal through `useProductModal().open`, without adding to the cart.
+- [x] Ring CTAs open the modal through `useProductModal().open`, without adding to the cart.
 
-- [ ] `npm run build` passes.
+- [x] `npm run build` passes.
 
 - [ ] Checked with **Claude in Chrome** against `npm run dev` in this worktree: home and products at 1440px and 390px, light and dark. Results and screenshots saved with save_note.
 
-- [ ] Use the **frontend-design** plugin for visual quality decisions.
+- [x] Use the **frontend-design** plugin for visual quality decisions.
