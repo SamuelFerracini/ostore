@@ -8,7 +8,20 @@ const emit = defineEmits(["change"]);
 const { isWishlisted, toggleWishlist } = useWishlist();
 const active = computed(() => isWishlisted(props.product));
 
-const toggle = () => {
+const { confirm } = useConfirm();
+
+const toggle = async () => {
+  if (active.value) {
+    const ok = await confirm({
+      title: "ลบออกจากรายการโปรด?",
+      message: props.product?.name
+        ? `ต้องการลบ "${props.product.name}" ออกจากรายการโปรดใช่ไหม`
+        : "",
+      confirmLabel: "ลบออก",
+      cancelLabel: "ยกเลิก",
+    });
+    if (!ok) return;
+  }
   toggleWishlist(props.product);
   emit("change", active.value);
 };
