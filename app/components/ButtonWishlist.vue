@@ -5,9 +5,16 @@ const props = defineProps({
 
 const emit = defineEmits(["change"]);
 
-const { isWishlisted, toggleWishlist } = useWishlist(props.product);
+const { isWishlisted, toggleWishlist, wishlist } = useWishlist(props.product);
 
 const toggle = () => {
+  // Every button has its own copy of the list; re-read it so a toggle here
+  // does not overwrite hearts set on other cards.
+  try {
+    wishlist.value = JSON.parse(localStorage.getItem("wishlist") || "[]");
+  } catch {
+    wishlist.value = [];
+  }
   toggleWishlist(props.product);
   emit("change", isWishlisted.value);
 };

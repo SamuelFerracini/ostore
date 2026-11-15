@@ -350,10 +350,12 @@ const searchPlaceholder = computed(() =>
   </div> -->
   <button
     v-if="cartModal"
-    class="hover:bg-white/65 dark:hover:bg-white/10 transition shadow-2xl mt-3 lg:mt-4 mx-3 lg:mx-5 items-center justify-center min-w-12 min-h-12 rounded-[2rem] right-0 fixed flex z-50 bg-white/85 dark:bg-black/30 dark:border dark:border-white/10 cart-button-bezel backdrop-blur-lg"
+    type="button"
+    aria-label="ปิดตะกร้า"
+    class="hover:bg-mist dark:hover:bg-midnight transition mt-3 lg:mt-4 mx-3 lg:mx-5 items-center justify-center min-w-12 min-h-12 rounded-[2rem] right-0 fixed flex z-50 bg-white dark:bg-midnight-surface border border-gold-line dark:border-midnight-line"
   >
     <UIcon
-      class="text-[#5f5f5f] dark:text-[#b7b7b7]"
+      class="text-navy dark:text-night-text"
       name="i-iconamoon-close"
       size="26"
     />
