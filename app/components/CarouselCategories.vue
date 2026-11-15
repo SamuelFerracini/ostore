@@ -11,25 +11,21 @@ const isDragging = ref(false);
 const dragThreshold = 10;
 let startX, scrollLeft;
 
-const colors = [
-  "bg-[#dad5ff]",
-  "bg-[#ffe2eb]",
-  "bg-[#ffe4c2]",
-  "bg-[#fffd92]",
-  "bg-[#cfffcb]",
-  "bg-[#dbfff6]",
-  "bg-[#d7edff]",
-];
-
 const setCategory = (category) => {
   if (!isDragging.value && (route.query.category || "") !== category) {
     router.push({ query: { ...route.query, category: category || undefined } });
   }
 };
 
-const getCategoryClass = (index) => {
-  return `${colors[index % colors.length]} hover:brightness-90`;
-};
+// Thai pills, limited to the categories the selected shop has.
+const pills = computed(() => {
+  const ids = (websiteStore.getters.selectedShop.categories || []).map(
+    (c) => c.id
+  );
+  return CATEGORY_PILLS.filter((pill) => !pill.id || ids.includes(pill.id));
+});
+
+const isActive = (id) => (route.query.category || "") === id;
 
 const initializeDrag = (e) => {
   isDragging.value = false;
@@ -76,74 +72,45 @@ const handleSetShop = (shop) => {
 
 <template>
   <div class="slider-container">
-    <div v-if="showPrev" class="slider-btn prev-btn"></div>
-    <!-- <div v-for="shop in websiteStore.getters.shops" :key="shop.id" class="mr-3">
-      <div
-        @click="handleSetShop(shop)"
-        :class="[
-          'card transition',
-          websiteStore.getters.selectedShop.id === shop.id
-            ? 'selected'
-            : 'hover:bg-[#e2e2e2] dark:bg-[#262626] hover:dark:bg-[#333]',
-          'bg-[#efefef]  text-black dark:text-white',
-        ]"
-      >
-        <div class="px-3.5">{{ shop.name }}</div>
-      </div>
-    </div> -->
     <div class="slider-wrapper">
       <div
         ref="cardsSlider"
         class="cards-slider"
+        role="group"
+        aria-label="หมวดหมู่สินค้า"
         @scroll="updateButtonVisibility"
       >
-        <div
-          @click="setCategory('')"
+        <button
+          v-for="pill in pills"
+          :key="pill.id || 'all'"
+          type="button"
+          @click="setCategory(pill.id)"
+          :aria-current="isActive(pill.id) ? 'page' : undefined"
           :class="[
-            'card ml-2 lg:ml-4 transition',
-            !route.query.category
-              ? 'selected'
-              : 'bg-[#efefef] hover:bg-[#e2e2e2] dark:bg-[#262626] hover:dark:bg-[#333] text-black dark:text-white',
+            'cat-pill',
+            isActive(pill.id)
+              ? 'cat-pill--active'
+              : pill.sale
+              ? 'cat-pill--sale'
+              : 'cat-pill--idle',
           ]"
         >
-          <div class="px-3.5">All Categories</div>
-        </div>
-        <div
-          v-for="(category, i) in websiteStore.getters.selectedShop.categories"
-          :key="category.id"
-          @click="setCategory(category.id)"
-          :class="[
-            'card text-black transition cat-button-bezel',
-            route.query.category === category.id
-              ? 'selected'
-              : getCategoryClass(i),
-          ]"
-        >
-          <NuxtImg
-            v-if="category.image"
-            :alt="category.name"
-            loading="lazy"
-            :src="category.image"
-            class="w-[38px] h-[38px] rounded-full object-cover border border-transparent dark:bg-black/15 bg-white/30"
+          <UIcon
+            v-if="pill.sale"
+            name="i-iconamoon-discount"
+            size="16"
+            aria-hidden="true"
           />
-          <div class="px-3.5">{{ category.name }}</div>
-        </div>
+          {{ pill.label }}
+        </button>
       </div>
     </div>
   </div>
 </template>
 
 <style lang="postcss">
-.cat-button-bezel {
-  box-shadow: inset 0 -1px 1px 0 rgba(0, 0, 0, 0.05),
-    inset 0 1px 0 0 rgba(255, 255, 255, 0.15);
-}
 img {
   @apply pointer-events-none;
-}
-
-.selected {
-  @apply bg-purple-600 lg:hover:bg-purple-700 text-white dark:bg-purple-700 lg:hover:dark:bg-purple-800;
 }
 
 .slider-container {
@@ -155,7 +122,7 @@ img {
 }
 
 .cards-slider {
-  @apply flex cursor-grab w-full overflow-auto gap-2 lg:gap-4 pr-3 lg:pr-4;
+  @apply flex cursor-grab w-full overflow-x-auto gap-2 px-4 lg:px-8 py-0.5;
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
@@ -168,43 +135,19 @@ img {
   cursor: grabbing;
 }
 
-.card {
-  @apply cursor-pointer min-w-max select-none box-border flex items-center rounded-full p-1.5 transition-all;
-  &:active {
-    @apply cursor-grab scale-95;
-  }
+.cat-pill {
+  @apply inline-flex shrink-0 items-center gap-1.5 min-h-[44px] px-4 rounded-full border text-[15px] font-medium whitespace-nowrap select-none transition active:scale-95;
 }
 
-.slider-btn {
-  @apply h-full w-14 cursor-pointer absolute top-0 z-10 flex items-center justify-center select-none;
+.cat-pill--idle {
+  @apply bg-white border-sky text-navy hover:border-periwinkle dark:bg-midnight dark:border-midnight-line dark:text-night-text dark:hover:border-periwinkle;
 }
 
-.prev-btn {
-  @apply left-0 bg-gradient-to-r from-white dark:from-black;
+.cat-pill--active {
+  @apply bg-navy border-navy text-white dark:bg-night-text dark:border-night-text dark:text-midnight;
 }
 
-.next-btn {
-  right: 0;
-  background: #000;
-}
-
-.next-btn::before {
-  position: absolute;
-  content: "";
-  right: 56px;
-  width: 56px;
-  height: 100%;
-  background: linear-gradient(to left, rgb(0, 0, 0), transparent);
-}
-
-.slider-wrapper::before,
-.slider-wrapper::after {
-  @apply absolute h-full top-0 w-2 lg:w-4 z-10;
-  content: "";
-  pointer-events: none;
-}
-
-.slider-wrapper::before {
-  @apply left-0 bg-gradient-to-r from-white dark:from-black;
+.cat-pill--sale {
+  @apply bg-gold-soft border-gold-line text-gold-text hover:border-gold dark:bg-gold/10 dark:border-gold/40 dark:text-night-gold;
 }
 </style>
