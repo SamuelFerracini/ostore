@@ -8,13 +8,13 @@ const toggleDark = () => {
 };
 
 const colorModeIcon = computed(() =>
-  colorMode.preference === "dark"
+  colorMode.value === "dark"
     ? "i-iconamoon-mode-dark-fill"
     : "i-iconamoon-mode-light-fill"
 );
 
 const colorModeLabel = computed(() =>
-  colorMode.preference === "dark" ? "เปลี่ยนเป็นโหมดสว่าง" : "เปลี่ยนเป็นโหมดมืด"
+  colorMode.value === "dark" ? "เปลี่ยนเป็นโหมดสว่าง" : "เปลี่ยนเป็นโหมดมืด"
 );
 
 const facebookUrl = "https://www.facebook.com/nonlapan.ssw";
@@ -65,7 +65,7 @@ const shopId = computed(() => websiteStore.getters.selectedShop.id);
           class="flex h-11 w-11 items-center justify-center rounded-full border border-white/25 text-white/90 hover:border-gold-light hover:text-gold-light transition active:scale-95"
           :aria-label="colorModeLabel"
         >
-          <UIcon :name="colorModeIcon" size="20" />
+          <ClientOnly><UIcon :name="colorModeIcon" size="20" /></ClientOnly>
         </button>
         <a
           :href="facebookUrl"
@@ -115,7 +115,7 @@ const shopId = computed(() => websiteStore.getters.selectedShop.id);
       class="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-white/25 text-white/90 active:scale-95 transition"
       :aria-label="colorModeLabel"
     >
-      <UIcon :name="colorModeIcon" size="20" />
+      <ClientOnly><UIcon :name="colorModeIcon" size="20" /></ClientOnly>
     </button>
     <a
       :href="facebookUrl"

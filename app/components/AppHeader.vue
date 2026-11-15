@@ -80,11 +80,6 @@ onClickOutside(onClickOutsideRef, (event) => {
   cartModal.value = false;
 });
 
-const colorMode = useColorMode();
-
-// The dark-mode toggle lives in AppFooter.vue.
-colorMode.preference = "dark";
-
 const showSearch = computed(() => {
   return route.path === "/products" || route.path === "/products/";
 });
