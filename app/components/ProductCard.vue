@@ -96,12 +96,6 @@ const metaLine = (product) => {
   return productTypeLabelTh(product);
 };
 
-// useWishlist keys items by databaseId; products.json uses id.
-const wishlistItem = (product) => ({
-  ...product,
-  databaseId: product.databaseId ?? product.id,
-});
-
 const onCta = (product) => {
   if (isInCart(product.id)) return removeFromCart(product.id);
   if (isRing(product)) return openModal(product);
@@ -174,7 +168,7 @@ const onCta = (product) => {
 
         <div class="absolute bottom-1.5 right-1.5 z-20">
           <ButtonWishlist
-            :product="wishlistItem(product)"
+            :product="product"
             @change="emit('wishlist-change', product)"
           />
         </div>
