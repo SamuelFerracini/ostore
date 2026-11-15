@@ -1,14 +1,93 @@
+<script setup>
+defineProps({
+  compact: { type: Boolean, default: false },
+});
+
+const categories = [
+  { label: "แหวน", to: "/products?q=ring" },
+  { label: "ชาร์ม", to: "/products?q=charm" },
+  { label: "ลดราคา", to: "/products?category=all-sale" },
+];
+</script>
+
 <template>
-  <div class="w-[calc(100vw-24px)] sm:w-96 h-96 p-3">
+  <div
+    :class="[
+      'flex flex-col items-center text-center text-navy dark:text-[#EEF2F8]',
+      compact ? 'w-[calc(100vw-24px)] sm:w-96 px-5 py-8' : 'px-4 py-12 md:py-20',
+    ]"
+  >
     <div
-      class="bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-red-100 via-white/0 to-white/0 dark:from-red-700/20 dark:via-black/0 dark:to-black/0 rounded-3xl w-full h-full flex items-center justify-center">
-      <div class="flex flex-col items-center justify-center mt-2 mb-4 gap-2">
-        <div class="bg-alizarin-crimson-500/20 dark:bg-alizarin-crimson-700/20 flex rounded-full p-5 mb-1">
-          <UIcon name="i-iconamoon-shopping-bag-fill" size="46" class="text-alizarin-crimson-600 dark:text-alizarin-crimson-700 shadow-md" />
-        </div>
-        <div class="text-lg font-semibold">Your Cart is Empty</div>
-        <div class="text-sm text-neutral-500 dark:text-neutral-400">You haven't added any items to your cart yet.</div>
-      </div>
+      :class="[
+        'relative rounded-full bg-mist dark:bg-midnight-surface flex items-center justify-center',
+        compact ? 'w-36 h-36' : 'w-[220px] h-[220px]',
+      ]"
+      aria-hidden="true"
+    >
+      <svg
+        viewBox="0 0 160 160"
+        :class="compact ? 'w-28 h-28' : 'w-40 h-40'"
+        fill="none"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <!-- glass slipper line art -->
+        <path
+          d="M44 34c0-5 4-8 9-8h10c5 0 8 3 8 8v30c0 8 5 14 13 18l30 14c10 5 16 12 16 22v6c0 4-3 7-7 7H46c-4 0-7-3-7-7V34z"
+          class="stroke-navy dark:stroke-[#EEF2F8]"
+          stroke-width="3.5"
+        />
+        <path
+          d="M39 120h98"
+          class="stroke-gold dark:stroke-[#D8B868]"
+          stroke-width="3.5"
+        />
+        <path
+          d="M50 40c0 22 6 34 20 44"
+          class="stroke-periwinkle"
+          stroke-width="3"
+        />
+        <path d="M95 96l14 6M100 108l14 6" class="stroke-periwinkle" stroke-width="3" />
+        <path
+          d="M118 62l2.5 6.5 6.5 2.5-6.5 2.5-2.5 6.5-2.5-6.5-6.5-2.5 6.5-2.5z"
+          class="fill-gold dark:fill-[#D8B868] stroke-none"
+        />
+        <path
+          d="M30 66l1.8 4.7 4.7 1.8-4.7 1.8L30 79l-1.8-4.7-4.7-1.8 4.7-1.8z"
+          class="fill-periwinkle stroke-none"
+        />
+      </svg>
+    </div>
+
+    <h2
+      :class="[
+        'font-display-th font-semibold mt-7 mb-2',
+        compact ? 'text-xl' : 'text-[28px]',
+      ]"
+    >
+      ตะกร้ายังว่างอยู่
+    </h2>
+    <p class="text-muted dark:text-[#B7C3D9] leading-relaxed mb-6">
+      ยังมีเวลาก่อนเที่ยงคืน<br />
+      มาหาชิ้นที่ใช่กันเถอะ
+    </p>
+
+    <NuxtLink
+      to="/products"
+      class="inline-flex items-center justify-center min-h-[48px] px-8 rounded-full bg-gold dark:bg-[#D8B868] text-navy font-semibold transition hover:brightness-105 active:scale-95 focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-periwinkle"
+    >
+      เลือกซื้อสินค้า
+    </NuxtLink>
+
+    <div class="flex flex-wrap justify-center gap-2 mt-6">
+      <NuxtLink
+        v-for="c in categories"
+        :key="c.label"
+        :to="c.to"
+        class="inline-flex items-center min-h-[44px] px-5 rounded-full border border-sky dark:border-midnight-line bg-white dark:bg-midnight-surface text-royal dark:text-[#EEF2F8] text-sm font-medium transition hover:bg-mist dark:hover:bg-midnight-line focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-periwinkle"
+      >
+        {{ c.label }}
+      </NuxtLink>
     </div>
   </div>
 </template>

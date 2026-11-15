@@ -3,29 +3,32 @@ const { order } = useCheckout();
 </script>
 
 <template>
-  <div class="w-[calc(100vw-24px)] sm:w-96 h-full rounded-3xl">
-    <div class="flex flex-col items-center justify-center mb-6 mt-8 gap-1">
-      <div class="bg-green-500/20 dark:bg-green-700/20 flex rounded-full p-3 mb-1">
-        <UIcon name="i-iconamoon-check-circle-1-fill" size="46" class="text-[#23a26d] dark:text-[#40d195] shadow-md" />
+  <div class="w-[calc(100vw-24px)] sm:w-96 h-full rounded-3xl text-navy dark:text-[#EEF2F8]">
+    <div class="flex flex-col items-center justify-center mb-6 mt-8 gap-1 text-center">
+      <div class="relative flex rounded-full p-4 mb-1 bg-mist dark:bg-midnight-surface" aria-hidden="true">
+        <UIcon name="i-iconamoon-check-circle-1-fill" size="46" class="text-gold dark:text-[#D8B868]" />
+        <svg width="16" height="16" viewBox="0 0 24 24" class="absolute -top-1 -right-1 fill-periwinkle">
+          <path d="M12 2l2.2 7.8L22 12l-7.8 2.2L12 22l-2.2-7.8L2 12l7.8-2.2z" />
+        </svg>
       </div>
-      <div class="text-lg font-semibold">Payment Success!</div>
-      <div class="text-sm text-neutral-500 dark:text-neutral-300">Your payment was successful.</div>
+      <div class="font-display-th text-lg font-semibold">ชำระเงินสำเร็จ</div>
+      <div class="text-sm text-muted dark:text-[#B7C3D9]">ขอบคุณที่สั่งซื้อกับเรานะคะ</div>
     </div>
-    <div class="bg-black/5 dark:bg-white/10 rounded-2xl p-5 m-5 gap-2 flex flex-col font-light text-sm capitalize">
+    <div class="bg-white dark:bg-midnight-surface border border-gold-line dark:border-midnight-line rounded-2xl p-5 m-5 gap-2 flex flex-col text-sm">
       <div class="flex justify-between items-center">
-        <span class="dark:text-neutral-400 text-neutral-600">Amount:</span>
-        <span class="font-semibold text-lg">{{ order.total }}</span>
+        <span class="text-muted dark:text-[#B7C3D9]">ยอดชำระ:</span>
+        <span class="font-semibold text-lg text-royal dark:text-[#D8B868]">{{ order.total }}</span>
       </div>
       <div class="flex justify-between items-center">
-        <span class="dark:text-neutral-400 text-neutral-600">Order Number:</span>
+        <span class="text-muted dark:text-[#B7C3D9]">หมายเลขคำสั่งซื้อ:</span>
         <span class="font-semibold">#{{ order.orderNumber }}</span>
       </div>
       <div class="flex justify-between items-center">
-        <span class="dark:text-neutral-400 text-neutral-600">Date:</span>
-        <span class="font-semibold">{{ useDateFormat(order.date, 'MMMM DD, YYYY') }}</span>
+        <span class="text-muted dark:text-[#B7C3D9]">วันที่:</span>
+        <span class="font-semibold">{{ useDateFormat(order.date, 'DD/MM/YYYY') }}</span>
       </div>
       <div class="flex justify-between items-center">
-        <span class="dark:text-neutral-400 text-neutral-600">Payment method:</span>
+        <span class="text-muted dark:text-[#B7C3D9]">วิธีชำระเงิน:</span>
         <span class="font-semibold">{{ order.paymentMethodTitle }}</span>
       </div>
     </div>
