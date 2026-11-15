@@ -3,7 +3,10 @@ import cartStore from "~~/stores/cart";
 
 const FB_URL = "https://www.facebook.com/share/1AmvwsRi18/?mibextid=wwXIfr";
 
-const cartItems = computed(() => cartStore.getters.cartItems);
+const cartItems = computed(() => {
+  const items = cartStore.getters.cartItems;
+  return Array.isArray(items) ? items : [];
+});
 const cartCount = computed(() => cartStore.getters.cartCount);
 const cartTotal = computed(() => cartStore.getters.cartTotal);
 
@@ -31,9 +34,10 @@ const referencePrice = (item) => {
 
 const savings = computed(() =>
   cartItems.value.reduce((sum, item) => {
-    const ref = referencePrice(item);
-    return ref
-      ? sum + (ref.value - Number(item.price_normalised)) * item.quantity
+    // Not named `ref`: a local `ref` stops Nuxt auto-importing Vue's `ref` for this file.
+    const refPrice = referencePrice(item);
+    return refPrice
+      ? sum + (refPrice.value - Number(item.price_normalised)) * item.quantity
       : sum;
   }, 0)
 );
