@@ -8,20 +8,20 @@ const maxPrice = ref(
 );
 
 const priceRanges = [
-  { label: "All Prices", min: 0, max: 2000000 },
-  { label: "Under 1,000 THB", min: 0, max: 1000 },
-  { label: "1,000 - 2,000 THB", min: 1000, max: 2000 },
-  { label: "2,000 - 3,000 THB", min: 2000, max: 3000 },
-  { label: "3,000 - 4,000 THB", min: 3000, max: 4000 },
-  { label: "4,000 - 6,000 THB", min: 4000, max: 6000 },
-  { label: "Over 6,000 THB", min: 6000, max: 2000000 },
+  { label: "ทุกราคา", min: 0, max: 2000000 },
+  { label: "ต่ำกว่า 1,000 ฿", min: 0, max: 1000 },
+  { label: "1,000–2,000 ฿", min: 1000, max: 2000 },
+  { label: "2,000–3,000 ฿", min: 2000, max: 3000 },
+  { label: "3,000–4,000 ฿", min: 3000, max: 4000 },
+  { label: "4,000–6,000 ฿", min: 4000, max: 6000 },
+  { label: "มากกว่า 6,000 ฿", min: 6000, max: 2000000 },
 ];
 
 const selectedRange = computed(() => {
   const range = priceRanges.find(
     (r) => r.min === minPrice.value && r.max === maxPrice.value
   );
-  return range ? range.label : "Custom Range";
+  return range ? range.label : "กำหนดเอง";
 });
 
 const applyPriceFilter = (min, max) => {
@@ -58,53 +58,66 @@ const dropdownRef = ref(null);
 onClickOutside(dropdownRef, () => (isDropdownVisible.value = false));
 
 const isActive = computed(() => {
-    return minPrice.value !== 0 || maxPrice.value !== 2000000;
+  return minPrice.value !== 0 || maxPrice.value !== 2000000;
 });
+
+const isSelected = (range) =>
+  (isActive.value && selectedRange.value === range.label) ||
+  (!isActive.value && range.min === 0 && range.max === 2000000);
 </script>
 
 <template>
-  <div 
-    class="relative cursor-pointer select-none items-center justify-center text-base font-semibold" 
-    ref="dropdownRef"
-    @click="isDropdownVisible = !isDropdownVisible"
-  >
-    <div
-      class="box-border flex items-center gap-1.5 rounded-full px-3 py-1.5 transition-all active:scale-95"
+  <div class="relative flex items-center gap-1 select-none" ref="dropdownRef">
+    <button
+      type="button"
+      class="filter-pill"
       :class="{
-        'bg-black text-white hover:bg-black dark:bg-white dark:text-black hover:dark:bg-white': isDropdownVisible || isActive,
-        'bg-[#efefef] hover:bg-[#e2e2e2] dark:bg-[#262626] hover:dark:bg-[#333]': !isDropdownVisible && !isActive,
+        'filter-pill--open': isDropdownVisible,
+        'filter-pill--active': isActive,
       }"
+      :aria-expanded="isDropdownVisible"
+      aria-haspopup="listbox"
+      @click="isDropdownVisible = !isDropdownVisible"
     >
-      <UIcon name="i-heroicons-tag" size="16" />
-      <span class="text-xs font-semibold">{{ isActive ? selectedRange : 'Price' }}</span>
-      <UIcon v-if="isActive" name="i-heroicons-x-mark" size="14" class="ml-1" @click.stop="applyPriceFilter(0, 2000000)" />
-    </div>
+      <UIcon name="i-iconamoon-discount" size="18" aria-hidden="true" />
+      <span>{{ isActive ? selectedRange : "ช่วงราคา" }}</span>
+      <UIcon name="i-iconamoon-arrow-down-2" size="16" aria-hidden="true" />
+    </button>
+    <button
+      v-if="isActive"
+      type="button"
+      class="flex h-11 w-11 items-center justify-center rounded-full text-muted hover:bg-mist hover:text-navy dark:text-night-muted dark:hover:bg-midnight-surface dark:hover:text-night-text transition"
+      aria-label="ล้างช่วงราคา"
+      @click="applyPriceFilter(0, 2000000)"
+    >
+      <UIcon name="i-iconamoon-close-bold" size="18" />
+    </button>
 
     <Transition name="dropdown">
-      <div
+      <ul
         v-if="isDropdownVisible"
-        class="absolute top-full left-0 z-10 mt-3 lg:mt-[18px] w-48 rounded-2xl text-base font-semibold bg-white dark:bg-[#262626] shadow-[0_0_8px_rgba(0,0,0,.1)]"
-        @click.stop
+        role="listbox"
+        aria-label="ช่วงราคา"
+        class="filter-menu right-0 sm:left-0 sm:right-auto"
       >
-        <div class="m-2">
-            <div
-            v-for="range in priceRanges"
-            :key="range.label"
+        <li v-for="range in priceRanges" :key="range.label">
+          <button
+            type="button"
+            role="option"
+            :aria-selected="isSelected(range)"
+            class="filter-option"
             @click="applyPriceFilter(range.min, range.max)"
-            class="rounded-[10px] px-3 py-2 transition-all duration-300 hover:bg-[#e9e9e9] hover:dark:bg-[#3c3c3c]"
-            >
-            <div class="flex items-center justify-between">
-                <div class="mr-1 w-full text-sm">{{ range.label }}</div>
-                <UIcon
-                v-if="(isActive && selectedRange === range.label) || (!isActive && range.label === 'All Prices')"
-                name="i-iconamoon-check-circle-1-fill"
-                size="20"
-                class="text-purple-600 dark:text-purple-400"
-                />
-            </div>
-            </div>
-        </div>
-      </div>
+          >
+            <span>{{ range.label }}</span>
+            <UIcon
+              v-if="isSelected(range)"
+              name="i-iconamoon-check-bold"
+              size="18"
+              class="text-royal dark:text-night-price"
+            />
+          </button>
+        </li>
+      </ul>
     </Transition>
   </div>
 </template>

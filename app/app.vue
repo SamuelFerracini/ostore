@@ -104,6 +104,23 @@ body {
     transition-duration: 0.01ms !important;
   }
 }
+/* Shared white filter pills (ButtonSortBy, PriceFilter) */
+.filter-pill {
+  @apply inline-flex min-h-[44px] items-center gap-2 rounded-full border border-sky bg-white px-4 text-[15px] font-medium text-navy transition hover:border-periwinkle active:scale-95 dark:border-midnight-line dark:bg-midnight-surface dark:text-night-text dark:hover:border-periwinkle;
+}
+.filter-pill--open {
+  @apply border-periwinkle;
+}
+.filter-pill--active {
+  @apply border-royal bg-mist text-royal dark:border-periwinkle dark:bg-midnight dark:text-night-price;
+}
+.filter-menu {
+  @apply absolute top-full z-30 mt-2 w-56 rounded-2xl border border-gold-line bg-white p-1.5 shadow-[0_12px_32px_rgba(29,43,69,0.14)] dark:border-midnight-line dark:bg-midnight-surface;
+}
+.filter-option {
+  @apply flex min-h-[44px] w-full items-center justify-between gap-2 rounded-xl px-3 text-left text-[15px] text-navy transition hover:bg-mist dark:text-night-text dark:hover:bg-midnight;
+}
+
 .dropdown-enter-active {
   @apply transition duration-200 ease-out;
 }
