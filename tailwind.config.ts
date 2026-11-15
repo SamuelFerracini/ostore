@@ -7,6 +7,7 @@ export default <Partial<Config>>{
         xs: '320px',
         '3xl': '1920px',
       },
+      fontFamily: { display: ['"Cormorant Garamond"', 'serif'], 'display-th': ['"Noto Serif Thai"', 'serif'], sans: ['"IBM Plex Sans Thai"', 'system-ui', 'sans-serif'] },
       colors: {
         'alizarin-crimson': {
           '50': '#fff0f2',

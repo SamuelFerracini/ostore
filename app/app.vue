@@ -62,6 +62,7 @@ onBeforeUnmount(() => {
       <NuxtPage />
     </div>
     <AppFooter />
+    <ProductModal />
 
     <!-- Scroll to top button -->
     <Transition name="scroll-button">
