@@ -36,8 +36,13 @@ export const useCart = () => {
   };
 
   onMounted(() => {
-    const storedCart = localStorage.getItem('cart');
-    if (storedCart) cart.value = JSON.parse(storedCart);
+    // Shared key with stores/cart.ts; malformed data must not crash every page.
+    try {
+      const storedCart = JSON.parse(localStorage.getItem('cart') || '[]');
+      if (Array.isArray(storedCart)) cart.value = storedCart;
+    } catch (error) {
+      console.error('Error loading cart from localStorage:', error);
+    }
   });
 
   return {
