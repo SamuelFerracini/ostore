@@ -34,4 +34,4 @@ Make the heart show outline when the product is not wishlisted, and filled red w
 
 - [ ] The modal and the card heart stay in sync.
 
-- [ ] The change is committed on this branch.
+- [x] The change is committed on this branch.
