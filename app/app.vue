@@ -16,7 +16,7 @@ const promotionsPaused = computed(() =>
 
 useHead({
   htmlAttrs: {
-    lang: "en",
+    lang: "th",
   },
   title: siteName,
   meta: [
@@ -58,9 +58,9 @@ onBeforeUnmount(() => {
   <PromotionsPaused v-if="promotionsPaused" />
   <template v-else>
     <AppHeader />
-    <div class="pt-[80px] pb-20 lg:pt-20 min-h-[calc(100vh-72px)]">
+    <main class="pb-[96px] lg:pb-0 min-h-[calc(100vh-220px)]">
       <NuxtPage />
-    </div>
+    </main>
     <AppFooter />
 
     <!-- Scroll to top button -->
@@ -68,12 +68,12 @@ onBeforeUnmount(() => {
       <button
         v-if="showScrollToTop"
         @click="scrollToTop"
-        class="fixed bottom-20 right-6 z-50 flex items-center justify-center w-12 h-12 lg:w-14 lg:h-14 rounded-full bg-white/85 dark:bg-black/85 backdrop-blur-sm dark:backdrop-blur-lg shadow-lg hover:bg-white/95 hover:dark:bg-black/95 transition-all active:scale-95 border border-black/5 dark:border-white/10"
-        aria-label="Scroll to top"
+        class="fixed bottom-24 lg:bottom-8 right-4 lg:right-6 z-50 flex items-center justify-center w-12 h-12 rounded-full bg-white dark:bg-midnight-surface border border-gold-line dark:border-midnight-line shadow-[0_6px_18px_rgba(29,43,69,0.14)] hover:border-gold transition-all active:scale-95"
+        aria-label="กลับขึ้นด้านบน"
       >
         <UIcon
           name="i-iconamoon-arrow-up-2-bold"
-          class="text-[#5f5f5f] dark:text-[#b7b7b7]"
+          class="text-navy dark:text-night-gold"
           size="24"
         />
       </button>
@@ -83,12 +83,26 @@ onBeforeUnmount(() => {
 
 <style lang="postcss">
 body {
-  @apply bg-white dark:bg-black;
+  @apply bg-ivory text-navy font-sans antialiased dark:bg-midnight dark:text-night-text;
 }
 
 .dark {
-  @apply text-neutral-100;
   color-scheme: dark;
+}
+
+:focus-visible {
+  outline: 3px solid theme("colors.periwinkle");
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }
 .dropdown-enter-active {
   @apply transition duration-200 ease-out;
