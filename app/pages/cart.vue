@@ -107,30 +107,21 @@ const focusRing =
 </script>
 
 <template>
-  <div class="bg-ivory dark:bg-midnight min-h-[calc(100vh-64px)] text-navy dark:text-[#EEF2F8]">
-    <div class="max-w-[1200px] mx-auto px-4 py-5 lg:px-6 lg:py-8">
-      <!-- Top row -->
-      <div class="flex flex-wrap items-center gap-x-4 gap-y-1 mb-6">
-        <NuxtLink
-          to="/products"
-          :class="[
-            'inline-flex items-center min-h-[44px] pr-3 rounded-full text-royal dark:text-[#D8B868] font-medium hover:underline',
-            focusRing,
-          ]"
-        >
-          ← เลือกซื้อต่อ
-        </NuxtLink>
-        <h1 class="font-display-th text-[32px] leading-tight font-semibold">
-          ตะกร้าของฉัน
-        </h1>
-        <div v-if="cartItems.length" class="ml-auto text-muted dark:text-[#B7C3D9]">
-          {{ fmt(cartCount) }} ชิ้น
-        </div>
-      </div>
+  <div class="mx-auto max-w-[1440px] px-4 lg:px-8 text-navy dark:text-night-text">
+    <div class="pt-6 pb-5 lg:pt-9 lg:pb-7">
+      <h1
+        class="font-display-th text-[26px] lg:text-[34px] font-semibold leading-tight text-navy dark:text-night-text"
+      >
+        ตะกร้าของฉัน
+      </h1>
+      <p v-if="cartItems.length" class="mt-1 text-[15px] text-muted dark:text-night-muted">
+        {{ fmt(cartCount) }} ชิ้น
+      </p>
+    </div>
 
       <EmptyCart v-if="!cartItems.length" />
 
-      <div v-else class="flex flex-wrap gap-6 items-start">
+      <div v-else class="flex flex-wrap gap-6 items-start pb-10">
         <!-- Items -->
         <ul class="list-none p-0 m-0 flex flex-col gap-4 min-w-0" style="flex: 999 1 520px">
           <li
@@ -160,15 +151,15 @@ const focusRing =
                 <h3 class="font-display text-[21px] leading-snug font-semibold line-clamp-2">
                   {{ item.name }}
                 </h3>
-                <div class="text-[18px] font-semibold text-royal dark:text-[#D8B868] whitespace-nowrap text-right">
+                <div class="text-[18px] font-semibold text-royal dark:text-night-gold whitespace-nowrap text-right">
                   {{ fmt(Number(item.price_normalised) * item.quantity) }} ฿
                 </div>
               </div>
 
-              <div class="flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-muted dark:text-[#B7C3D9]">
+              <div class="flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-muted dark:text-night-muted">
                 <span
                   v-if="item.size"
-                  class="px-2.5 py-0.5 rounded-full bg-mist dark:bg-midnight-line text-royal dark:text-[#EEF2F8] font-medium"
+                  class="px-2.5 py-0.5 rounded-full bg-mist dark:bg-midnight-line text-royal dark:text-night-text font-medium"
                 >
                   ไซส์ {{ item.size }}
                 </span>
@@ -188,7 +179,7 @@ const focusRing =
                   <button
                     type="button"
                     :class="[
-                      'w-11 h-10 flex items-center justify-center text-royal dark:text-[#EEF2F8] hover:bg-mist dark:hover:bg-midnight-line disabled:opacity-40 disabled:hover:bg-transparent transition',
+                      'w-11 h-10 flex items-center justify-center text-royal dark:text-night-text hover:bg-mist dark:hover:bg-midnight-line disabled:opacity-40 disabled:hover:bg-transparent transition',
                       focusRing,
                     ]"
                     aria-label="ลดจำนวน"
@@ -205,7 +196,7 @@ const focusRing =
                   <button
                     type="button"
                     :class="[
-                      'w-11 h-10 flex items-center justify-center text-royal dark:text-[#EEF2F8] hover:bg-mist dark:hover:bg-midnight-line transition',
+                      'w-11 h-10 flex items-center justify-center text-royal dark:text-night-text hover:bg-mist dark:hover:bg-midnight-line transition',
                       focusRing,
                     ]"
                     aria-label="เพิ่มจำนวน"
@@ -218,7 +209,7 @@ const focusRing =
                 <button
                   type="button"
                   :class="[
-                    'inline-flex items-center gap-1.5 min-h-[44px] px-3 rounded-full text-sm text-muted dark:text-[#B7C3D9] hover:text-navy dark:hover:text-white transition',
+                    'inline-flex items-center gap-1.5 min-h-[44px] px-3 rounded-full text-sm text-muted dark:text-night-muted hover:text-navy dark:hover:text-white transition',
                     focusRing,
                   ]"
                   :aria-label="`ลบ ${item.name} ออกจากตะกร้า`"
@@ -237,22 +228,22 @@ const focusRing =
           class="bg-white dark:bg-midnight-surface border border-gold-line dark:border-midnight-line rounded-[24px] overflow-hidden lg:sticky lg:top-24"
           style="flex: 1 1 340px"
         >
-          <div class="h-1 bg-gold dark:bg-[#D8B868]"></div>
+          <div class="h-1 bg-gold dark:bg-night-gold"></div>
           <div class="p-6">
             <h2 class="font-display-th text-xl font-semibold mb-4">สรุปคำสั่งซื้อ</h2>
 
             <dl class="m-0 space-y-2">
               <div class="flex justify-between gap-3">
-                <dt class="text-muted dark:text-[#B7C3D9]">ราคาสินค้า ({{ fmt(cartCount) }} ชิ้น)</dt>
+                <dt class="text-muted dark:text-night-muted">ราคาสินค้า ({{ fmt(cartCount) }} ชิ้น)</dt>
                 <dd class="m-0">{{ fmt(cartTotal) }} ฿</dd>
               </div>
               <div class="flex justify-between gap-3">
-                <dt class="text-muted dark:text-[#B7C3D9]">กล่องและถุง</dt>
+                <dt class="text-muted dark:text-night-muted">กล่องและถุง</dt>
                 <dd class="m-0">รวมแล้ว</dd>
               </div>
               <div class="flex justify-between items-baseline gap-3 pt-3 border-t border-gold-line dark:border-midnight-line">
                 <dt class="font-semibold">ยอดรวม</dt>
-                <dd class="m-0 text-[26px] font-semibold text-royal dark:text-[#D8B868]">
+                <dd class="m-0 text-[26px] font-semibold text-royal dark:text-night-gold">
                   {{ fmt(cartTotal) }} ฿
                 </dd>
               </div>
@@ -260,9 +251,9 @@ const focusRing =
 
             <div
               v-if="savings > 0"
-              class="mt-4 flex items-center gap-2 rounded-xl bg-gold-soft dark:bg-[#D8B868]/15 text-[#6E5418] dark:text-[#E2C783] px-3 py-2 text-sm"
+              class="mt-4 flex items-center gap-2 rounded-xl bg-gold-soft dark:bg-night-gold/15 text-[#6E5418] dark:text-[#E2C783] px-3 py-2 text-sm"
             >
-              <svg width="14" height="14" viewBox="0 0 24 24" class="shrink-0 fill-gold dark:fill-[#D8B868]" aria-hidden="true">
+              <svg width="14" height="14" viewBox="0 0 24 24" class="shrink-0 fill-gold dark:fill-night-gold" aria-hidden="true">
                 <path d="M12 2l2.9 6.6 7.1.6-5.4 4.7 1.6 7L12 17.3 5.8 21l1.6-7L2 9.2l7.1-.6z" />
               </svg>
               ประหยัดไป {{ fmt(savings) }} ฿ เทียบราคาปกติ
@@ -279,7 +270,7 @@ const focusRing =
                 class="flex items-start gap-3 text-sm"
               >
                 <span
-                  class="w-6 h-6 shrink-0 rounded-full bg-navy dark:bg-[#D8B868] text-white dark:text-navy text-xs font-semibold flex items-center justify-center"
+                  class="w-6 h-6 shrink-0 rounded-full bg-navy dark:bg-night-gold text-white dark:text-navy text-xs font-semibold flex items-center justify-center"
                   >{{ i + 1 }}</span
                 >
                 <span class="pt-0.5">{{ step }}</span>
@@ -291,8 +282,8 @@ const focusRing =
               :class="[
                 'w-full h-[54px] rounded-full font-semibold flex items-center justify-center gap-2 transition active:scale-[0.98]',
                 copied
-                  ? 'bg-mist dark:bg-midnight-line text-navy dark:text-[#EEF2F8]'
-                  : 'bg-gold dark:bg-[#D8B868] text-navy hover:brightness-105',
+                  ? 'bg-mist dark:bg-midnight-line text-navy dark:text-night-text'
+                  : 'bg-gold dark:bg-night-gold text-navy hover:brightness-105',
                 focusRing,
               ]"
               @click="copyToClipboard"
@@ -305,7 +296,7 @@ const focusRing =
                 copied ? "คัดลอกแล้ว วางในแชทได้เลย" : "คัดลอกรายการสั่งซื้อ"
               }}</span>
             </button>
-            <p v-if="copyError" role="alert" class="mt-2 text-sm text-muted dark:text-[#B7C3D9]">
+            <p v-if="copyError" role="alert" class="mt-2 text-sm text-muted dark:text-night-muted">
               คัดลอกไม่สำเร็จ ลองแคปหน้าจอนี้ส่งให้แม่ค้าแทนนะคะ
             </p>
 
@@ -329,7 +320,7 @@ const focusRing =
                 v-if="!confirmingClear"
                 type="button"
                 :class="[
-                  'min-h-[44px] px-3 rounded-full text-sm underline text-muted dark:text-[#B7C3D9]',
+                  'min-h-[44px] px-3 rounded-full text-sm underline text-muted dark:text-night-muted',
                   focusRing,
                 ]"
                 @click="confirmingClear = true"
@@ -337,11 +328,11 @@ const focusRing =
                 ล้างตะกร้า
               </button>
               <div v-else class="flex items-center justify-center gap-2 text-sm" role="group">
-                <span class="text-muted dark:text-[#B7C3D9]">ยืนยันล้างตะกร้า?</span>
+                <span class="text-muted dark:text-night-muted">ยืนยันล้างตะกร้า?</span>
                 <button
                   type="button"
                   :class="[
-                    'min-h-[44px] px-4 rounded-full bg-navy dark:bg-[#D8B868] text-white dark:text-navy font-medium',
+                    'min-h-[44px] px-4 rounded-full bg-navy dark:bg-night-gold text-white dark:text-navy font-medium',
                     focusRing,
                   ]"
                   @click="clearCart"
@@ -361,12 +352,11 @@ const focusRing =
               </div>
             </div>
 
-            <p class="mt-2 text-xs text-center text-muted dark:text-[#B7C3D9]">
+            <p class="mt-2 text-xs text-center text-muted dark:text-night-muted">
               ราคาอาจเปลี่ยนแปลงตามโปรช่วงนั้น · ต้องการใบเสร็จทักสอบถามได้นะคะ
             </p>
           </div>
         </aside>
       </div>
-    </div>
   </div>
 </template>
