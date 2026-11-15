@@ -12,6 +12,64 @@ const categories = [
 
 <template>
   <div
+    v-if="!compact"
+    class="flex min-h-[50vh] flex-col items-center justify-center px-5 pb-16 text-center"
+  >
+    <div
+      class="flex h-24 w-24 items-center justify-center rounded-full bg-mist dark:bg-midnight-surface"
+      aria-hidden="true"
+    >
+      <svg
+        viewBox="0 0 160 160"
+        class="h-14 w-14"
+        fill="none"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <path
+          d="M44 34c0-5 4-8 9-8h10c5 0 8 3 8 8v30c0 8 5 14 13 18l30 14c10 5 16 12 16 22v6c0 4-3 7-7 7H46c-4 0-7-3-7-7V34z"
+          class="stroke-navy dark:stroke-night-text"
+          stroke-width="5"
+        />
+        <path
+          d="M39 120h98"
+          class="stroke-gold dark:stroke-night-gold"
+          stroke-width="5"
+        />
+        <path
+          d="M50 40c0 22 6 34 20 44"
+          class="stroke-periwinkle"
+          stroke-width="4"
+        />
+        <path d="M95 96l14 6M100 108l14 6" class="stroke-periwinkle" stroke-width="4" />
+        <path
+          d="M118 62l2.5 6.5 6.5 2.5-6.5 2.5-2.5 6.5-2.5-6.5-6.5-2.5 6.5-2.5z"
+          class="fill-gold dark:fill-night-gold stroke-none"
+        />
+        <path
+          d="M30 66l1.8 4.7 4.7 1.8-4.7 1.8L30 79l-1.8-4.7-4.7-1.8 4.7-1.8z"
+          class="fill-periwinkle stroke-none"
+        />
+      </svg>
+    </div>
+    <p
+      class="mt-6 font-display-th text-2xl font-semibold text-navy dark:text-night-text"
+    >
+      ตะกร้ายังว่างอยู่
+    </p>
+    <p class="mt-2 text-[15px] text-muted dark:text-night-muted">
+      มาหาชิ้นที่ใช่กันเถอะ
+    </p>
+    <NuxtLink
+      to="/products"
+      class="mt-6 inline-flex min-h-[46px] items-center rounded-full bg-gold px-6 text-[15px] font-semibold text-navy hover:bg-gold-light transition"
+    >
+      เลือกซื้อสินค้า
+    </NuxtLink>
+  </div>
+
+  <div
+    v-else
     :class="[
       'flex flex-col items-center text-center text-navy dark:text-[#EEF2F8]',
       compact ? 'w-[calc(100vw-24px)] sm:w-96 px-5 py-8' : 'px-4 py-12 md:py-20',
