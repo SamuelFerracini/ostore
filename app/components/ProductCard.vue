@@ -132,7 +132,7 @@ const onCta = (product) => {
                 ? product.hoverImage
                 : product.primaryImage
             "
-            class="absolute h-full w-full bg-photo object-cover"
+            class="absolute inset-0 h-full w-full bg-photo object-cover"
           />
           <NuxtImg
             :id="`primary-image-${product.id}`"
@@ -140,7 +140,7 @@ const onCta = (product) => {
             loading="lazy"
             :src="product.primaryImage"
             @load="onImageLoad(product.id)"
-            class="absolute h-full w-full bg-photo object-cover transition-opacity duration-300 group-hover:opacity-0"
+            class="absolute inset-0 h-full w-full bg-photo object-cover transition-opacity duration-300 group-hover:opacity-0"
           />
         </button>
 
