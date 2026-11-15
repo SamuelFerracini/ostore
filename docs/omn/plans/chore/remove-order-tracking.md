@@ -36,4 +36,4 @@ Delete the tracking page and every user-facing link/text pointing to it.
 
 - [x] Build/typecheck (`npm run build` or project equivalent) passes.
 
-- [ ] Changes committed on the branch.
+- [x] Changes committed on the branch.
