@@ -134,14 +134,10 @@ const onCta = () => {
   });
 };
 
-// ---- wishlist (existing composable; it keys on databaseId) -------------
-const { isWishlisted, toggleWishlist } = useWishlist({
-  get databaseId() {
-    return product.value?.id;
-  },
-});
-const onWish = () =>
-  toggleWishlist({ ...product.value, databaseId: product.value.id });
+// ---- wishlist ------------------------------------------------------------
+const { isWishlisted, toggleWishlist } = useWishlist();
+const active = computed(() => isWishlisted(product.value?.id));
+const onWish = () => toggleWishlist(product.value);
 
 // ---- a11y: focus trap, scroll lock, Esc ---------------------------------
 const FOCUSABLE =
@@ -434,14 +430,14 @@ onBeforeUnmount(() => {
                 <button
                   type="button"
                   class="h-14 w-14 shrink-0 rounded-full border border-gold-line dark:border-midnight-line flex items-center justify-center focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-royal"
-                  :aria-pressed="isWishlisted"
-                  :aria-label="isWishlisted ? 'เอาออกจากรายการโปรด' : 'เพิ่มในรายการโปรด'"
+                  :aria-pressed="active"
+                  :aria-label="active ? 'เอาออกจากรายการโปรด' : 'เพิ่มในรายการโปรด'"
                   @click="onWish"
                 >
                   <UIcon
-                    :name="isWishlisted ? 'i-iconamoon-heart-fill' : 'i-iconamoon-heart'"
+                    :name="active ? 'i-iconamoon-heart-fill' : 'i-iconamoon-heart'"
                     size="26"
-                    :class="isWishlisted ? 'text-alizarin-crimson-500' : ''"
+                    :class="active ? 'text-alizarin-crimson-500' : ''"
                   />
                 </button>
               </div>
