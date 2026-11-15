@@ -52,4 +52,4 @@ Find the real root cause and fix it. `/cart` must render with an empty cart, a f
 
 - [x] Verified in Chrome: `/cart` loads with no 500 for an empty cart, after adding items, and after a hard reload.
 
-- [ ] Fix committed on this branch.
+- [x] Fix committed on this branch.
