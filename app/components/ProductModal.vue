@@ -295,7 +295,7 @@ onBeforeUnmount(() => {
                       <img
                         :src="src"
                         :alt="`${product.name} ${i + 1}`"
-                        class="w-full h-full object-contain"
+                        class="w-full h-full object-cover"
                         :loading="i === 0 ? 'eager' : 'lazy'"
                       />
                     </SwiperSlide>
