@@ -16,7 +16,7 @@ const promotionsPaused = computed(() =>
 
 useHead({
   htmlAttrs: {
-    lang: "en",
+    lang: "th",
   },
   title: siteName,
   meta: [
@@ -58,9 +58,9 @@ onBeforeUnmount(() => {
   <PromotionsPaused v-if="promotionsPaused" />
   <template v-else>
     <AppHeader />
-    <div class="pt-[80px] pb-20 lg:pt-20 min-h-[calc(100vh-72px)]">
+    <main class="pb-[96px] lg:pb-0 min-h-[calc(100vh-220px)]">
       <NuxtPage />
-    </div>
+    </main>
     <AppFooter />
     <ProductModal />
 
@@ -69,12 +69,12 @@ onBeforeUnmount(() => {
       <button
         v-if="showScrollToTop"
         @click="scrollToTop"
-        class="fixed bottom-20 right-6 z-50 flex items-center justify-center w-12 h-12 lg:w-14 lg:h-14 rounded-full bg-white/85 dark:bg-black/85 backdrop-blur-sm dark:backdrop-blur-lg shadow-lg hover:bg-white/95 hover:dark:bg-black/95 transition-all active:scale-95 border border-black/5 dark:border-white/10"
-        aria-label="Scroll to top"
+        class="fixed bottom-24 lg:bottom-8 right-4 lg:right-6 z-50 flex items-center justify-center w-12 h-12 rounded-full bg-white dark:bg-midnight-surface border border-gold-line dark:border-midnight-line shadow-[0_6px_18px_rgba(29,43,69,0.14)] hover:border-gold transition-all active:scale-95"
+        aria-label="กลับขึ้นด้านบน"
       >
         <UIcon
           name="i-iconamoon-arrow-up-2-bold"
-          class="text-[#5f5f5f] dark:text-[#b7b7b7]"
+          class="text-navy dark:text-night-gold"
           size="24"
         />
       </button>
@@ -84,13 +84,44 @@ onBeforeUnmount(() => {
 
 <style lang="postcss">
 body {
-  @apply bg-white dark:bg-black;
+  @apply bg-ivory text-navy font-sans antialiased dark:bg-midnight dark:text-night-text;
 }
 
 .dark {
-  @apply text-neutral-100;
   color-scheme: dark;
 }
+
+:focus-visible {
+  outline: 3px solid theme("colors.periwinkle");
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+/* Shared white filter pills (ButtonSortBy, PriceFilter) */
+.filter-pill {
+  @apply inline-flex min-h-[44px] items-center gap-2 rounded-full border border-sky bg-white px-4 text-[15px] font-medium text-navy transition hover:border-periwinkle active:scale-95 dark:border-midnight-line dark:bg-midnight-surface dark:text-night-text dark:hover:border-periwinkle;
+}
+.filter-pill--open {
+  @apply border-periwinkle;
+}
+.filter-pill--active {
+  @apply border-royal bg-mist text-royal dark:border-periwinkle dark:bg-midnight dark:text-night-price;
+}
+.filter-menu {
+  @apply absolute top-full z-30 mt-2 w-56 rounded-2xl border border-gold-line bg-white p-1.5 shadow-[0_12px_32px_rgba(29,43,69,0.14)] dark:border-midnight-line dark:bg-midnight-surface;
+}
+.filter-option {
+  @apply flex min-h-[44px] w-full items-center justify-between gap-2 rounded-xl px-3 text-left text-[15px] text-navy transition hover:bg-mist dark:text-night-text dark:hover:bg-midnight;
+}
+
 .dropdown-enter-active {
   @apply transition duration-200 ease-out;
 }

@@ -61,65 +61,80 @@ onMounted(() => {
 });
 </script>
 <template>
-  <div class="flex flex-col items-center justify-center">
-    <div class="md:w-1/3 w-full p-10">
-      <div
-        class="flex flex-shrink flex-grow flex-col text-sm font-semibold text-[#111] dark:text-[#eee] mr-2"
+  <div class="mx-auto flex max-w-2xl flex-col items-center px-4 pt-8 pb-12 lg:pt-12">
+    <h1
+      class="font-display-th text-[26px] lg:text-[34px] font-semibold text-navy dark:text-night-text"
+    >
+      ติดตามคำสั่งซื้อ
+    </h1>
+    <p class="mt-1 text-[15px] text-muted dark:text-night-muted">
+      ใส่เลขพัสดุที่ได้รับทางแชท
+    </p>
+    <form
+      @submit.prevent="search"
+      class="mt-6 flex h-12 w-full max-w-md items-center rounded-full border border-sky bg-field pl-5 pr-1 transition-colors focus-within:border-periwinkle dark:border-midnight-line dark:bg-midnight-surface"
+    >
+      <label for="tracking-ref" class="sr-only">เลขพัสดุ</label>
+      <input
+        id="tracking-ref"
+        v-model="trackingReference"
+        class="w-full min-w-0 bg-transparent py-2 text-[15px] text-navy outline-none focus-visible:outline-none placeholder:text-muted dark:text-night-text placeholder:dark:text-night-muted"
+        type="text"
+        @input="reflect"
+        placeholder="เลขพัสดุ"
+      />
+      <button
+        type="submit"
+        class="flex h-10 min-w-[44px] shrink-0 items-center justify-center gap-1.5 rounded-full bg-royal px-4 text-sm font-medium text-white hover:bg-royal-blue-600 transition"
+        aria-label="ค้นหาเลขพัสดุ"
       >
-        <form
-          @submit.prevent="search"
-          class="flex h-12 flex-grow rounded-full pl-4 pr-3 transition-all hover:bg-black/10 hover:dark:bg-white/20 bg-black/5 dark:bg-white/15"
-        >
-          <div class="flex w-full items-center gap-4">
-            <div class="flex w-full items-center">
-              <input
-                v-model="trackingReference"
-                class="w-full bg-transparent py-2 outline-none placeholder:text-[#757575] placeholder:dark:text-neutral-400"
-                type="text"
-                @input="reflect"
-                placeholder="Tracking number"
-              />
-              <button
-                type="submit"
-                class="flex text-neutral-500 dark:text-neutral-400"
-              >
-                <UIcon name="i-iconamoon-search-bold" size="20" />
-              </button>
-            </div>
-          </div>
-        </form>
-      </div>
-    </div>
+        <UIcon v-if="!loading" name="i-iconamoon-search-bold" size="18" />
+        <UIcon v-else name="i-svg-spinners-90-ring-with-bg" size="18" />
+      </button>
+    </form>
+
+    <p
+      v-if="errorMessage"
+      role="alert"
+      class="mt-6 flex items-center gap-2 rounded-2xl border border-gold-line bg-gold-soft px-4 py-3 text-[15px] text-navy dark:border-gold/30 dark:bg-gold/10 dark:text-night-text"
+    >
+      <UIcon name="i-iconamoon-information-circle" size="20" class="shrink-0 text-gold-text dark:text-night-gold" />
+      ไม่พบข้อมูลพัสดุ ({{ errorMessage }}) ลองตรวจเลขพัสดุอีกครั้ง หรือทักแชทสอบถาม
+    </p>
+
     <div
       v-if="trackingReponse?.success && !errorMessage"
-      class="flex flex-col items-center gap-3"
+      class="mt-8 flex w-full flex-col items-center gap-4"
     >
-      <p>Last Update at: {{ formatDate(trackingReponse.data.updated_at) }}</p>
-      <div v-for="(tracking, idx) in trackingReponse.data.orders" :key="idx">
-        <div class="flex justify-end mb-3">
-          <img class="w-10" :src="logos[tracking.courier]" />
+      <p class="text-[15px] text-muted dark:text-night-muted">
+        อัปเดตล่าสุด: {{ formatDate(trackingReponse.data.updated_at) }}
+      </p>
+      <div
+        v-for="(tracking, idx) in trackingReponse.data.orders"
+        :key="idx"
+        class="w-full rounded-3xl border border-gold-line bg-white p-5 dark:border-midnight-line dark:bg-midnight-surface"
+      >
+        <div class="mb-3 flex justify-end">
+          <img class="w-10 rounded-lg" :src="logos[tracking.courier]" :alt="tracking.courier" />
         </div>
-        <div class="card">
-          <Timeline :value="tracking.events">
-            <template #opposite="slotProps">
-              <small class="text-surface-500 dark:text-surface-400">
-                {{ formatDate(slotProps.item.date) }}
-              </small>
-            </template>
-            <template #content="slotProps">
-              <div>
-                <p>
-                  {{ slotProps.item.description }}
-                </p>
-                <p>
-                  {{ slotProps.item.location }}
-                </p>
-              </div>
-            </template>
-          </Timeline>
-        </div>
+        <Timeline :value="tracking.events">
+          <template #opposite="slotProps">
+            <small class="text-muted dark:text-night-muted">
+              {{ formatDate(slotProps.item.date) }}
+            </small>
+          </template>
+          <template #content="slotProps">
+            <div class="text-navy dark:text-night-text">
+              <p>
+                {{ slotProps.item.description }}
+              </p>
+              <p class="text-muted dark:text-night-muted">
+                {{ slotProps.item.location }}
+              </p>
+            </div>
+          </template>
+        </Timeline>
       </div>
     </div>
-    <p class="text-red-500">{{ errorMessage }}</p>
   </div>
 </template>
