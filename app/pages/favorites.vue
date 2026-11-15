@@ -5,15 +5,6 @@ const { wishlist } = useWishlist();
 const items = computed(() =>
   wishlist.value.filter((item) => item && item.primaryImage)
 );
-
-// Each wishlist button keeps its own copy, so re-read after a toggle.
-const reloadWishlist = () => {
-  try {
-    wishlist.value = JSON.parse(localStorage.getItem("wishlist") || "[]");
-  } catch {
-    wishlist.value = [];
-  }
-};
 </script>
 
 <template>
@@ -30,7 +21,7 @@ const reloadWishlist = () => {
     </div>
 
     <div v-if="items.length" class="favorites-grid pb-10">
-      <ProductCard :products="items" @wishlist-change="reloadWishlist" />
+      <ProductCard :products="items" />
     </div>
     <div
       v-else
@@ -56,7 +47,7 @@ const reloadWishlist = () => {
         to="/products"
         class="mt-6 inline-flex min-h-[46px] items-center rounded-full bg-gold px-6 text-[15px] font-semibold text-navy hover:bg-gold-light transition"
       >
-        ดูสินค้าทั้งหมด
+        เลือกซื้อสินค้า
       </NuxtLink>
     </div>
   </div>
