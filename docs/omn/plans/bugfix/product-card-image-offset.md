@@ -26,7 +26,7 @@ The photo fills the whole arch frame, top to bottom.
 
 ## Done when
 
-- [ ] Both images have `inset-0`.
+- [x] Both images have `inset-0`.
 
 - [ ] Use Claude in Chrome to open the products page in the running dev app. Confirm the photo fills the full arch, and that the hover swap still works.
 
