@@ -38,8 +38,8 @@ Clicking Cart or Favorites in the header always renders the matching page, in bo
 
 ## Done when
 
-- [ ] Navigating Favorites → Cart → Favorites from the header shows the correct page every time, with Translate on and off, and the console shows no errors.
+- [x] Navigating Favorites → Cart → Favorites from the header shows the correct page every time, with Translate on and off, and the console shows no errors.
 
-- [ ] Root cause and fix summarised in the commit message.
+- [x] Root cause and fix summarised in the commit message.
 
-- [ ] Changes committed on the branch.
+- [x] Changes committed on the branch.
