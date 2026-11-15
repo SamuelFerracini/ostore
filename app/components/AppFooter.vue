@@ -92,13 +92,6 @@ onBeforeUnmount(() => footerObserver?.disconnect());
       </div>
 
       <div class="footer-actions">
-        <NuxtLink
-          to="/tracking"
-          class="inline-flex min-h-[44px] items-center gap-2 rounded-full px-3 text-[15px] font-medium text-white/90 underline-offset-4 hover:text-white hover:underline"
-        >
-          <UIcon name="i-iconamoon-delivery-light" size="20" aria-hidden="true" />
-          ติดตามคำสั่งซื้อ
-        </NuxtLink>
         <button
           type="button"
           @click="toggleDark"
