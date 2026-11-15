@@ -1,7 +1,12 @@
 <template>
   <div class="fixed px-7 mt-0.5 -left-1.5 max-2xl:hidden z-30">
-    <button @click.prevent="useRouter().back()" class="flex p-3 rounded-full dark:bg-black hover:dark:bg-neutral-800 bg-white hover:bg-neutral-200 active:scale-95 transition">
-      <UIcon name="i-iconamoon-arrow-left-1-bold" size="24" />
+    <button
+      type="button"
+      @click.prevent="useRouter().back()"
+      class="flex min-h-[44px] items-center gap-2 rounded-full border border-sky bg-white px-4 text-[15px] font-medium text-navy hover:border-periwinkle active:scale-95 transition dark:border-midnight-line dark:bg-midnight-surface dark:text-night-text"
+    >
+      <UIcon name="i-iconamoon-arrow-left-1-bold" size="20" aria-hidden="true" />
+      ย้อนกลับ
     </button>
   </div>
 </template>

@@ -13,34 +13,53 @@ const checkAllTabs = () => {
 
 <template>
   <div
-    class="w-full p-5 text-center min-h-[calc(100vh-204px)] items-center flex flex-col justify-center bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-neutral-100 via-white to-white dark:from-neutral-900 dark:via-black dark:to-black rounded-xl">
-    <div class="w-28 h-28 bg-neutral-950/70 rounded-full border-neutral-800 border items-center justify-center flex shadow-lg">
-      <UIcon name="i-iconamoon-search-bold" class="w-16 h-16 text-white dark:text-neutral-600" />
+    class="flex min-h-[50vh] w-full flex-col items-center justify-center px-5 pb-16 text-center"
+  >
+    <div
+      class="flex h-24 w-24 items-center justify-center rounded-full border border-sky bg-mist dark:border-midnight-line dark:bg-midnight-surface"
+    >
+      <UIcon
+        name="i-iconamoon-search-bold"
+        class="h-11 w-11 text-royal dark:text-night-price"
+      />
     </div>
-    <div v-if="route.query.category && route.query.q" class="font-extrabold text-3xl my-6 text-center">
-      No products matching
-      <strong class="text-alizarin-crimson-700">"{{ route.query.q }}"</strong>
-      in
-      <strong class="text-alizarin-crimson-700">{{ route.query.category }}</strong>
-    </div>
-    <div v-else-if="route.query.q" class="font-extrabold text-3xl my-6">
-      No products found matching
-      <strong class="text-alizarin-crimson-700">"{{ route.query.q }}"</strong>
-    </div>
-    <div v-else class="font-extrabold text-3xl my-6">No products found</div>
-    <div class="text-center mb-5">
-      You can use the search bar above to try searching
-      <br />
-      with different terms.
-    </div>
-    <div class="flex flex-row items-center justify-center gap-2">
-      <button @click="resetSearch"
-        class="px-4 py-2 bg-black/5 hover:bg-black/10 dark:bg-white/10 hover:dark:bg-white/20 text-neutral-800 dark:text-white rounded-full active:scale-95 transition text-sm font-semibold">
-        Reset Search
+    <p
+      v-if="route.query.category && route.query.q"
+      class="mt-6 font-display-th text-2xl font-semibold text-navy dark:text-night-text"
+    >
+      ไม่พบ “{{ route.query.q }}” ใน{{ categoryLabelTh(route.query.category) }}
+    </p>
+    <p
+      v-else-if="route.query.q"
+      class="mt-6 font-display-th text-2xl font-semibold text-navy dark:text-night-text"
+    >
+      ไม่พบสินค้าที่ตรงกับ “{{ route.query.q }}”
+    </p>
+    <p
+      v-else
+      class="mt-6 font-display-th text-2xl font-semibold text-navy dark:text-night-text"
+    >
+      ยังไม่มีสินค้าในหมวดนี้
+    </p>
+    <p class="mt-2 text-[15px] text-muted dark:text-night-muted">
+      ลองค้นหาด้วยคำอื่น หรือดูสินค้าทุกหมวด
+    </p>
+    <div class="mt-6 flex flex-wrap items-center justify-center gap-2">
+      <button
+        v-if="route.query.q"
+        type="button"
+        @click="resetSearch"
+        class="min-h-[46px] rounded-full border border-sky bg-white px-5 text-[15px] font-medium text-navy hover:border-periwinkle transition active:scale-95 dark:border-midnight-line dark:bg-midnight-surface dark:text-night-text"
+      >
+        ล้างคำค้นหา
       </button>
-      <button v-if="route.query.category && route.query.q" @click="checkAllTabs"
-        class="px-4 py-2 bg-black/80 hover:bg-black/100 dark:bg-white/10 hover:dark:bg-white/20 text-white dark:text-white rounded-full active:scale-95 transition text-sm font-semibold">
-        Check all tabs
+      <button
+        v-if="route.query.category"
+        type="button"
+        @click="checkAllTabs"
+        class="min-h-[46px] rounded-full bg-navy px-5 text-[15px] font-medium text-white hover:bg-royal transition active:scale-95 dark:bg-night-text dark:text-midnight"
+      >
+        ดูทุกหมวด
       </button>
     </div>
   </div>

@@ -82,140 +82,169 @@ onClickOutside(onClickOutsideRef, (event) => {
 
 const colorMode = useColorMode();
 
-const toggleDark = () => {
-  colorMode.preference = colorMode.value === "dark" ? "light" : "dark";
-};
-
+// The dark-mode toggle lives in AppFooter.vue.
 colorMode.preference = "dark";
-
-const colorModeIcon = computed(() =>
-  colorMode.preference === "dark"
-    ? "i-iconamoon-mode-dark-fill"
-    : "i-iconamoon-mode-light-fill"
-);
 
 const showSearch = computed(() => {
   return route.path === "/products" || route.path === "/products/";
 });
+
+const searchPlaceholder = computed(() =>
+  route.query.category
+    ? `ค้นหาใน${categoryLabelTh(route.query.category)}…`
+    : "ค้นหาแหวน ชาร์ม กำไล…"
+);
 </script>
 
 <template>
-  <div
-    class="flex w-full flex-row items-center px-3 lg:px-5 h-[80px] lg:h-20 z-40 fixed bg-white/85 dark:bg-black/85 backdrop-blur-sm dark:backdrop-blur-lg"
+  <header
+    class="sticky top-0 z-40 w-full bg-white/95 dark:bg-midnight-surface/95 backdrop-blur-md border-b border-gold-line dark:border-midnight-line"
   >
-    <div class="flex flex-row w-full flex-nowrap items-center">
+    <div class="h-1 bg-gold" aria-hidden="true"></div>
+    <div
+      class="mx-auto flex max-w-[1440px] flex-wrap lg:flex-nowrap items-center gap-x-3 gap-y-2 px-4 lg:px-8 py-2.5 lg:py-3"
+    >
       <NuxtLink
-        aria-label="Home"
-        class="flex items-center justify-center min-w-[52px] min-h-[52px] max-lg:min-w-12 max-lg:min-h-12 rounded-2xl max-lg:rounded-full transition active:scale-95 px-3"
+        aria-label="หน้าแรก Pandora with Nonlapan"
+        class="flex min-h-[44px] items-center gap-2.5 rounded-full pr-2 shrink-0"
         to="/"
       >
-        <img src="/logo.png" alt="Nonlapan" class="w-16" />
+        <svg
+          class="h-8 w-11 lg:h-9 lg:w-12 text-gold dark:text-night-gold"
+          viewBox="0 0 48 32"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.6"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          aria-hidden="true"
+        >
+          <path d="M5 27c9-3.5 29-3.5 38 0" />
+          <path d="M6 27 9 13l7 7.5L24 7l8 13.5 7-7.5 3 14" />
+          <circle cx="24" cy="4.2" r="1.9" />
+          <circle cx="9" cy="11" r="1.4" />
+          <circle cx="39" cy="11" r="1.4" />
+          <path d="m24 16 2 3-2 3-2-3Z" />
+        </svg>
+        <span class="flex flex-col leading-none">
+          <span
+            class="font-display text-[26px] lg:text-[28px] font-semibold tracking-[0.01em] text-navy dark:text-night-text"
+            >Pandora</span
+          >
+          <span
+            class="font-display italic font-medium text-[15px] -mt-0.5 text-gold-text dark:text-night-gold"
+            >with Nonlapan</span
+          >
+        </span>
       </NuxtLink>
+
       <div
-        class="flex flex-shrink flex-grow flex-col text-sm font-semibold text-[#111] dark:text-[#eee] mr-2"
+        class="order-last lg:order-none basis-full lg:basis-auto flex-1 min-w-0 text-sm text-navy dark:text-night-text lg:max-w-[560px] lg:mx-auto"
       >
         <div
           v-if="showSearch"
           :class="[
-            'flex h-12 flex-grow rounded-full  pl-4 pr-3 transition-all hover:bg-black/10 hover:dark:bg-white/20',
+            'flex h-11 items-center rounded-full border pl-4 pr-1 transition-colors bg-field dark:bg-midnight',
             suggestionMenu
-              ? 'bg-black/10 dark:bg-white/20'
-              : 'bg-black/5 dark:bg-white/15',
+              ? 'border-periwinkle'
+              : 'border-sky dark:border-midnight-line hover:border-periwinkle',
           ]"
         >
           <div
             @click="suggestionMenu = true"
-            class="flex w-full items-center gap-4"
+            class="flex w-full items-center gap-3"
           >
-            <div
-              v-if="!suggestionMenu"
-              class="flex text-neutral-500 dark:text-neutral-400"
+            <UIcon
+              name="i-iconamoon-search-bold"
+              class="shrink-0 text-muted dark:text-night-muted"
+              size="20"
+            />
+            <label for="site-search" class="sr-only">ค้นหาสินค้า</label>
+            <input
+              id="site-search"
+              class="w-full min-w-0 bg-transparent py-2 outline-none focus-visible:outline-none placeholder:text-muted placeholder:dark:text-night-muted"
+              type="search"
+              v-model="searchQuery"
+              @input="search"
+              :placeholder="searchPlaceholder"
+            />
+            <button
+              v-if="searchQuery || suggestionMenu"
+              type="button"
+              @click.stop="clearSearch"
+              class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-navy dark:text-night-text hover:bg-mist dark:hover:bg-midnight-surface transition"
+              aria-label="ล้างคำค้นหา"
             >
-              <UIcon name="i-iconamoon-search-bold" size="20" />
-            </div>
-            <div class="flex w-full">
-              <input
-                class="w-full bg-transparent py-2 outline-none placeholder:text-[#757575] placeholder:dark:text-neutral-400"
-                type="text"
-                v-model="searchQuery"
-                @input="search"
-                :placeholder="
-                  route.query.category
-                    ? `Search in ${getCategoryName(
-                        route.query.category
-                      ).toLowerCase()}...`
-                    : 'Search...'
-                "
+              <UIcon
+                v-if="!isLoading"
+                name="i-iconamoon-close-circle-1-fill"
+                size="22"
               />
-              <div
-                v-if="searchQuery || suggestionMenu"
-                @click.stop="clearSearch"
-                class="flex items-center justify-center cursor-pointer transition-all"
-              >
-                <UIcon
-                  v-if="!isLoading"
-                  class="text-black dark:text-white"
-                  name="i-iconamoon-close-circle-1-fill"
-                  size="24"
-                />
-                <UIcon
-                  v-else
-                  name="i-svg-spinners-bars-rotate-fade"
-                  size="20"
-                />
-              </div>
-            </div>
+              <UIcon v-else name="i-svg-spinners-bars-rotate-fade" size="20" />
+            </button>
           </div>
         </div>
       </div>
-      <button
-        @click="toggleDark"
-        class="hover:bg-black/5 hover:dark:bg-white/15 max-lg:dark:bg-white/15 max-lg:bg-black/5 max-lg:hover:bg-black/10 max-lg:hover:dark:bg-white/20 min-w-12 min-h-12 flex items-center justify-center rounded-full cursor-pointer transition-all active:scale-95 mr-2"
-        aria-label="Toggle dark mode"
-      >
-        <UIcon
-          :name="colorModeIcon"
-          class="text-[#5f5f5f] dark:text-[#b7b7b7] transition-all duration-300"
-          size="24"
-        />
-      </button>
-      <NuxtLink
-        to="/cart"
-        class="hover:bg-black/5 hover:dark:bg-white/15 max-lg:dark:bg-white/15 max-lg:bg-black/5 max-lg:hover:bg-black/10 max-lg:hover:dark:bg-white/20 min-w-12 min-h-12 flex items-center justify-center rounded-full cursor-pointer relative transition-all"
-        :class="cartCountAnimating ? 'cart-icon-shake' : ''"
-      >
-        <UIcon
-          class="text-[#5f5f5f] dark:text-[#b7b7b7] transition-transform duration-200"
-          :class="cartCountAnimating ? 'scale-110' : ''"
-          name="i-iconamoon-shopping-bag-bold"
-          size="26"
-        />
-        <Transition name="badge">
-          <span
-            v-if="cartCount > 0"
-            class="absolute top-1 right-1 flex h-[18px] w-[18px]"
-          >
-            <span
-              v-if="cartCountAnimating"
-              class="animate-ping absolute inline-flex h-full w-full rounded-full bg-purple-400 opacity-75"
-            ></span>
-            <span
-              class="relative inline-flex rounded-full h-[18px] w-[18px] bg-purple-600 text-[10px] items-center justify-center shadow font-semibold text-white transition-all"
-              :class="cartCountAnimating ? 'badge-pulse' : ''"
-            >
-              {{ cartCount }}
-            </span>
-          </span>
-        </Transition>
-      </NuxtLink>
+
+      <nav class="ml-auto lg:ml-0 flex items-center gap-2 shrink-0" aria-label="เมนูหลัก">
+        <NuxtLink
+          to="/favorites"
+          class="flex h-11 min-w-[44px] items-center justify-center gap-2 rounded-full border border-sky dark:border-midnight-line bg-white dark:bg-transparent px-3 lg:px-4 text-sm font-medium text-navy dark:text-night-text hover:border-periwinkle transition active:scale-95"
+          aria-label="รายการโปรด"
+        >
+          <UIcon name="i-iconamoon-heart" size="20" />
+          <span class="max-sm:hidden">รายการโปรด</span>
+        </NuxtLink>
+        <NuxtLink
+          to="/cart"
+          class="relative flex h-11 items-center gap-2 rounded-full bg-royal pl-3.5 pr-2.5 text-sm font-medium text-white hover:bg-royal-blue-600 dark:ring-1 dark:ring-periwinkle/60 dark:hover:bg-royal-blue-400 transition active:scale-95"
+          :class="cartCountAnimating ? 'cart-icon-shake' : ''"
+          :aria-label="cartCount > 0 ? `ตะกร้า ${cartCount} ชิ้น` : 'ตะกร้า'"
+        >
+          <UIcon
+            class="transition-transform duration-200"
+            :class="cartCountAnimating ? 'scale-110' : ''"
+            name="i-iconamoon-shopping-bag-bold"
+            size="20"
+          />
+          <span>ตะกร้า</span>
+          <Transition name="badge">
+              <span
+                v-if="cartCount > 0"
+                class="relative flex h-[22px] min-w-[22px]"
+              >
+                <span
+                  v-if="cartCountAnimating"
+                  class="animate-ping absolute inline-flex h-full w-full rounded-full bg-gold-light opacity-75"
+                ></span>
+                <span
+                  class="relative inline-flex h-[22px] min-w-[22px] px-1.5 rounded-full bg-gold text-[12px] items-center justify-center font-semibold text-navy transition-all"
+                  :class="cartCountAnimating ? 'badge-pulse' : ''"
+                >
+                  {{ cartCount }}
+                </span>
+              </span>
+            </Transition>
+        </NuxtLink>
+      </nav>
     </div>
-  </div>
+    <div
+      v-if="showSearch"
+      class="border-t border-gold-line/70 dark:border-midnight-line"
+    >
+      <div class="mx-auto max-w-[1440px] py-2">
+        <ButtonSelectCategory />
+      </div>
+    </div>
+  </header>
   <button
     v-if="cartModal"
-    class="hover:bg-white/65 dark:hover:bg-white/10 transition shadow-2xl mt-3 lg:mt-4 mx-3 lg:mx-5 items-center justify-center min-w-12 min-h-12 rounded-[2rem] right-0 fixed flex z-50 bg-white/85 dark:bg-black/30 dark:border dark:border-white/10 cart-button-bezel backdrop-blur-lg"
+    type="button"
+    aria-label="ปิดตะกร้า"
+    class="hover:bg-mist dark:hover:bg-midnight transition mt-3 lg:mt-4 mx-3 lg:mx-5 items-center justify-center min-w-12 min-h-12 rounded-[2rem] right-0 fixed flex z-50 bg-white dark:bg-midnight-surface border border-gold-line dark:border-midnight-line"
   >
     <UIcon
-      class="text-[#5f5f5f] dark:text-[#b7b7b7]"
+      class="text-navy dark:text-night-text"
       name="i-iconamoon-close"
       size="26"
     />
@@ -233,7 +262,7 @@ const showSearch = computed(() => {
   @apply bg-transparent;
 }
 ::-webkit-scrollbar-thumb {
-  @apply bg-black/15 dark:bg-white/15 rounded-full border-solid border-white dark:border-black;
+  @apply bg-navy/15 dark:bg-white/15 rounded-full border-solid border-ivory dark:border-midnight;
   border-width: 5px;
 }
 
