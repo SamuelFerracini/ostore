@@ -30,10 +30,10 @@ Delete the tracking page and every user-facing link/text pointing to it.
 
 ## Done when
 
-- [ ] `/tracking` page file is gone and no code links to it.
+- [x] `/tracking` page file is gone and no code links to it.
 
-- [ ] Footer renders without the tracking link.
+- [x] Footer renders without the tracking link.
 
-- [ ] Build/typecheck (`npm run build` or project equivalent) passes.
+- [x] Build/typecheck (`npm run build` or project equivalent) passes.
 
 - [ ] Changes committed on the branch.
