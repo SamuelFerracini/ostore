@@ -121,10 +121,20 @@ const ctaLabel = computed(() => {
 const ctaDisabled = computed(
   () => needsSize.value && !selectedSize.value && !inCart.value,
 );
-const onCta = () => {
+const { confirm } = useConfirm();
+const onCta = async () => {
   if (ctaDisabled.value) return;
   if (inCart.value) {
-    cartStore.dispatch("removeFromCart", lineKey.value);
+    const key = lineKey.value;
+    const ok = await confirm({
+      title: "ลบสินค้าออกจากตะกร้า?",
+      message: product.value?.name
+        ? `ต้องการลบ "${product.value.name}" ออกจากตะกร้าใช่ไหม`
+        : "",
+      confirmLabel: "ลบออก",
+      cancelLabel: "ยกเลิก",
+    });
+    if (ok) cartStore.dispatch("removeFromCart", key);
     return;
   }
   const p = product.value;
@@ -137,13 +147,27 @@ const onCta = () => {
 // ---- wishlist ------------------------------------------------------------
 const { isWishlisted, toggleWishlist } = useWishlist();
 const active = computed(() => isWishlisted(product.value?.id));
-const onWish = () => toggleWishlist(product.value);
+const onWish = async () => {
+  const p = product.value;
+  if (active.value) {
+    const ok = await confirm({
+      title: "ลบออกจากรายการโปรด?",
+      message: p?.name ? `ต้องการลบ "${p.name}" ออกจากรายการโปรดใช่ไหม` : "",
+      confirmLabel: "ลบออก",
+      cancelLabel: "ยกเลิก",
+    });
+    if (!ok) return;
+  }
+  toggleWishlist(p);
+};
 
 // ---- a11y: focus trap, scroll lock, Esc ---------------------------------
 const FOCUSABLE =
   'a[href],button:not([disabled]),input:not([disabled]),[tabindex]:not([tabindex="-1"])';
 const onKeydown = (e) => {
   if (!isOpen.value) return;
+  // confirm dialog is on top: it owns Esc / Tab
+  if (document.querySelector("[data-confirm-dialog], [role=alertdialog]")) return;
   if (e.key === "Escape") {
     e.preventDefault();
     close();

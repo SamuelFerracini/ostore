@@ -10,8 +10,16 @@ const cartTotal = computed(() => cartStore.getters.cartTotal);
 const fmt = (n) => Number(n || 0).toLocaleString("en-US");
 const itemKey = (item) => item.key ?? item.id;
 
-const removeFromCart = (key) => {
-  cartStore.dispatch("removeFromCart", key);
+const { confirm } = useConfirm();
+
+const removeFromCart = async (item) => {
+  const ok = await confirm({
+    title: "ลบสินค้าออกจากตะกร้า?",
+    message: item.name ? `ต้องการลบ "${item.name}" ออกจากตะกร้าใช่ไหม` : "",
+    confirmLabel: "ลบออก",
+    cancelLabel: "ยกเลิก",
+  });
+  if (ok) cartStore.dispatch("removeFromCart", itemKey(item));
 };
 </script>
 
@@ -73,7 +81,7 @@ const removeFromCart = (key) => {
                 type="button"
                 class="w-11 h-11 shrink-0 flex items-center justify-center rounded-full text-muted dark:text-[#B7C3D9] hover:bg-mist dark:hover:bg-midnight-line transition focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-periwinkle"
                 :aria-label="`ลบ ${item.name} ออกจากตะกร้า`"
-                @click="removeFromCart(itemKey(item))"
+                @click="removeFromCart(item)"
               >
                 <UIcon name="i-iconamoon-trash-bold" size="20" />
               </button>

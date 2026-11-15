@@ -63,6 +63,7 @@ onBeforeUnmount(() => {
     </main>
     <AppFooter />
     <ProductModal />
+    <ConfirmDialog />
 
     <!-- Scroll to top button -->
     <Transition name="scroll-button">

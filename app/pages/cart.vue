@@ -42,8 +42,16 @@ const updateQuantity = (productId, quantity) => {
   cartStore.dispatch("updateQuantity", { productId, quantity });
 };
 
-const removeFromCart = (productId) => {
-  cartStore.dispatch("removeFromCart", productId);
+const { confirm } = useConfirm();
+
+const removeFromCart = async (item) => {
+  const ok = await confirm({
+    title: "ลบสินค้าออกจากตะกร้า?",
+    message: item.name ? `ต้องการลบ "${item.name}" ออกจากตะกร้าใช่ไหม` : "",
+    confirmLabel: "ลบออก",
+    cancelLabel: "ยกเลิก",
+  });
+  if (ok) cartStore.dispatch("removeFromCart", itemKey(item));
 };
 
 const clearCart = () => {
@@ -210,7 +218,7 @@ const focusRing =
                     focusRing,
                   ]"
                   :aria-label="`ลบ ${item.name} ออกจากตะกร้า`"
-                  @click="removeFromCart(itemKey(item))"
+                  @click="removeFromCart(item)"
                 >
                   <UIcon name="i-iconamoon-trash-bold" size="18" />
                   ลบ

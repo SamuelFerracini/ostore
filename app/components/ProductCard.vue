@@ -28,9 +28,18 @@ const addToCart = (product) => {
   triggerAnimation(product.id, "add");
 };
 
-const removeFromCart = (productId) => {
-  cartStore.dispatch("removeFromCart", productId);
-  triggerAnimation(productId, "remove");
+const { confirm } = useConfirm();
+
+const removeFromCart = async (product) => {
+  const ok = await confirm({
+    title: "ลบสินค้าออกจากตะกร้า?",
+    message: product.name ? `ต้องการลบ "${product.name}" ออกจากตะกร้าใช่ไหม` : "",
+    confirmLabel: "ลบออก",
+    cancelLabel: "ยกเลิก",
+  });
+  if (!ok) return;
+  cartStore.dispatch("removeFromCart", product.id);
+  triggerAnimation(product.id, "remove");
 };
 
 const isInCart = (productId) => {
@@ -97,7 +106,7 @@ const metaLine = (product) => {
 };
 
 const onCta = (product) => {
-  if (isInCart(product.id)) return removeFromCart(product.id);
+  if (isInCart(product.id)) return removeFromCart(product);
   if (isRing(product)) return openModal(product);
   return addToCart(product);
 };

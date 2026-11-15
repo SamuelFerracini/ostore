@@ -43,10 +43,10 @@ Show one shared small confirm modal before any removal from the cart or the favo
 
 ## Done when
 
-- [ ] Every cart removal and every un-favorite path above shows the confirm; confirm removes, cancel keeps the item.
+- [x] Every cart removal and every un-favorite path above shows the confirm; confirm removes, cancel keeps the item.
 
-- [ ] Adding to cart / favorites shows no confirm.
+- [x] Adding to cart / favorites shows no confirm.
 
-- [ ] Dialog works inside ProductModal, on mobile width, and in dark mode.
+- [x] Dialog works inside ProductModal, on mobile width, and in dark mode.
 
-- [ ] Build / typecheck passes; changes committed on the branch.
+- [x] Build / typecheck passes; changes committed on the branch.
