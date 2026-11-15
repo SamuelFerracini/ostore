@@ -19,11 +19,51 @@ const colorModeLabel = computed(() =>
 
 const facebookUrl = "https://www.facebook.com/nonlapan.ssw";
 const shopId = computed(() => websiteStore.getters.selectedShop.id);
+
+// Hide the floating chat pill while the footer (with its own CTA) is in view.
+const footerEl = ref(null);
+const footerVisible = ref(false);
+let footerObserver = null;
+
+onMounted(() => {
+  if (!footerEl.value || typeof IntersectionObserver === "undefined") return;
+  footerObserver = new IntersectionObserver(([entry]) => {
+    footerVisible.value = entry.isIntersecting;
+  });
+  footerObserver.observe(footerEl.value);
+});
+
+onBeforeUnmount(() => footerObserver?.disconnect());
 </script>
 
 <template>
+  <!-- Desktop floating chat button -->
+  <Transition name="chat-fab">
+    <a
+      v-if="!footerVisible"
+      :href="facebookUrl"
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label="ทักแชท Facebook"
+      class="max-lg:hidden fixed bottom-6 right-6 z-40 inline-flex min-h-[48px] items-center gap-3 rounded-full bg-navy pl-1.5 pr-5 text-[15px] font-medium text-gold-light shadow-[0_8px_24px_rgba(29,43,69,0.28)] ring-1 ring-gold/60 transition hover:bg-navy/90 active:scale-95 dark:ring-gold/40 dark:shadow-[0_8px_24px_rgba(0,0,0,0.55)]"
+    >
+      <span
+        class="flex h-9 w-9 items-center justify-center rounded-full bg-gold text-navy"
+        aria-hidden="true"
+      >
+        <svg viewBox="0 0 24 24" class="h-5 w-5" fill="currentColor">
+          <path
+            d="M13.5 21v-7.5h2.6l.4-3h-3V8.6c0-.9.3-1.5 1.6-1.5h1.6V4.4c-.3 0-1.2-.1-2.3-.1-2.3 0-3.9 1.4-3.9 4v2.2H8v3h2.5V21h3Z"
+          />
+        </svg>
+      </span>
+      ทักแชท Facebook
+    </a>
+  </Transition>
+
   <!-- Desktop footer -->
   <footer
+    ref="footerEl"
     class="max-lg:hidden mt-16 bg-navy text-white border-t-4 border-gold dark:border-t dark:border-midnight-line"
   >
     <div
@@ -134,6 +174,15 @@ const shopId = computed(() => websiteStore.getters.selectedShop.id);
 </template>
 
 <style scoped>
+.chat-fab-enter-active,
+.chat-fab-leave-active {
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+.chat-fab-enter-from,
+.chat-fab-leave-to {
+  opacity: 0;
+  transform: translateY(0.75rem);
+}
 .footer-brand {
   flex: 1 1 420px;
   min-width: 0;
