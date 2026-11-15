@@ -6,6 +6,9 @@ export default defineNuxtConfig({
 
   modules: ["@vueuse/nuxt", "@nuxt/ui", "@nuxt/image"],
 
+  // Follow the OS on first visit; the footer toggle stores an explicit choice.
+  colorMode: { preference: "system", fallback: "light" },
+
   future: { compatibilityVersion: 4 },
 
   app: {
