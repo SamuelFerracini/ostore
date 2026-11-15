@@ -1,18 +1,5 @@
 <script setup>
 import websiteStore from "~~/stores/website";
-
-const config = useRuntimeConfig();
-const colorMode = useColorMode();
-
-const toggleDark = () => {
-  colorMode.preference = colorMode.value === "dark" ? "light" : "dark";
-};
-
-const colorModeIcon = computed(() =>
-  colorMode.preference === "dark"
-    ? "i-iconamoon-mode-dark-fill"
-    : "i-iconamoon-mode-light-fill"
-);
 </script>
 
 <template>

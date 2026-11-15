@@ -1,20 +1,10 @@
 import pkg from "./package.json";
 import storefrontConfig from "./storefront.config.js";
 
-import Aura from "@primevue/themes/aura";
-
 export default defineNuxtConfig({
   devtools: { enabled: false },
 
-  modules: ["@vueuse/nuxt", "@nuxt/ui", "@nuxt/image", "@primevue/nuxt-module"],
-
-  primevue: {
-    options: {
-      theme: {
-        preset: Aura,
-      },
-    },
-  },
+  modules: ["@vueuse/nuxt", "@nuxt/ui", "@nuxt/image"],
 
   future: { compatibilityVersion: 4 },
 

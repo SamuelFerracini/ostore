@@ -204,14 +204,6 @@ const copyToClipboard = async () => {
           <h2 class="text-xl font-bold mb-4 text-black dark:text-white">Order Summary</h2>
 
           <div class="space-y-3 mb-6">
-            <!-- <div class="flex justify-between text-sm">
-              <span class="text-[#5f5f5f] dark:text-[#b7b7b7]">Subtotal</span>
-              <span class="font-semibold">${{ cartTotal.toFixed(2) }}</span>
-            </div> -->
-            <!-- <div class="flex justify-between text-sm">
-              <span class="text-[#5f5f5f] dark:text-[#b7b7b7]">Shipping</span>
-              <span class="font-semibold">Calculated at checkout</span>
-            </div> -->
             <div class="border-t border-black/10 dark:border-white/10 pt-3">
               <div class="flex justify-between text-lg font-bold text-black dark:text-white">
                 <span>Total</span>

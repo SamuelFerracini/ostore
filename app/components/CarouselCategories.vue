@@ -66,31 +66,11 @@ onBeforeUnmount(() => {
   document.removeEventListener("mousemove", handleDragging);
   document.removeEventListener("mouseup", endDrag);
 });
-
-const handleSetShop = (shop) => {
-  setCategory(shop.categories[0].id);
-  websiteStore.dispatch("selectShop", shop);
-  router.push({ query: { shop: shop.id } });
-};
 </script>
 
 <template>
   <div class="slider-container">
     <div v-if="showPrev" class="slider-btn prev-btn"></div>
-    <!-- <div v-for="shop in websiteStore.getters.shops" :key="shop.id" class="mr-3">
-      <div
-        @click="handleSetShop(shop)"
-        :class="[
-          'card transition',
-          websiteStore.getters.selectedShop.id === shop.id
-            ? 'selected'
-            : 'hover:bg-[#e2e2e2] dark:bg-[#262626] hover:dark:bg-[#333]',
-          'bg-[#efefef]  text-black dark:text-white',
-        ]"
-      >
-        <div class="px-3.5">{{ shop.name }}</div>
-      </div>
-    </div> -->
     <div class="slider-wrapper">
       <div
         ref="cardsSlider"
