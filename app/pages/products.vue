@@ -8,14 +8,8 @@ const hasFetched = ref(false);
 const loadingMoreProducts = ref(false);
 const page = ref(1);
 const loadMore = ref(null);
-const showFilters = ref(true);
-const lastScrollY = ref(0);
-const manuallyOpened = ref(false);
-const isMobile = ref(false);
-const filterBarRef = ref(null);
-const filterContentHeight = ref("auto");
+const totalCount = ref(null);
 let observer = null;
-
 
 const variables = computed(() => ({
   search: route.query.q,
@@ -28,96 +22,21 @@ const variables = computed(() => ({
   fieldby: route.query.fieldby || 'PRICE',
 }));
 
-const activeFiltersCount = computed(() => {
-  let count = 0;
-  if (route.query.category) count++;
-  if (route.query.minPrice || route.query.maxPrice) count++;
-  return count;
+const heading = computed(() => {
+  if (route.query.q) return `ผลการค้นหา “${route.query.q}”`;
+  if (route.query.category) return categoryLabelTh(route.query.category);
+  return "เครื่องประดับทั้งหมด";
 });
 
-const checkIfMobile = () => {
-  isMobile.value = window.innerWidth < 1024; // lg breakpoint
-  // Always show filters on desktop
-  if (!isMobile.value) {
-    showFilters.value = true;
-  }
-  measureContentHeight();
-};
-
-const filtersFullyExpanded = ref(false);
-
-const measureContentHeight = () => {
-  nextTick(() => {
-    if (filterBarRef.value) {
-      if (isMobile.value && showFilters.value) {
-        const content = filterBarRef.value.querySelector(
-          ".filter-content-wrapper"
-        );
-        if (content) {
-          filterContentHeight.value = `${content.offsetHeight}px`;
-        }
-      } else if (!isMobile.value) {
-        // Measure desktop height
-        filterContentHeight.value = `${filterBarRef.value.scrollHeight}px`;
-      }
-    }
+// Count every match, not only the loaded page.
+async function countProducts() {
+  const all = await searchProducts({
+    ...variables.value,
+    page: 1,
+    perPage: Number.MAX_SAFE_INTEGER,
   });
-};
-
-const spacerHeight = computed(() => {
-  if (!isMobile.value) {
-    return "60px";
-  }
-  return showFilters.value ? filterContentHeight.value : "48px";
-});
-
-const toggleFilters = () => {
-  // Only allow toggle on mobile
-  if (!isMobile.value) return;
-
-  showFilters.value = !showFilters.value;
-
-  if (showFilters.value) {
-    manuallyOpened.value = true;
-    measureContentHeight();
-    // Wait for transition to finish
-    setTimeout(() => {
-      filtersFullyExpanded.value = true;
-    }, 450);
-  } else {
-    filtersFullyExpanded.value = false;
-    manuallyOpened.value = false;
-  }
-};
-
-const handleScroll = () => {
-  // Only auto-hide on mobile
-  if (!isMobile.value) return;
-
-  const currentScrollY = window.scrollY;
-
-  // Don't auto-close if manually opened
-  if (
-    currentScrollY > 150 &&
-    currentScrollY > lastScrollY.value &&
-    !manuallyOpened.value
-  ) {
-    // Scrolling down
-    showFilters.value = false;
-    filtersFullyExpanded.value = false;
-  }
-
-  // Reset manual flag if scrolling back to top
-  if (currentScrollY < 150) {
-    manuallyOpened.value = false;
-    showFilters.value = true;
-    setTimeout(() => {
-      filtersFullyExpanded.value = true;
-    }, 450);
-  }
-
-  lastScrollY.value = currentScrollY;
-};
+  totalCount.value = all.length;
+}
 
 async function fetch() {
   if (isLoading.value) return;
@@ -146,27 +65,12 @@ onMounted(async () => {
 
   await loadProducts();
   await fetch();
+  countProducts();
   setupObserver();
-
-  // Check if mobile and setup listeners
-  checkIfMobile();
-
-  // Measure height after a short delay to ensure DOM is rendered
-  setTimeout(() => {
-    measureContentHeight();
-    if (showFilters.value) {
-        filtersFullyExpanded.value = true;
-    }
-  }, 100);
-
-  window.addEventListener("scroll", handleScroll);
-  window.addEventListener("resize", checkIfMobile);
 });
 
 onBeforeUnmount(() => {
   if (observer) observer.disconnect();
-  window.removeEventListener("scroll", handleScroll);
-  window.removeEventListener("resize", checkIfMobile);
 });
 
 watch(
@@ -175,7 +79,7 @@ watch(
     page.value = 1;
     productsData.value = [];
     fetch();
-    measureContentHeight();
+    countProducts();
     window.scrollTo(0, 0);
   }
 );
@@ -215,157 +119,101 @@ const productsEmpty = computed(
 </script>
 
 <template>
-  <!-- Fixed filter bar -->
-  <div
-    ref="filterBarRef"
-    class="fixed top-[80px] lg:top-20 left-0 right-0 z-30 bg-white/85 dark:bg-black/85 backdrop-blur-sm dark:backdrop-blur-lg border-b border-black/5 dark:border-white/10 transition-all duration-400 ease-out"
-    :class="{
-        'overflow-y-hidden': !filtersFullyExpanded && isMobile,
-         'overflow-visible': filtersFullyExpanded || !isMobile
-    }"
-    :style="{
-      maxHeight: !isMobile
-        ? 'none'
-        : showFilters
-        ? filterContentHeight
-        : '48px',
-    }"
+  <section
+    class="bg-mist dark:bg-midnight-surface/60 border-b border-sky/70 dark:border-midnight-line"
+    aria-label="ข้อมูลร้าน"
   >
-    <!-- Desktop: Always visible -->
-    <div v-if="!isMobile" class="pt-1 pb-2">
-      <ButtonSelectCategory />
-      <div class="px-3 lg:px-5 pb-2 pt-2 flex items-center gap-2 flex-wrap">
+    <ul
+      class="max-lg:hidden mx-auto flex max-w-[1440px] items-center justify-center gap-x-12 px-8 py-3 text-[15px] text-navy dark:text-night-text"
+    >
+      <li class="flex items-center gap-2.5">
+        <svg class="trust-icon" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M12 3 19 6v5.2c0 4.4-3 7.9-7 9.8-4-1.9-7-5.4-7-9.8V6l7-3Z" />
+          <path d="m9 12 2.2 2.2L15.5 10" />
+        </svg>
+        ของแท้ ช็อปจากออสเตรเลีย
+      </li>
+      <li class="flex items-center gap-2.5">
+        <svg class="trust-icon" viewBox="0 0 24 24" aria-hidden="true">
+          <rect x="3.5" y="8" width="17" height="4" rx="1" />
+          <path d="M5 12v8h14v-8M12 8v12" />
+          <path d="M12 8c-1-2.6-2.6-3.8-4-3.4-1.6.5-1.2 3.4 4 3.4Zm0 0c1-2.6 2.6-3.8 4-3.4 1.6.5 1.2 3.4-4 3.4Z" />
+        </svg>
+        ราคารวมกล่องและถุงแล้ว
+      </li>
+      <li class="flex items-center gap-2.5">
+        <svg class="trust-icon" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M6 3h12v18l-2.5-1.6L13 21l-2.5-1.6L8 21l-2-1.3V3Z" />
+          <path d="M9 8h6M9 11.5h6M9 15h3.5" />
+        </svg>
+        ต้องการใบเสร็จ ทักสอบถามได้
+      </li>
+    </ul>
+    <p
+      class="lg:hidden flex items-center justify-center gap-2 px-4 py-2.5 text-[13px] text-navy dark:text-night-text"
+    >
+      <svg class="trust-icon h-[18px] w-[18px]" viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M12 3 19 6v5.2c0 4.4-3 7.9-7 9.8-4-1.9-7-5.4-7-9.8V6l7-3Z" />
+        <path d="m9 12 2.2 2.2L15.5 10" />
+      </svg>
+      ของแท้จากออสเตรเลีย · ราคารวมกล่องและถุงแล้ว
+    </p>
+  </section>
+
+  <div class="mx-auto max-w-[1440px] px-4 lg:px-8">
+    <div
+      class="flex flex-wrap items-end justify-between gap-x-6 gap-y-3 pt-6 pb-5 lg:pt-9 lg:pb-7"
+    >
+      <div class="min-w-0">
+        <h1
+          class="font-display-th text-[26px] lg:text-[34px] font-semibold leading-tight text-navy dark:text-night-text"
+        >
+          {{ heading }}
+        </h1>
+        <p
+          class="mt-1 text-[15px] text-muted dark:text-night-muted"
+          aria-live="polite"
+        >
+          <template v-if="totalCount !== null">{{ totalCount.toLocaleString("en-US") }} ชิ้น</template>
+          <template v-else>&nbsp;</template>
+        </p>
+      </div>
+      <div class="flex flex-wrap items-center gap-2">
         <ButtonSortBy />
         <PriceFilter />
       </div>
     </div>
 
-    <!-- Mobile: Toggleable -->
-    <Transition v-if="isMobile" name="filter-content">
-      <div v-if="showFilters" class="filter-content-wrapper pt-1">
-        <ButtonSelectCategory />
-        <div class="px-3 lg:px-5 pb-2 pt-2 flex items-center gap-2 flex-wrap">
-          <ButtonSortBy />
-          <PriceFilter />
-        </div>
-        <div class="flex justify-end items-center px-3 lg:px-5 pb-2 pt-1">
-          <button
-            @click="toggleFilters"
-            class="flex items-center gap-2 px-3 py-1.5 rounded-full bg-black/5 dark:bg-white/10 hover:bg-black/10 hover:dark:bg-white/15 transition active:scale-95"
-            aria-label="Hide filters"
-          >
-            <span
-              class="text-xs font-semibold text-[#5f5f5f] dark:text-[#b7b7b7]"
-            >
-              Hide filters
-            </span>
-            <UIcon
-              name="i-iconamoon-arrow-up-2-bold"
-              class="text-[#5f5f5f] dark:text-[#b7b7b7]"
-              size="16"
-            />
-          </button>
-        </div>
-      </div>
-    </Transition>
-
-    <!-- Drawer handle - visible when closed (mobile only) -->
-    <Transition v-if="isMobile" name="handle">
-      <div
-        v-if="!showFilters"
-        class="flex items-center justify-end h-12 px-3 lg:px-5"
-      >
-        <button
-          @click="toggleFilters"
-          class="flex items-center gap-2 px-3 py-1.5 rounded-full bg-black/5 dark:bg-white/10 hover:bg-black/10 hover:dark:bg-white/15 transition active:scale-95 group"
-          aria-label="Show filters"
-        >
-          <UIcon
-            name="i-iconamoon-filter-fill"
-            class="text-[#5f5f5f] dark:text-[#b7b7b7]"
-            size="16"
-          />
-          <span
-            class="text-xs font-semibold text-[#5f5f5f] dark:text-[#b7b7b7]"
-          >
-            Show filters
-          </span>
-          <span
-            v-if="activeFiltersCount > 0"
-            class="flex items-center justify-center min-w-[18px] h-[18px] px-1 rounded-full bg-purple-600 text-white text-[10px] font-bold"
-          >
-            {{ activeFiltersCount }}
-          </span>
-          <UIcon
-            name="i-iconamoon-arrow-down-2-bold"
-            class="text-[#5f5f5f] dark:text-[#b7b7b7]"
-            size="14"
-          />
-        </button>
-      </div>
-    </Transition>
+    <div v-if="!productsEmpty" class="product-grid pb-10">
+      <ProductCard :products="products" />
+      <ProductsSkeleton
+        v-if="(!products.length || isLoading) && !productsEmpty"
+      />
+      <!-- Trigger for loading more products -->
+      <div ref="loadMore" class="col-span-full h-16"></div>
+    </div>
+    <ProductsEmpty v-else />
   </div>
-
-  <!-- Spacer for fixed filter bar -->
-  <div
-    class="transition-all ease-out"
-    :style="{
-      height: spacerHeight,
-      transitionDuration: isMobile ? '400ms' : '0ms',
-    }"
-  ></div>
-
-  <div
-    v-if="!productsEmpty"
-    class="grid grid-cols-1 xs:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 3xl:grid-cols-7 gap-3 lg:gap-5 p-3 lg:p-5 lg:mt-10"
-  >
-    <ProductCard :products="products" />
-    <!-- Trigger for loading more products -->
-    <div ref="loadMore" class="h-16"></div>
-    <ProductsSkeleton
-      v-if="(!products.length || isLoading) && !productsEmpty"
-    />
-    <div class="col-span-full mt-10"></div>
-  </div>
-  <ProductsEmpty v-else />
 </template>
 
 <style lang="postcss" scoped>
-/* Filter content transitions */
-.filter-content-enter-active {
-  @apply transition-all duration-300 ease-out;
-  transition-delay: 0.05s;
-}
-.filter-content-leave-active {
-  @apply transition-all duration-200 ease-in;
-}
-.filter-content-enter-from,
-.filter-content-leave-to {
-  @apply opacity-0;
-  transform: translateY(-5px);
-}
-.filter-content-enter-to,
-.filter-content-leave-from {
-  @apply opacity-100;
-  transform: translateY(0);
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 28px 12px;
 }
 
-/* Handle transitions */
-.handle-enter-active {
-  @apply transition-all duration-300 ease-out;
-  transition-delay: 0.05s;
+@media (min-width: 640px) {
+  .product-grid {
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 40px 24px;
+  }
 }
-.handle-leave-active {
-  @apply transition-all duration-200 ease-in;
-}
-.handle-enter-from,
-.handle-leave-to {
-  @apply opacity-0;
-  transform: translateY(-5px);
-}
-.handle-enter-to,
-.handle-leave-from {
-  @apply opacity-100;
-  transform: translateY(0);
+
+.trust-icon {
+  @apply h-5 w-5 shrink-0 fill-none stroke-gold dark:stroke-night-gold;
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
 }
 </style>

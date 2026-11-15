@@ -9,7 +9,7 @@ const { wishlist } = useWishlist();
         <h1 class="font-display-th text-3xl font-semibold text-navy dark:text-night-text">รายการโปรด</h1>
         <span class="text-sm text-muted">{{ wishlist.length }} ชิ้น</span>
       </div>
-      <div class="grid grid-cols-1 xs:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 3xl:grid-cols-7 gap-3 lg:gap-5 mt-4 lg:mt-6">
+      <div class="product-grid pb-10 mt-4 lg:mt-6">
         <ProductCard :products="wishlist" />
       </div>
     </template>
@@ -24,3 +24,18 @@ const { wishlist } = useWishlist();
     </div>
   </div>
 </template>
+
+<style lang="postcss" scoped>
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 28px 12px;
+}
+
+@media (min-width: 640px) {
+  .product-grid {
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 40px 24px;
+  }
+}
+</style>

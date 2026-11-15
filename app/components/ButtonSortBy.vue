@@ -2,63 +2,73 @@
 const router = useRouter();
 const route = useRoute();
 
+const options = [
+  { value: "ASC", label: "ราคาน้อยไปมาก" },
+  { value: "DESC", label: "ราคามากไปน้อย" },
+];
+
 const selectedSort = ref(
-  !route.query.orderby && !route.query.fieldby ? 'Price: Low to High' : route.query.orderby === 'DESC' && route.query.fieldby === 'PRICE' ? 'Price: High to Low' : 'Price: Low to High'
+  route.query.orderby === "DESC" && route.query.fieldby === "PRICE"
+    ? "DESC"
+    : "ASC"
 );
 
-const options = reactive([{ value: 'Price: Low to High' }, { value: 'Price: High to Low' }]);
+const selectedLabel = computed(
+  () => options.find((o) => o.value === selectedSort.value)?.label
+);
 
-const setSort = value => {
+const setSort = (value) => {
   selectedSort.value = value;
-  const query = { ...route.query };
-
-  switch (value) {
-    case 'Price: High to Low':
-      query.orderby = 'DESC';
-      query.fieldby = 'PRICE';
-      break;
-    case 'Price: Low to High':
-      query.orderby = 'ASC';
-      query.fieldby = 'PRICE';
-      break;
-  }
-  router.push({ query });
+  isDropdownVisible.value = false;
+  router.push({ query: { ...route.query, orderby: value, fieldby: "PRICE" } });
 };
 
 const isDropdownVisible = ref(false);
 const dropdownRef = ref(null);
 
-onClickOutside(dropdownRef, event => (isDropdownVisible.value = false));
+onClickOutside(dropdownRef, () => (isDropdownVisible.value = false));
 </script>
 
 <template>
-  <div class="relative cursor-pointer select-none items-center justify-center text-base font-semibold" ref="dropdownRef" @click="isDropdownVisible = !isDropdownVisible">
-    <div
-      class="box-border flex items-center gap-1.5 rounded-full px-3 py-1.5 transition-all active:scale-95"
-      :class="{
-        'bg-black text-white hover:bg-black dark:bg-white dark:text-black hover:dark:bg-white': isDropdownVisible,
-        'bg-[#efefef] hover:bg-[#e2e2e2] dark:bg-[#262626] hover:dark:bg-[#333]': !isDropdownVisible,
-      }">
-      <UIcon name="i-iconamoon-options-duotone" size="16" />
-      <span class="text-xs font-semibold">Sort</span>
-    </div>
+  <div class="relative select-none" ref="dropdownRef">
+    <button
+      type="button"
+      class="filter-pill"
+      :class="{ 'filter-pill--open': isDropdownVisible }"
+      :aria-expanded="isDropdownVisible"
+      aria-haspopup="listbox"
+      @click="isDropdownVisible = !isDropdownVisible"
+    >
+      <UIcon name="i-iconamoon-sorting-left" size="18" aria-hidden="true" />
+      <span>เรียง: {{ selectedLabel }}</span>
+      <UIcon name="i-iconamoon-arrow-down-2" size="16" aria-hidden="true" />
+    </button>
     <Transition name="dropdown">
-      <div
+      <ul
         v-if="isDropdownVisible"
-        class="absolute top-full left-0 z-10 mt-3 lg:mt-[18px] rounded-2xl text-base font-semibold bg-white dark:bg-[#262626] shadow-[0_0_8px_rgba(0,0,0,.1)]">
-        <div class="m-2 w-48">
-          <div
-            v-for="(option, i) in options"
-            :key="i"
+        role="listbox"
+        aria-label="เรียงตาม"
+        class="filter-menu left-0"
+      >
+        <li v-for="option in options" :key="option.value">
+          <button
+            type="button"
+            role="option"
+            :aria-selected="selectedSort === option.value"
+            class="filter-option"
             @click="setSort(option.value)"
-            class="rounded-[10px] px-3 py-2 transition-all duration-300 hover:bg-[#e9e9e9] hover:dark:bg-[#3c3c3c]">
-            <div class="flex items-center justify-between">
-              <div class="mr-1 w-full">{{ option.value }}</div>
-              <UIcon v-if="selectedSort === option.value" name="i-iconamoon-check-circle-1-fill" size="24" />
-            </div>
-          </div>
-        </div>
-      </div>
+          >
+            <span>{{ option.label }}</span>
+            <UIcon
+              v-if="selectedSort === option.value"
+              name="i-iconamoon-check-bold"
+              size="18"
+              class="text-royal dark:text-night-price"
+            />
+          </button>
+        </li>
+      </ul>
     </Transition>
   </div>
 </template>
+
