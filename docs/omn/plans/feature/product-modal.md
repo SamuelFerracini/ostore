@@ -119,7 +119,7 @@ To test before the theme unit merges, add a temporary `@click` on the card image
 
 - [ ] Old localStorage carts still load.
 
-- [ ] The temporary `ProductCard.vue` click is reverted. `npm run build` passes.
+- [x] The temporary `ProductCard.vue` click is reverted. `npm run build` passes.
 
 - [ ] Checked with **Claude in Chrome** against `npm run dev` in this worktree: a ring and a non-ring, at 1440px and 390px, light and dark, plus keyboard-only use. Results saved with save_note.
 

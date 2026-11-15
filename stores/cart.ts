@@ -10,7 +10,17 @@ export interface CartItem {
   category?: string;
   shop?: string;
   quantity: number;
+  size?: string;
+  key: string;
 }
+
+export const cartKey = (id: string, size?: string | null): string =>
+  size ? `${id}::${size}` : id;
+
+const withKey = (item: any): CartItem => ({
+  ...item,
+  key: item.key ?? cartKey(item.id, item.size),
+});
 
 // Helper function to load and validate cart items against products.json
 const validateCartItems = async (items: CartItem[]): Promise<CartItem[]> => {
@@ -76,7 +86,7 @@ const loadFromLocalStorage = (): CartItem[] => {
   if (typeof window !== "undefined") {
     try {
       const stored = localStorage.getItem("cart");
-      return stored ? JSON.parse(stored) : [];
+      return stored ? JSON.parse(stored).map(withKey) : [];
     } catch (error) {
       console.error("Error loading cart from localStorage:", error);
       return [];
@@ -94,20 +104,21 @@ const store = createStore({
   },
 
   mutations: {
-    ADD_TO_CART(state, product: Omit<CartItem, "quantity">) {
-      const existingItem = state.items.find((item) => item.id === product.id);
+    ADD_TO_CART(state, product: Omit<CartItem, "quantity" | "key">) {
+      const key = cartKey(product.id, product.size);
+      const existingItem = state.items.find((item) => item.key === key);
 
       if (existingItem) {
         existingItem.quantity++;
       } else {
-        state.items.push({ ...product, quantity: 1 });
+        state.items.push({ ...product, key, quantity: 1 });
       }
 
       saveToLocalStorage(state.items);
     },
 
-    REMOVE_FROM_CART(state, productId: string) {
-      state.items = state.items.filter((item) => item.id !== productId);
+    REMOVE_FROM_CART(state, key: string) {
+      state.items = state.items.filter((item) => item.key !== key);
       saveToLocalStorage(state.items);
     },
 
@@ -115,11 +126,11 @@ const store = createStore({
       state,
       { productId, quantity }: { productId: string; quantity: number }
     ) {
-      const item = state.items.find((item) => item.id === productId);
+      const item = state.items.find((item) => item.key === productId);
 
       if (item) {
         if (quantity <= 0) {
-          state.items = state.items.filter((item) => item.id !== productId);
+          state.items = state.items.filter((item) => item.key !== productId);
         } else {
           item.quantity = quantity;
         }
@@ -137,7 +148,7 @@ const store = createStore({
     },
 
     VALIDATE_CART(state, validatedItems: CartItem[]) {
-      state.items = validatedItems;
+      state.items = validatedItems.map(withKey);
       state.validationComplete = true;
       saveToLocalStorage(state.items);
     },
@@ -148,12 +159,12 @@ const store = createStore({
   },
 
   actions: {
-    addToCart({ commit }, product: Omit<CartItem, "quantity">) {
+    addToCart({ commit }, product: Omit<CartItem, "quantity" | "key">) {
       commit("ADD_TO_CART", product);
     },
 
-    removeFromCart({ commit }, productId: string) {
-      commit("REMOVE_FROM_CART", productId);
+    removeFromCart({ commit }, key: string) {
+      commit("REMOVE_FROM_CART", key);
     },
 
     updateQuantity(
