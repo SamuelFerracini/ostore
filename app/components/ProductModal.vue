@@ -6,6 +6,7 @@ import "swiper/css/pagination";
 import cartStore from "~~/stores/cart";
 
 const { product, isOpen, close } = useProductModal();
+const { t } = useLocale();
 
 const dialogEl = ref(null);
 const closeBtn = ref(null);
@@ -47,16 +48,16 @@ const onSwiper = (s) => {
 };
 
 // ---- pricing ------------------------------------------------------------
-const fmt = (n) => `${Math.round(Number(n)).toLocaleString("en-US")} ฿`;
+const fmt = (n) => `${Math.round(Number(n)).toLocaleString("en-US")} \u0E3F`;
 const price = computed(() => Number(product.value?.price_normalised) || 0);
 const reference = computed(() => {
   const p = product.value;
   if (!p) return null;
   if (p.market_thb && p.market_thb > price.value) {
-    return { label: "ราคาที่ช็อปไทย", value: Number(p.market_thb) };
+    return { label: t("modal.thaiShopPrice"), value: Number(p.market_thb) };
   }
   if (p.originalPrice_normalised && p.originalPrice_normalised > price.value) {
-    return { label: "ปกติ", value: Number(p.originalPrice_normalised) };
+    return { label: t("common.regularPrice"), value: Number(p.originalPrice_normalised) };
   }
   return null;
 });
@@ -87,16 +88,10 @@ const isRing = computed(
 );
 const sizes = computed(() => product.value?.sizes || []);
 const categoryLabel = computed(() => {
-  const map = {
-    rings: "แหวน",
-    charms: "ชาร์ม",
-    charm: "ชาร์ม",
-    bracelets: "กำไล",
-    necklaces: "สร้อยคอ",
-    earrings: "ต่างหู",
-    "charms-and-bracelets": "ชาร์มและกำไล",
-  };
-  return map[categoryId.value] ?? categoryId.value;
+  const id = categoryId.value;
+  const key = id === "bracelets" ? "cat.braceletsShort" : `cat.${id}`;
+  const label = t(key);
+  return label === key ? id : label;
 });
 
 // ---- cart ---------------------------------------------------------------
@@ -112,11 +107,11 @@ const inCart = computed(() =>
   cartStore.state.items.some((i) => (i.key ?? i.id) === lineKey.value),
 );
 const ctaLabel = computed(() => {
-  if (inCart.value) return "อยู่ในตะกร้าแล้ว";
-  if (needsSize.value && !selectedSize.value) return "เลือกไซส์ก่อน";
+  if (inCart.value) return t("modal.alreadyInCart");
+  if (needsSize.value && !selectedSize.value) return t("modal.chooseSizeFirst");
   return selectedSize.value
-    ? `ใส่ตะกร้า · ไซส์ ${selectedSize.value}`
-    : "ใส่ตะกร้า";
+    ? t("modal.addToCartSize", { size: selectedSize.value })
+    : t("card.addToCart");
 });
 const ctaDisabled = computed(
   () => needsSize.value && !selectedSize.value && !inCart.value,
@@ -127,12 +122,12 @@ const onCta = async () => {
   if (inCart.value) {
     const key = lineKey.value;
     const ok = await confirm({
-      title: "ลบสินค้าออกจากตะกร้า?",
+      title: t("confirm.removeCartTitle"),
       message: product.value?.name
-        ? `ต้องการลบ "${product.value.name}" ออกจากตะกร้าใช่ไหม`
+        ? t("confirm.removeCartMessage", { name: product.value.name })
         : "",
-      confirmLabel: "ลบออก",
-      cancelLabel: "ยกเลิก",
+      confirmLabel: t("common.remove"),
+      cancelLabel: t("common.cancel"),
     });
     if (ok) cartStore.dispatch("removeFromCart", key);
     return;
@@ -151,10 +146,10 @@ const onWish = async () => {
   const p = product.value;
   if (active.value) {
     const ok = await confirm({
-      title: "ลบออกจากรายการโปรด?",
-      message: p?.name ? `ต้องการลบ "${p.name}" ออกจากรายการโปรดใช่ไหม` : "",
-      confirmLabel: "ลบออก",
-      cancelLabel: "ยกเลิก",
+      title: t("confirm.removeWishTitle"),
+      message: p?.name ? t("confirm.removeWishMessage", { name: p.name }) : "",
+      confirmLabel: t("common.remove"),
+      cancelLabel: t("common.cancel"),
     });
     if (!ok) return;
   }
@@ -256,7 +251,7 @@ onBeforeUnmount(() => {
           <button
             ref="closeBtn"
             type="button"
-            aria-label="ปิด"
+            :aria-label="t('modal.close')"
             class="absolute top-4 right-4 z-40 h-10 w-10 rounded-full bg-white/90 dark:bg-midnight text-navy dark:text-[#EEF2F8] border border-gold-line dark:border-midnight-line flex items-center justify-center hover:bg-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-royal dark:focus-visible:outline-[#D8B868]"
             @click="close"
           >
@@ -274,7 +269,7 @@ onBeforeUnmount(() => {
               v-if="images.length > 1"
               class="hidden md:flex flex-col gap-3 overflow-y-auto pr-1"
               role="group"
-              aria-label="รูปสินค้า"
+              :aria-label="t('modal.photosAria')"
             >
               <button
                 v-for="(src, i) in images"
@@ -286,7 +281,7 @@ onBeforeUnmount(() => {
                     ? 'border-gold dark:border-[#D8B868]'
                     : 'border-gold-line dark:border-midnight-line'
                 "
-                :aria-label="`รูปที่ ${i + 1}`"
+                :aria-label="t('modal.photoN', { n: i + 1 })"
                 :aria-current="i === activeIndex"
                 @click="
                   activeIndex = i;
@@ -324,7 +319,7 @@ onBeforeUnmount(() => {
                   <template v-if="images.length > 1">
                     <button
                       type="button"
-                      aria-label="รูปก่อนหน้า"
+                      :aria-label="t('modal.prevPhoto')"
                       class="hidden md:flex absolute left-3 top-1/2 -translate-y-1/2 z-10 h-11 w-11 rounded-full bg-white text-navy shadow items-center justify-center focus-visible:outline focus-visible:outline-2 focus-visible:outline-royal"
                       @click="go(-1)"
                     >
@@ -332,7 +327,7 @@ onBeforeUnmount(() => {
                     </button>
                     <button
                       type="button"
-                      aria-label="รูปถัดไป"
+                      :aria-label="t('modal.nextPhoto')"
                       class="hidden md:flex absolute right-3 top-1/2 -translate-y-1/2 z-10 h-11 w-11 rounded-full bg-white text-navy shadow items-center justify-center focus-visible:outline focus-visible:outline-2 focus-visible:outline-royal"
                       @click="go(1)"
                     >
@@ -382,17 +377,17 @@ onBeforeUnmount(() => {
                 class="mt-3 inline-flex items-center gap-1.5 rounded-full bg-gold-soft dark:bg-midnight px-3 py-1 text-sm font-medium text-[#6E5418] dark:text-[#D8B868]"
               >
                 <svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><path d="M6 0l1.7 4.2L12 4.6 8.7 7.5 9.7 12 6 9.6 2.3 12l1-4.5L0 4.6l4.3-.4z" fill="#C5A253" /></svg>
-                ประหยัด {{ fmt(saving) }}
+                {{ t("modal.save", { amount: fmt(saving) }) }}
               </p>
 
               <fieldset v-if="isRing && sizes.length" class="mt-6 border-0 p-0 m-0">
                 <div class="flex items-baseline justify-between gap-3 mb-3">
                   <legend class="text-sm font-semibold p-0">
-                    เลือกไซส์ (EU) ·
-                    {{ selectedSize ? `ไซส์ ${selectedSize}` : "ยังไม่ได้เลือก" }}
+                    {{ t("modal.chooseSizeEu") }}
+                    {{ selectedSize ? t("common.size", { size: selectedSize }) : t("modal.notSelected") }}
                   </legend>
                   <a href="#" class="text-sm text-royal dark:text-[#D8B868] underline underline-offset-2">
-                    วิธีวัดไซส์แหวน
+                    {{ t("modal.ringGuide") }}
                   </a>
                 </div>
                 <div class="grid grid-cols-7 gap-1.5">
@@ -402,7 +397,7 @@ onBeforeUnmount(() => {
                     type="button"
                     :disabled="s.available === false"
                     :aria-pressed="selectedSize === s.value"
-                    :aria-label="s.available === false ? `ไซส์ ${s.value} หมด` : `ไซส์ ${s.value}`"
+                    :aria-label="s.available === false ? t('modal.sizeSoldOut', { size: s.value }) : t('common.size', { size: s.value })"
                     class="h-[50px] min-w-0 rounded-xl border text-sm font-medium focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-royal dark:focus-visible:outline-[#D8B868]"
                     :class="
                       s.available === false
@@ -417,17 +412,17 @@ onBeforeUnmount(() => {
                   </button>
                 </div>
                 <div class="mt-3 flex gap-4 text-xs text-muted dark:text-[#9AA8C2]">
-                  <span class="inline-flex items-center gap-1.5"><i class="h-3 w-3 rounded border border-sky bg-white" />มีของ</span>
-                  <span class="inline-flex items-center gap-1.5"><i class="h-3 w-3 rounded bg-[#F2F2EF]" />หมด</span>
+                  <span class="inline-flex items-center gap-1.5"><i class="h-3 w-3 rounded border border-sky bg-white" />{{ t("modal.available") }}</span>
+                  <span class="inline-flex items-center gap-1.5"><i class="h-3 w-3 rounded bg-[#F2F2EF]" />{{ t("modal.soldOut") }}</span>
                 </div>
               </fieldset>
 
               <ul
                 class="mt-6 rounded-2xl bg-mist dark:bg-midnight p-4 text-sm leading-relaxed space-y-1 list-disc list-inside"
               >
-                <li>ราคารวมกล่องและถุงแล้ว</li>
-                <li>ราคาอาจเปลี่ยนแปลงตามโปรช่วงนั้น</li>
-                <li>ต้องการใบเสร็จ ทักสอบถามได้นะคะ</li>
+                <li>{{ t("modal.note1") }}</li>
+                <li>{{ t("modal.note2") }}</li>
+                <li>{{ t("modal.note3") }}</li>
               </ul>
             </div>
 
@@ -455,7 +450,7 @@ onBeforeUnmount(() => {
                   type="button"
                   class="h-14 w-14 shrink-0 rounded-full border border-gold-line dark:border-midnight-line flex items-center justify-center focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-royal"
                   :aria-pressed="active"
-                  :aria-label="active ? 'เอาออกจากรายการโปรด' : 'เพิ่มในรายการโปรด'"
+                  :aria-label="active ? t('modal.removeWish') : t('modal.addWish')"
                   @click="onWish"
                 >
                   <UIcon
@@ -472,7 +467,7 @@ onBeforeUnmount(() => {
                 rel="noopener noreferrer"
                 class="mt-2 block text-center text-sm text-royal dark:text-[#D8B868] underline underline-offset-2"
               >
-                ดูบนเว็บ Pandora
+                {{ t("modal.viewPandora") }}
               </a>
             </div>
           </div>

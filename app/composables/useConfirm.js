@@ -2,17 +2,20 @@
 // confirm({ title, message, confirmLabel, cancelLabel }) -> Promise<boolean>
 let resolver = null;
 
-const DEFAULTS = {
-  title: "",
-  message: "",
-  confirmLabel: "ลบออก",
-  cancelLabel: "ยกเลิก",
-};
-
 export const useConfirm = () => {
+  const { t } = useLocale();
+
+  // Labels default to the current locale at the time confirm() is called.
+  const defaults = () => ({
+    title: "",
+    message: "",
+    confirmLabel: t("common.remove"),
+    cancelLabel: t("common.cancel"),
+  });
+
   const state = useState("confirm-dialog", () => ({
     open: false,
-    ...DEFAULTS,
+    ...defaults(),
   }));
 
   const settle = (result) => {
@@ -27,7 +30,7 @@ export const useConfirm = () => {
   const confirm = (options = {}) => {
     // A new request cancels any pending one.
     if (resolver) settle(false);
-    state.value = { ...DEFAULTS, ...options, open: true };
+    state.value = { ...defaults(), ...options, open: true };
     return new Promise((resolve) => {
       resolver = resolve;
     });

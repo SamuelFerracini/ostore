@@ -14,9 +14,11 @@ const promotionsPaused = computed(() =>
   readPromotionsPaused(runtimeConfig.public.promotionsPaused),
 );
 
+const { t, locale } = useLocale();
+
 useHead({
   htmlAttrs: {
-    lang: "th",
+    lang: locale,
   },
   title: siteName,
   meta: [
@@ -71,7 +73,7 @@ onBeforeUnmount(() => {
         v-if="showScrollToTop"
         @click="scrollToTop"
         class="fixed bottom-24 lg:bottom-24 right-4 lg:right-6 z-50 flex items-center justify-center w-12 h-12 rounded-full bg-white dark:bg-midnight-surface border border-gold-line dark:border-midnight-line shadow-[0_6px_18px_rgba(29,43,69,0.14)] hover:border-gold transition-all active:scale-95"
-        aria-label="กลับขึ้นด้านบน"
+        :aria-label="t('scroll.top')"
       >
         <UIcon
           name="i-iconamoon-arrow-up-2-bold"

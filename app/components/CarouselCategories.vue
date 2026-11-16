@@ -3,6 +3,8 @@ import websiteStore from "~~/stores/website";
 
 const router = useRouter();
 const route = useRoute();
+const { t } = useLocale();
+const { categoryPills } = useCategoryLabels();
 
 const cardsSlider = ref(null);
 const showPrev = ref(false);
@@ -17,12 +19,12 @@ const setCategory = (category) => {
   }
 };
 
-// Thai pills, limited to the categories the selected shop has.
+// Localised pills, limited to the categories the selected shop has.
 const pills = computed(() => {
   const ids = (websiteStore.getters.selectedShop.categories || []).map(
     (c) => c.id
   );
-  return CATEGORY_PILLS.filter((pill) => !pill.id || ids.includes(pill.id));
+  return categoryPills.value.filter((pill) => !pill.id || ids.includes(pill.id));
 });
 
 const isActive = (id) => (route.query.category || "") === id;
@@ -71,7 +73,7 @@ onBeforeUnmount(() => {
         ref="cardsSlider"
         class="cards-slider"
         role="group"
-        aria-label="หมวดหมู่สินค้า"
+        :aria-label="t('cat.categories')"
         @scroll="updateButtonVisibility"
       >
         <button

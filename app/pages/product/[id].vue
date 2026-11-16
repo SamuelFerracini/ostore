@@ -2,6 +2,7 @@
 import { Swiper, SwiperSlide } from 'swiper/vue';
 import { Navigation, Pagination, Thumbs } from 'swiper/modules';
 const { isOpenImageSliderModal } = useComponents();
+const { t } = useLocale();
 
 import 'swiper/css';
 import 'swiper/css/navigation';
@@ -106,11 +107,11 @@ const { handleAddToCart, addToCartButtonStatus } = useCart();
             <div class="flex justify-between flex-row items-baseline">
               <div class="flex flex-row items-baseline">
                 <p class="text-xl font-semibold text-royal dark:text-night-price" v-html="product.salePrice"></p>
-                <p class="text-sm ml-2 text-muted dark:text-night-muted">รวม VAT แล้ว</p>
+                <p class="text-sm ml-2 text-muted dark:text-night-muted">{{ t("product.vat") }}</p>
               </div>
             </div>
             <div class="flex-wrap items-baseline flex-row flex">
-              <p class="text-sm text-muted dark:text-night-muted">ราคาปกติ:</p>
+              <p class="text-sm text-muted dark:text-night-muted">{{ t("product.regular") }}</p>
               <p class="text-sm ml-1 line-through text-muted dark:text-night-muted" v-html="product.regularPrice"></p>
               <p class="text-sm ml-1 font-semibold text-gold-text dark:text-night-gold">{{ calculateDiscountPercentage }}%</p>
             </div>
@@ -135,7 +136,7 @@ const { handleAddToCart, addToCartButtonStatus } = useCart();
 
           <div class="pb-4 px-3 lg:px-0 border-b border-gold-line dark:border-midnight-line">
             <div class="text-sm font-semibold leading-5 text-muted dark:text-night-muted flex gap-1">
-              ไซส์:
+              {{ t("product.sizeLabel") }}
               <div class="uppercase">{{ selectedVariation.attributes.nodes.map(attr => attr.value).toString() }}</div>
             </div>
             <div class="flex gap-2 mt-2 mb-4 flex-wrap">
@@ -145,7 +146,7 @@ const { handleAddToCart, addToCartButtonStatus } = useCart();
                 :key="variation.databaseId"
                 :class="[variation.stockStatus === 'OUT_OF_STOCK' ? 'disabled' : '', selectedVariation.databaseId === variation.databaseId ? 'selected-varitaion' : '']">
                 <input type="radio" class="hidden" name="variation" :value="variation" :disabled="variation.stockStatus === 'OUT_OF_STOCK'" v-model="selectedVariation" />
-                <span class="font-semibold uppercase" :title="`ไซส์: ${variation.attributes.nodes.map(attr => attr.value).toString()}`">
+                <span class="font-semibold uppercase" :title="t('order.size', { size: variation.attributes.nodes.map(attr => attr.value).toString() })">
                   {{ variation.attributes.nodes.map(attr => attr.value).toString() }}
                 </span>
               </label>
@@ -157,23 +158,23 @@ const { handleAddToCart, addToCartButtonStatus } = useCart();
                 :disabled="addToCartButtonStatus !== 'add'"
                 class="button-bezel w-full h-[46px] rounded-full relative font-semibold text-navy text-[15px] flex justify-center items-center">
                 <Transition name="slide-up">
-                  <div v-if="addToCartButtonStatus === 'add'" class="absolute">ใส่ตะกร้า</div>
+                  <div v-if="addToCartButtonStatus === 'add'" class="absolute">{{ t("product.addToCart") }}</div>
                   <UIcon v-else-if="addToCartButtonStatus === 'loading'" class="absolute" name="i-svg-spinners-90-ring-with-bg" size="22" />
-                  <div v-else-if="addToCartButtonStatus === 'added'" class="absolute">ใส่ตะกร้าแล้ว</div>
+                  <div v-else-if="addToCartButtonStatus === 'added'" class="absolute">{{ t("product.added") }}</div>
                 </Transition>
               </button>
               <div class="ml-3"><ButtonWishlist :product="product" /></div>
             </div>
           </div>
           <div class="px-3 lg:px-0">
-            <div class="font-display-th text-lg mb-2 font-semibold">ข้อมูลสินค้า</div>
+            <div class="font-display-th text-lg mb-2 font-semibold">{{ t("product.info") }}</div>
             <div class="description leading-7 text-sm">
               <ul>
                 <li>
                   Free returns within 15 days. Click for detailed
                   <a class="underline" href="#">information</a>
                 </li>
-                <li>รหัสสินค้า: {{ product.sku }}</li>
+                <li>{{ t("product.sku", { sku: product.sku }) }}</li>
                 <div v-html="product.description"></div>
               </ul>
             </div>
@@ -182,7 +183,7 @@ const { handleAddToCart, addToCartButtonStatus } = useCart();
       </div>
     </div>
   </div>
-  <h2 class="font-display-th text-xl lg:text-2xl lg:text-center font-semibold mt-8 pt-4 px-3 border-t border-gold-line dark:border-midnight-line lg:border-none">สินค้าที่คล้ายกัน</h2>
+  <h2 class="font-display-th text-xl lg:text-2xl lg:text-center font-semibold mt-8 pt-4 px-3 border-t border-gold-line dark:border-midnight-line lg:border-none">{{ t("product.similar") }}</h2>
   <div class="grid grid-cols-2 sm:grid-cols-[repeat(auto-fill,minmax(250px,1fr))] gap-x-3 gap-y-7 sm:gap-x-6 sm:gap-y-10 px-4 lg:px-8 mt-4 lg:mt-6">
     <ProductCard :products="product.related?.nodes" />
     <ProductsSkeleton v-if="!product.name" />

@@ -2,6 +2,7 @@
 import cartStore from "~~/stores/cart";
 
 const { order } = useCheckout();
+const { t } = useLocale();
 
 const items = computed(() => cartStore.getters.cartItems);
 const cartCount = computed(() => cartStore.getters.cartCount);
@@ -14,10 +15,12 @@ const { confirm } = useConfirm();
 
 const removeFromCart = async (item) => {
   const ok = await confirm({
-    title: "ลบสินค้าออกจากตะกร้า?",
-    message: item.name ? `ต้องการลบ "${item.name}" ออกจากตะกร้าใช่ไหม` : "",
-    confirmLabel: "ลบออก",
-    cancelLabel: "ยกเลิก",
+    title: t("confirm.removeCartTitle"),
+    message: item.name
+      ? t("confirm.removeCartMessage", { name: item.name })
+      : "",
+    confirmLabel: t("common.remove"),
+    cancelLabel: t("common.cancel"),
   });
   if (ok) cartStore.dispatch("removeFromCart", itemKey(item));
 };
@@ -35,8 +38,8 @@ const removeFromCart = async (item) => {
       >
         <div class="h-1 bg-gold dark:bg-[#D8B868] shrink-0"></div>
         <div class="px-5 pt-4 pb-1 flex items-baseline justify-between shrink-0">
-          <div class="font-display-th text-lg font-semibold">ตะกร้าของฉัน</div>
-          <div class="text-sm text-muted dark:text-[#B7C3D9]">{{ fmt(cartCount) }} ชิ้น</div>
+          <div class="font-display-th text-lg font-semibold">{{ t("cart.title") }}</div>
+          <div class="text-sm text-muted dark:text-[#B7C3D9]">{{ t("common.items", { n: cartCount }) }}</div>
         </div>
 
         <div class="overflow-auto px-3 pb-2">
@@ -69,10 +72,10 @@ const removeFromCart = async (item) => {
                   <span
                     v-if="item.size"
                     class="px-2 rounded-full bg-mist dark:bg-midnight-line text-royal dark:text-[#EEF2F8] text-xs font-medium"
-                    >ไซส์ {{ item.size }}</span
+                    >{{ t("common.size", { size: item.size }) }}</span
                   >
                   <span class="text-royal dark:text-[#D8B868] font-semibold">
-                    {{ fmt(item.price_normalised) }} ฿
+                    {{ fmt(item.price_normalised) }} &#3647;
                   </span>
                   <span class="text-muted dark:text-[#B7C3D9]">× {{ item.quantity }}</span>
                 </div>
@@ -80,7 +83,7 @@ const removeFromCart = async (item) => {
               <button
                 type="button"
                 class="w-11 h-11 shrink-0 flex items-center justify-center rounded-full text-muted dark:text-[#B7C3D9] hover:bg-mist dark:hover:bg-midnight-line transition focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-periwinkle"
-                :aria-label="`ลบ ${item.name} ออกจากตะกร้า`"
+                :aria-label="t('cart.removeAria', { name: item.name })"
                 @click="removeFromCart(item)"
               >
                 <UIcon name="i-iconamoon-trash-bold" size="20" />
@@ -91,16 +94,16 @@ const removeFromCart = async (item) => {
 
         <div class="px-5 pt-3 pb-5 shrink-0 border-t border-gold-line dark:border-midnight-line">
           <div class="flex items-baseline justify-between mb-3">
-            <span class="font-semibold">ยอดรวม</span>
+            <span class="font-semibold">{{ t("common.total") }}</span>
             <span class="text-[22px] font-semibold text-royal dark:text-[#D8B868]">
-              {{ fmt(cartTotal) }} ฿
+              {{ fmt(cartTotal) }} &#3647;
             </span>
           </div>
           <NuxtLink
             to="/cart"
             class="w-full h-[48px] rounded-full bg-gold dark:bg-[#D8B868] text-navy font-semibold flex items-center justify-center transition hover:brightness-105 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-periwinkle"
           >
-            ดูตะกร้า
+            {{ t("cart.view") }}
           </NuxtLink>
         </div>
       </div>

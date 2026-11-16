@@ -1,5 +1,6 @@
 <script setup>
 const { order } = useCheckout();
+const { t } = useLocale();
 </script>
 
 <template>
@@ -11,24 +12,24 @@ const { order } = useCheckout();
           <path d="M12 2l2.2 7.8L22 12l-7.8 2.2L12 22l-2.2-7.8L2 12l7.8-2.2z" />
         </svg>
       </div>
-      <div class="font-display-th text-lg font-semibold">ชำระเงินสำเร็จ</div>
-      <div class="text-sm text-muted dark:text-[#B7C3D9]">ขอบคุณที่สั่งซื้อกับเรานะคะ</div>
+      <div class="font-display-th text-lg font-semibold">{{ t("pay.success") }}</div>
+      <div class="text-sm text-muted dark:text-[#B7C3D9]">{{ t("pay.thanks") }}</div>
     </div>
     <div class="bg-white dark:bg-midnight-surface border border-gold-line dark:border-midnight-line rounded-2xl p-5 m-5 gap-2 flex flex-col text-sm">
       <div class="flex justify-between items-center">
-        <span class="text-muted dark:text-[#B7C3D9]">ยอดชำระ:</span>
+        <span class="text-muted dark:text-[#B7C3D9]">{{ t("pay.amount") }}</span>
         <span class="font-semibold text-lg text-royal dark:text-[#D8B868]">{{ order.total }}</span>
       </div>
       <div class="flex justify-between items-center">
-        <span class="text-muted dark:text-[#B7C3D9]">หมายเลขคำสั่งซื้อ:</span>
+        <span class="text-muted dark:text-[#B7C3D9]">{{ t("pay.orderNumber") }}</span>
         <span class="font-semibold">#{{ order.orderNumber }}</span>
       </div>
       <div class="flex justify-between items-center">
-        <span class="text-muted dark:text-[#B7C3D9]">วันที่:</span>
+        <span class="text-muted dark:text-[#B7C3D9]">{{ t("pay.date") }}</span>
         <span class="font-semibold">{{ useDateFormat(order.date, 'DD/MM/YYYY') }}</span>
       </div>
       <div class="flex justify-between items-center">
-        <span class="text-muted dark:text-[#B7C3D9]">วิธีชำระเงิน:</span>
+        <span class="text-muted dark:text-[#B7C3D9]">{{ t("pay.method") }}</span>
         <span class="font-semibold">{{ order.paymentMethodTitle }}</span>
       </div>
     </div>

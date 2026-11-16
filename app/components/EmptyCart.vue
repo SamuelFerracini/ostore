@@ -3,11 +3,13 @@ defineProps({
   compact: { type: Boolean, default: false },
 });
 
-const categories = [
-  { label: "แหวน", to: "/products?q=ring" },
-  { label: "ชาร์ม", to: "/products?q=charm" },
-  { label: "ลดราคา", to: "/products?category=all-sale" },
-];
+const { t } = useLocale();
+
+const categories = computed(() => [
+  { label: t("empty.rings"), to: "/products?q=ring" },
+  { label: t("empty.charms"), to: "/products?q=charm" },
+  { label: t("empty.sale"), to: "/products?category=all-sale" },
+]);
 </script>
 
 <template>
@@ -55,16 +57,16 @@ const categories = [
     <p
       class="mt-6 font-display-th text-2xl font-semibold text-navy dark:text-night-text"
     >
-      ตะกร้ายังว่างอยู่
+      {{ t("empty.cartTitle") }}
     </p>
     <p class="mt-2 text-[15px] text-muted dark:text-night-muted">
-      มาหาชิ้นที่ใช่กันเถอะ
+      {{ t("empty.cartSub") }}
     </p>
     <NuxtLink
       to="/products"
       class="mt-6 inline-flex min-h-[46px] items-center rounded-full bg-gold px-6 text-[15px] font-semibold text-navy hover:bg-gold-light transition"
     >
-      เลือกซื้อสินค้า
+      {{ t("common.shopNow") }}
     </NuxtLink>
   </div>
 
@@ -123,18 +125,18 @@ const categories = [
         compact ? 'text-xl' : 'text-[28px]',
       ]"
     >
-      ตะกร้ายังว่างอยู่
+      {{ t("empty.cartTitle") }}
     </h2>
     <p class="text-muted dark:text-[#B7C3D9] leading-relaxed mb-6">
-      ยังมีเวลาก่อนเที่ยงคืน<br />
-      มาหาชิ้นที่ใช่กันเถอะ
+      {{ t("empty.cartSubLong") }}<br />
+      {{ t("empty.cartSub") }}
     </p>
 
     <NuxtLink
       to="/products"
       class="inline-flex items-center justify-center min-h-[48px] px-8 rounded-full bg-gold dark:bg-[#D8B868] text-navy font-semibold transition hover:brightness-105 active:scale-95 focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-periwinkle"
     >
-      เลือกซื้อสินค้า
+      {{ t("common.shopNow") }}
     </NuxtLink>
 
     <div class="flex flex-wrap justify-center gap-2 mt-6">

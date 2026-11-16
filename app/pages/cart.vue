@@ -1,6 +1,8 @@
 <script setup>
 import cartStore from "~~/stores/cart";
 
+const { t, tIn } = useLocale();
+
 const FB_URL = "https://www.facebook.com/share/1AmvwsRi18/?mibextid=wwXIfr";
 
 const cartItems = computed(() => {
@@ -23,11 +25,11 @@ const referencePrice = (item) => {
   const price = Number(item.price_normalised);
   const market = Number(item.market_thb);
   if (item.market_thb && market > price) {
-    return { label: "ช็อปไทย", value: market };
+    return { label: t("common.thaiShopPrice"), value: market };
   }
   const original = Number(item.originalPrice_normalised);
   if (item.originalPrice_normalised && original > price) {
-    return { label: "ปกติ", value: original };
+    return { label: t("common.regularPrice"), value: original };
   }
   return null;
 };
@@ -50,10 +52,12 @@ const { confirm } = useConfirm();
 
 const removeFromCart = async (item) => {
   const ok = await confirm({
-    title: "ลบสินค้าออกจากตะกร้า?",
-    message: item.name ? `ต้องการลบ "${item.name}" ออกจากตะกร้าใช่ไหม` : "",
-    confirmLabel: "ลบออก",
-    cancelLabel: "ยกเลิก",
+    title: t("confirm.removeCartTitle"),
+    message: item.name
+      ? t("confirm.removeCartMessage", { name: item.name })
+      : "",
+    confirmLabel: t("common.remove"),
+    cancelLabel: t("common.cancel"),
   });
   if (ok) cartStore.dispatch("removeFromCart", itemKey(item));
 };
@@ -66,24 +70,26 @@ const clearCart = () => {
 const copyToClipboard = async () => {
   const baseUrl = window.location.origin;
   let text = "";
+  // The list is pasted to the Thai-speaking seller, so it is always Thai.
+  const ot = (key, params) => tIn("th", key, params);
 
   cartItems.value.forEach((item, index) => {
     text += `${index + 1}. ${item.name}\n`;
     if (item.size) {
-      text += `   ไซส์: ${item.size}\n`;
+      text += `   ${ot("order.size", { size: item.size })}\n`;
     }
-    text += `   ราคา: ${fmt(item.price_normalised)} บาท`;
-    text += `   จำนวน: ${item.quantity}\n`;
-    text += `   รวม: ${fmt(Number(item.price_normalised) * item.quantity)} บาท\n`;
+    text += `   ${ot("order.price", { amount: fmt(item.price_normalised) })}`;
+    text += `   ${ot("order.qty", { n: item.quantity })}\n`;
+    text += `   ${ot("order.line", { amount: fmt(Number(item.price_normalised) * item.quantity) })}\n`;
     if (item.category) {
-      text += `   หมวดหมู่: ${getCategoryName(item.category)}\n`;
+      text += `   ${ot("order.category", { name: getCategoryName(item.category) })}\n`;
     }
-    text += `   ลิงก์: ${baseUrl}/products?q=${encodeURIComponent(item.name)}\n`;
+    text += `   ${ot("order.link", { url: `${baseUrl}/products?q=${encodeURIComponent(item.name)}` })}\n`;
     text += `\n`;
   });
 
-  text += `จำนวนทั้งหมด: ${cartCount.value} ชิ้น\n`;
-  text += `ยอดรวม: ${fmt(cartTotal.value)} บาท\n`;
+  text += `${ot("order.count", { count: ot("common.items", { n: cartCount.value }) })}\n`;
+  text += `${ot("order.total", { amount: fmt(cartTotal.value) })}\n`;
 
   try {
     await navigator.clipboard.writeText(text);
@@ -112,10 +118,10 @@ const focusRing =
       <h1
         class="font-display-th text-[26px] lg:text-[34px] font-semibold leading-tight text-navy dark:text-night-text"
       >
-        ตะกร้าของฉัน
+        {{ t("cart.title") }}
       </h1>
       <p v-if="cartItems.length" class="mt-1 text-[15px] text-muted dark:text-night-muted">
-        {{ fmt(cartCount) }} ชิ้น
+        {{ t("common.items", { n: cartCount }) }}
       </p>
     </div>
 
@@ -152,7 +158,7 @@ const focusRing =
                   {{ item.name }}
                 </h3>
                 <div class="text-[18px] font-semibold text-royal dark:text-night-gold whitespace-nowrap text-right">
-                  {{ fmt(Number(item.price_normalised) * item.quantity) }} ฿
+                  {{ fmt(Number(item.price_normalised) * item.quantity) }} &#3647;
                 </div>
               </div>
 
@@ -161,12 +167,12 @@ const focusRing =
                   v-if="item.size"
                   class="px-2.5 py-0.5 rounded-full bg-mist dark:bg-midnight-line text-royal dark:text-night-text font-medium"
                 >
-                  ไซส์ {{ item.size }}
+                  {{ t("common.size", { size: item.size }) }}
                 </span>
-                <span>{{ fmt(item.price_normalised) }} ฿ / ชิ้น</span>
+                <span>{{ fmt(item.price_normalised) }} {{ t("cart.perPiece") }}</span>
                 <span v-if="referencePrice(item)">
                   {{ referencePrice(item).label }}
-                  <s>{{ fmt(referencePrice(item).value) }} ฿</s>
+                  <s>{{ fmt(referencePrice(item).value) }} &#3647;</s>
                 </span>
               </div>
 
@@ -174,7 +180,7 @@ const focusRing =
                 <div
                   class="inline-flex items-center rounded-full border border-sky dark:border-midnight-line overflow-hidden"
                   role="group"
-                  :aria-label="`จำนวน ${item.name}`"
+                  :aria-label="t('cart.qtyAria', { name: item.name })"
                 >
                   <button
                     type="button"
@@ -182,7 +188,7 @@ const focusRing =
                       'w-11 h-10 flex items-center justify-center text-royal dark:text-night-text hover:bg-mist dark:hover:bg-midnight-line disabled:opacity-40 disabled:hover:bg-transparent transition',
                       focusRing,
                     ]"
-                    aria-label="ลดจำนวน"
+                    :aria-label="t('cart.decrease')"
                     :disabled="item.quantity <= 1"
                     @click="updateQuantity(itemKey(item), item.quantity - 1)"
                   >
@@ -199,7 +205,7 @@ const focusRing =
                       'w-11 h-10 flex items-center justify-center text-royal dark:text-night-text hover:bg-mist dark:hover:bg-midnight-line transition',
                       focusRing,
                     ]"
-                    aria-label="เพิ่มจำนวน"
+                    :aria-label="t('cart.increase')"
                     @click="updateQuantity(itemKey(item), item.quantity + 1)"
                   >
                     <UIcon name="i-iconamoon-sign-plus-bold" size="18" />
@@ -212,11 +218,11 @@ const focusRing =
                     'inline-flex items-center gap-1.5 min-h-[44px] px-3 rounded-full text-sm text-muted dark:text-night-muted hover:text-navy dark:hover:text-white transition',
                     focusRing,
                   ]"
-                  :aria-label="`ลบ ${item.name} ออกจากตะกร้า`"
+                  :aria-label="t('cart.removeAria', { name: item.name })"
                   @click="removeFromCart(item)"
                 >
                   <UIcon name="i-iconamoon-trash-bold" size="18" />
-                  ลบ
+                  {{ t("cart.removeShort") }}
                 </button>
               </div>
             </div>
@@ -230,21 +236,21 @@ const focusRing =
         >
           <div class="h-1 bg-gold dark:bg-night-gold"></div>
           <div class="p-6">
-            <h2 class="font-display-th text-xl font-semibold mb-4">สรุปคำสั่งซื้อ</h2>
+            <h2 class="font-display-th text-xl font-semibold mb-4">{{ t("cart.summary") }}</h2>
 
             <dl class="m-0 space-y-2">
               <div class="flex justify-between gap-3">
-                <dt class="text-muted dark:text-night-muted">ราคาสินค้า ({{ fmt(cartCount) }} ชิ้น)</dt>
-                <dd class="m-0">{{ fmt(cartTotal) }} ฿</dd>
+                <dt class="text-muted dark:text-night-muted">{{ t("cart.itemsPrice", { count: t("common.items", { n: cartCount }) }) }}</dt>
+                <dd class="m-0">{{ fmt(cartTotal) }} &#3647;</dd>
               </div>
               <div class="flex justify-between gap-3">
-                <dt class="text-muted dark:text-night-muted">กล่องและถุง</dt>
-                <dd class="m-0">รวมแล้ว</dd>
+                <dt class="text-muted dark:text-night-muted">{{ t("cart.boxBag") }}</dt>
+                <dd class="m-0">{{ t("cart.included") }}</dd>
               </div>
               <div class="flex justify-between items-baseline gap-3 pt-3 border-t border-gold-line dark:border-midnight-line">
-                <dt class="font-semibold">ยอดรวม</dt>
+                <dt class="font-semibold">{{ t("common.total") }}</dt>
                 <dd class="m-0 text-[26px] font-semibold text-royal dark:text-night-gold">
-                  {{ fmt(cartTotal) }} ฿
+                  {{ fmt(cartTotal) }} &#3647;
                 </dd>
               </div>
             </dl>
@@ -256,15 +262,15 @@ const focusRing =
               <svg width="14" height="14" viewBox="0 0 24 24" class="shrink-0 fill-gold dark:fill-night-gold" aria-hidden="true">
                 <path d="M12 2l2.9 6.6 7.1.6-5.4 4.7 1.6 7L12 17.3 5.8 21l1.6-7L2 9.2l7.1-.6z" />
               </svg>
-              ประหยัดไป {{ fmt(savings) }} ฿ เทียบราคาปกติ
+              {{ t("cart.saved", { amount: fmt(savings) }) }}
             </div>
 
             <ol class="list-none p-0 my-5 space-y-3">
               <li
                 v-for="(step, i) in [
-                  'คัดลอกรายการ หรือแคปหน้าจอนี้',
-                  'ทักแม่ค้าทาง Facebook แล้ววางรายการ',
-                  'แม่ค้ายืนยันยอดและวิธีชำระเงิน',
+                  t('cart.step1'),
+                  t('cart.step2'),
+                  t('cart.step3'),
                 ]"
                 :key="i"
                 class="flex items-start gap-3 text-sm"
@@ -293,11 +299,11 @@ const focusRing =
                 size="20"
               />
               <span aria-live="polite">{{
-                copied ? "คัดลอกแล้ว วางในแชทได้เลย" : "คัดลอกรายการสั่งซื้อ"
+                copied ? t("cart.copied") : t("cart.copy")
               }}</span>
             </button>
             <p v-if="copyError" role="alert" class="mt-2 text-sm text-muted dark:text-night-muted">
-              คัดลอกไม่สำเร็จ ลองแคปหน้าจอนี้ส่งให้แม่ค้าแทนนะคะ
+              {{ t("cart.copyFailed") }}
             </p>
 
             <a
@@ -312,7 +318,7 @@ const focusRing =
               <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
                 <path d="M22 12a10 10 0 1 0-11.56 9.88v-6.99H7.9V12h2.54V9.8c0-2.5 1.49-3.89 3.78-3.89 1.09 0 2.24.2 2.24.2v2.46h-1.26c-1.24 0-1.63.77-1.63 1.56V12h2.78l-.44 2.89h-2.34v6.99A10 10 0 0 0 22 12z" />
               </svg>
-              ทักแม่ค้าทาง Facebook
+              {{ t("cart.chatSeller") }}
             </a>
 
             <div class="mt-4 text-center min-h-[44px]">
@@ -325,10 +331,10 @@ const focusRing =
                 ]"
                 @click="confirmingClear = true"
               >
-                ล้างตะกร้า
+                {{ t("cart.clear") }}
               </button>
               <div v-else class="flex items-center justify-center gap-2 text-sm" role="group">
-                <span class="text-muted dark:text-night-muted">ยืนยันล้างตะกร้า?</span>
+                <span class="text-muted dark:text-night-muted">{{ t("cart.clearConfirm") }}</span>
                 <button
                   type="button"
                   :class="[
@@ -337,7 +343,7 @@ const focusRing =
                   ]"
                   @click="clearCart"
                 >
-                  ยืนยัน
+                  {{ t("common.confirm") }}
                 </button>
                 <button
                   type="button"
@@ -347,13 +353,13 @@ const focusRing =
                   ]"
                   @click="confirmingClear = false"
                 >
-                  ยกเลิก
+                  {{ t("common.cancel") }}
                 </button>
               </div>
             </div>
 
             <p class="mt-2 text-xs text-center text-muted dark:text-night-muted">
-              ราคาอาจเปลี่ยนแปลงตามโปรช่วงนั้น · ต้องการใบเสร็จทักสอบถามได้นะคะ
+              {{ t("cart.priceNote") }}
             </p>
           </div>
         </aside>

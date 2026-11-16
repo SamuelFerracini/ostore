@@ -39,13 +39,13 @@ Add a button that switches the UI between Thai and English. Thai is the default.
 
 ## Done when
 
-- [ ] Site loads in Thai by default on first visit.
+- [x] Site loads in Thai by default on first visit.
 
 - [ ] Clicking the header button switches every UI string to English and back. Choice persists across reload (cookie) and SSR renders it with no flash.
 
-- [ ] `grep -rnE '[ก-๙]' app` shows Thai only in the TH dictionary.
+- [x] `grep -rnE '[ก-๙]' app` shows Thai only in the TH dictionary.
 
-- [ ] `npm run build` passes.
+- [x] `npm run build` passes.
 
 - [ ] Checked in the browser with Claude in Chrome: home, products, product page, cart, checkout, favorites, in both languages, desktop and phone width. Dark mode still works.
 

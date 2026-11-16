@@ -1,6 +1,8 @@
 <script setup>
 const route = useRoute();
 const router = useRouter();
+const { t } = useLocale();
+const { categoryLabel } = useCategoryLabels();
 
 const resetSearch = () => {
   router.push({ query: { ...route.query, q: undefined } });
@@ -27,22 +29,22 @@ const checkAllTabs = () => {
       v-if="route.query.category && route.query.q"
       class="mt-6 font-display-th text-2xl font-semibold text-navy dark:text-night-text"
     >
-      ไม่พบ “{{ route.query.q }}” ใน{{ categoryLabelTh(route.query.category) }}
+      {{ t("empty.noneInCategory", { q: route.query.q, category: categoryLabel(route.query.category) }) }}
     </p>
     <p
       v-else-if="route.query.q"
       class="mt-6 font-display-th text-2xl font-semibold text-navy dark:text-night-text"
     >
-      ไม่พบสินค้าที่ตรงกับ “{{ route.query.q }}”
+      {{ t("empty.noneQuery", { q: route.query.q }) }}
     </p>
     <p
       v-else
       class="mt-6 font-display-th text-2xl font-semibold text-navy dark:text-night-text"
     >
-      ยังไม่มีสินค้าในหมวดนี้
+      {{ t("empty.noneCategory") }}
     </p>
     <p class="mt-2 text-[15px] text-muted dark:text-night-muted">
-      ลองค้นหาด้วยคำอื่น หรือดูสินค้าทุกหมวด
+      {{ t("empty.tryOther") }}
     </p>
     <div class="mt-6 flex flex-wrap items-center justify-center gap-2">
       <button
@@ -51,7 +53,7 @@ const checkAllTabs = () => {
         @click="resetSearch"
         class="min-h-[46px] rounded-full border border-sky bg-white px-5 text-[15px] font-medium text-navy hover:border-periwinkle transition active:scale-95 dark:border-midnight-line dark:bg-midnight-surface dark:text-night-text"
       >
-        ล้างคำค้นหา
+        {{ t("empty.clearSearch") }}
       </button>
       <button
         v-if="route.query.category"
@@ -59,7 +61,7 @@ const checkAllTabs = () => {
         @click="checkAllTabs"
         class="min-h-[46px] rounded-full bg-navy px-5 text-[15px] font-medium text-white hover:bg-royal transition active:scale-95 dark:bg-night-text dark:text-midnight"
       >
-        ดูทุกหมวด
+        {{ t("empty.allCategories") }}
       </button>
     </div>
   </div>

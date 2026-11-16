@@ -2,6 +2,8 @@
 import websiteStore from "~~/stores/website";
 
 const route = useRoute();
+const { t } = useLocale();
+const { categoryLabel } = useCategoryLabels();
 const productsData = ref([]);
 const isLoading = ref(false);
 const hasFetched = ref(false);
@@ -23,9 +25,9 @@ const variables = computed(() => ({
 }));
 
 const heading = computed(() => {
-  if (route.query.q) return `ผลการค้นหา “${route.query.q}”`;
-  if (route.query.category) return categoryLabelTh(route.query.category);
-  return "เครื่องประดับทั้งหมด";
+  if (route.query.q) return t("products.search", { q: route.query.q });
+  if (route.query.category) return categoryLabel(route.query.category);
+  return t("products.all");
 });
 
 // Count every match, not only the loaded page.
@@ -121,7 +123,7 @@ const productsEmpty = computed(
 <template>
   <section
     class="bg-mist dark:bg-midnight-surface/60 border-b border-sky/70 dark:border-midnight-line"
-    aria-label="ข้อมูลร้าน"
+    :aria-label="t('products.shopInfo')"
   >
     <ul
       class="max-lg:hidden mx-auto flex max-w-[1440px] items-center justify-center gap-x-12 px-8 py-3 text-[15px] text-navy dark:text-night-text"
@@ -131,7 +133,7 @@ const productsEmpty = computed(
           <path d="M12 3 19 6v5.2c0 4.4-3 7.9-7 9.8-4-1.9-7-5.4-7-9.8V6l7-3Z" />
           <path d="m9 12 2.2 2.2L15.5 10" />
         </svg>
-        ของแท้ ช็อปจากออสเตรเลีย
+        {{ t("products.authentic") }}
       </li>
       <li class="flex items-center gap-2.5">
         <svg class="trust-icon" viewBox="0 0 24 24" aria-hidden="true">
@@ -139,14 +141,14 @@ const productsEmpty = computed(
           <path d="M5 12v8h14v-8M12 8v12" />
           <path d="M12 8c-1-2.6-2.6-3.8-4-3.4-1.6.5-1.2 3.4 4 3.4Zm0 0c1-2.6 2.6-3.8 4-3.4 1.6.5 1.2 3.4-4 3.4Z" />
         </svg>
-        ราคารวมกล่องและถุงแล้ว
+        {{ t("products.included") }}
       </li>
       <li class="flex items-center gap-2.5">
         <svg class="trust-icon" viewBox="0 0 24 24" aria-hidden="true">
           <path d="M6 3h12v18l-2.5-1.6L13 21l-2.5-1.6L8 21l-2-1.3V3Z" />
           <path d="M9 8h6M9 11.5h6M9 15h3.5" />
         </svg>
-        ต้องการใบเสร็จ ทักสอบถามได้
+        {{ t("products.receipt") }}
       </li>
     </ul>
     <p
@@ -156,7 +158,7 @@ const productsEmpty = computed(
         <path d="M12 3 19 6v5.2c0 4.4-3 7.9-7 9.8-4-1.9-7-5.4-7-9.8V6l7-3Z" />
         <path d="m9 12 2.2 2.2L15.5 10" />
       </svg>
-      ของแท้จากออสเตรเลีย · ราคารวมกล่องและถุงแล้ว
+      {{ t("products.authenticShort") }}
     </p>
   </section>
 
@@ -174,7 +176,7 @@ const productsEmpty = computed(
           class="mt-1 text-[15px] text-muted dark:text-night-muted"
           aria-live="polite"
         >
-          <template v-if="totalCount !== null">{{ totalCount.toLocaleString("en-US") }} ชิ้น</template>
+          <template v-if="totalCount !== null">{{ t("common.items", { n: totalCount }) }}</template>
           <template v-else>&nbsp;</template>
         </p>
       </div>
