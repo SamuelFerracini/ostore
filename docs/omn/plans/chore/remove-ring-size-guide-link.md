@@ -28,7 +28,7 @@ Remove the link and its unused translation keys.
 
 ## Done when
 
-- [ ] The link is gone from the modal for ring products, in both Thai and English.
+- [x] The link is gone from the modal for ring products, in both Thai and English.
 
 - [ ] No `ringGuide` references remain.
 

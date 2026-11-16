@@ -98,7 +98,6 @@ export default {
   "modal.save": "ประหยัด {amount}",
   "modal.chooseSizeEu": "เลือกไซส์ (EU) ·",
   "modal.notSelected": "ยังไม่ได้เลือก",
-  "modal.ringGuide": "วิธีวัดไซส์แหวน",
   "modal.sizeSoldOut": "ไซส์ {size} หมด",
   "modal.available": "มีของ",
   "modal.soldOut": "หมด",

@@ -381,14 +381,11 @@ onBeforeUnmount(() => {
               </p>
 
               <fieldset v-if="isRing && sizes.length" class="mt-6 border-0 p-0 m-0">
-                <div class="flex items-baseline justify-between gap-3 mb-3">
+                <div class="flex items-baseline mb-3">
                   <legend class="text-sm font-semibold p-0">
                     {{ t("modal.chooseSizeEu") }}
                     {{ selectedSize ? t("common.size", { size: selectedSize }) : t("modal.notSelected") }}
                   </legend>
-                  <a href="#" class="text-sm text-royal dark:text-[#D8B868] underline underline-offset-2">
-                    {{ t("modal.ringGuide") }}
-                  </a>
                 </div>
                 <div class="grid grid-cols-7 gap-1.5">
                   <button
