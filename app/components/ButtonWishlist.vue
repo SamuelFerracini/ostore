@@ -4,6 +4,7 @@ const props = defineProps({
 });
 
 const emit = defineEmits(["change"]);
+const { t } = useLocale();
 
 const { isWishlisted, toggleWishlist } = useWishlist();
 const active = computed(() => isWishlisted(props.product));
@@ -13,12 +14,12 @@ const { confirm } = useConfirm();
 const toggle = async () => {
   if (active.value) {
     const ok = await confirm({
-      title: "ลบออกจากรายการโปรด?",
+      title: t("confirm.removeWishTitle"),
       message: props.product?.name
-        ? `ต้องการลบ "${props.product.name}" ออกจากรายการโปรดใช่ไหม`
+        ? t("confirm.removeWishMessage", { name: props.product.name })
         : "",
-      confirmLabel: "ลบออก",
-      cancelLabel: "ยกเลิก",
+      confirmLabel: t("common.remove"),
+      cancelLabel: t("common.cancel"),
     });
     if (!ok) return;
   }
@@ -32,7 +33,7 @@ const toggle = async () => {
     type="button"
     @click.stop.prevent="toggle"
     :aria-pressed="active"
-    :aria-label="active ? 'ลบออกจากรายการโปรด' : 'เพิ่มในรายการโปรด'"
+    :aria-label="active ? t('wish.removeAria') : t('wish.addAria')"
     class="flex h-11 w-11 items-center justify-center rounded-full bg-white shadow-[0_2px_8px_rgba(29,43,69,0.16)] border border-gold-line/70 transition hover:scale-105 active:scale-95"
   >
     <UIcon

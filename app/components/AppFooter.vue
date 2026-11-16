@@ -2,6 +2,7 @@
 import websiteStore from "~~/stores/website";
 
 const colorMode = useColorMode();
+const { t } = useLocale();
 
 const toggleDark = () => {
   colorMode.preference = colorMode.value === "dark" ? "light" : "dark";
@@ -14,7 +15,7 @@ const colorModeIcon = computed(() =>
 );
 
 const colorModeLabel = computed(() =>
-  colorMode.value === "dark" ? "เปลี่ยนเป็นโหมดสว่าง" : "เปลี่ยนเป็นโหมดมืด"
+  colorMode.value === "dark" ? t("footer.lightMode") : t("footer.darkMode")
 );
 
 const facebookUrl = "https://www.facebook.com/nonlapan.ssw";
@@ -44,7 +45,7 @@ onBeforeUnmount(() => footerObserver?.disconnect());
       :href="facebookUrl"
       target="_blank"
       rel="noopener noreferrer"
-      aria-label="ทักแชท Facebook"
+      :aria-label="t('footer.chatAria')"
       class="max-lg:hidden fixed bottom-6 right-6 z-40 inline-flex min-h-[48px] items-center gap-3 rounded-full bg-navy pl-1.5 pr-5 text-[15px] font-medium text-gold-light shadow-[0_8px_24px_rgba(29,43,69,0.28)] ring-1 ring-gold/60 transition hover:bg-navy/90 active:scale-95 dark:ring-gold/40 dark:shadow-[0_8px_24px_rgba(0,0,0,0.55)]"
     >
       <span
@@ -57,7 +58,7 @@ onBeforeUnmount(() => footerObserver?.disconnect());
           />
         </svg>
       </span>
-      ทักแชท Facebook
+      {{ t("common.chatFacebook") }}
     </a>
   </Transition>
 
@@ -78,16 +79,16 @@ onBeforeUnmount(() => footerObserver?.disconnect());
           v-if="shopId === 'pandora'"
           class="mt-4 flex flex-col gap-1 text-[15px] leading-relaxed text-white/80"
         >
-          <p>ช็อปออสเตรเลีย ราคารวมทุกอย่างพร้อมกล่องและถุง 💖</p>
+          <p>{{ t("footer.line1") }}</p>
           <p>
-            อาจเปลี่ยนแปลงตามโปรช่วงนั้นนะคะ ถ้าต้องการใบเสร็จทักสอบถามได้นะคะ 🙏🏼
+            {{ t("footer.line2") }}
           </p>
         </div>
         <div
           v-if="shopId === 'gnoce'"
           class="mt-4 text-[15px] leading-relaxed text-white/80"
         >
-          <p>สินค้าส่งตรงถึงบ้าน ไม่ต้อองจ่ายภาษีและค่าส่งเพิ่มนะคะ</p>
+          <p>{{ t("footer.line3") }}</p>
         </div>
       </div>
 
@@ -116,7 +117,7 @@ onBeforeUnmount(() => footerObserver?.disconnect());
               />
             </svg>
           </span>
-          ทักแชท Facebook
+          {{ t("common.chatFacebook") }}
         </a>
       </div>
     </div>
@@ -131,16 +132,16 @@ onBeforeUnmount(() => footerObserver?.disconnect());
       v-if="shopId === 'pandora'"
       class="flex min-w-0 flex-1 flex-col gap-0.5 text-[12px] leading-snug text-white/85"
     >
-      <p>ช็อปออสเตรเลีย ราคารวมทุกอย่างพร้อมกล่องและถุง 💖</p>
+      <p>{{ t("footer.line1") }}</p>
       <p>
-        อาจเปลี่ยนแปลงตามโปรช่วงนั้นนะคะ ถ้าต้องการใบเสร็จทักสอบถามได้นะคะ 🙏🏼
+        {{ t("footer.line2") }}
       </p>
     </div>
     <div
       v-if="shopId === 'gnoce'"
       class="flex min-w-0 flex-1 flex-col text-[12px] leading-snug text-white/85"
     >
-      <p>สินค้าส่งตรงถึงบ้าน ไม่ต้อองจ่ายภาษีและค่าส่งเพิ่มนะคะ</p>
+      <p>{{ t("footer.line3") }}</p>
     </div>
     <button
       type="button"
@@ -155,7 +156,7 @@ onBeforeUnmount(() => footerObserver?.disconnect());
       target="_blank"
       rel="noopener noreferrer"
       class="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-gold text-navy shadow-[0_0_0_3px_rgba(226,199,131,0.25)] active:scale-95 transition"
-      aria-label="ทักแชท Facebook"
+      :aria-label="t('footer.chatAria')"
     >
       <svg viewBox="0 0 24 24" class="h-6 w-6" fill="currentColor" aria-hidden="true">
         <path

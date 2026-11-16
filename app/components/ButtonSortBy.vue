@@ -1,11 +1,12 @@
 <script setup>
 const router = useRouter();
 const route = useRoute();
+const { t } = useLocale();
 
-const options = [
-  { value: "ASC", label: "ราคาน้อยไปมาก" },
-  { value: "DESC", label: "ราคามากไปน้อย" },
-];
+const options = computed(() => [
+  { value: "ASC", label: t("sort.asc") },
+  { value: "DESC", label: t("sort.desc") },
+]);
 
 const selectedSort = ref(
   route.query.orderby === "DESC" && route.query.fieldby === "PRICE"
@@ -14,7 +15,7 @@ const selectedSort = ref(
 );
 
 const selectedLabel = computed(
-  () => options.find((o) => o.value === selectedSort.value)?.label
+  () => options.value.find((o) => o.value === selectedSort.value)?.label
 );
 
 const setSort = (value) => {
@@ -40,14 +41,14 @@ onClickOutside(dropdownRef, () => (isDropdownVisible.value = false));
       @click="isDropdownVisible = !isDropdownVisible"
     >
       <UIcon name="i-iconamoon-sorting-left" size="18" aria-hidden="true" />
-      <span>เรียง: {{ selectedLabel }}</span>
+      <span>{{ t("sort.label", { label: selectedLabel }) }}</span>
       <UIcon name="i-iconamoon-arrow-down-2" size="16" aria-hidden="true" />
     </button>
     <Transition name="dropdown">
       <ul
         v-if="isDropdownVisible"
         role="listbox"
-        aria-label="เรียงตาม"
+        :aria-label="t('sort.aria')"
         class="filter-menu left-0"
       >
         <li v-for="option in options" :key="option.value">

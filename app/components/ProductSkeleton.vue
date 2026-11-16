@@ -1,3 +1,7 @@
+<script setup>
+const { t } = useLocale();
+</script>
+
 <template>
   <div class="justify-center flex flex-col lg:flex-row lg:mx-5">
     <ButtonBack />
@@ -14,7 +18,7 @@
         </div>
       </div>
       <div class="w-full max-lg:h-72 flex flex-row items-center justify-center">
-        <div class="bg-mist dark:bg-midnight-surface flex rounded-full w-12 h-12 items-center justify-center skeleton" role="status" aria-label="กำลังโหลด">
+        <div class="bg-mist dark:bg-midnight-surface flex rounded-full w-12 h-12 items-center justify-center skeleton" role="status" :aria-label="t('common.loading')">
           <UIcon class="text-royal dark:text-night-price" name="i-svg-spinners-8-dots-rotate" size="26" />
         </div>
       </div>

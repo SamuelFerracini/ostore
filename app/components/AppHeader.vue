@@ -10,6 +10,8 @@ const suggestionMenu = ref(false);
 const onClickOutsideRef = ref(null);
 const cartModal = ref(false);
 const { cart } = useCart();
+const { t, locale, toggleLocale } = useLocale();
+const { categoryLabel } = useCategoryLabels();
 
 const cartCount = computed(() => cartStore.getters.cartCount);
 const cartCountAnimating = ref(false);
@@ -86,8 +88,8 @@ const showSearch = computed(() => {
 
 const searchPlaceholder = computed(() =>
   route.query.category
-    ? `ค้นหาใน${categoryLabelTh(route.query.category)}…`
-    : "ค้นหาแหวน ชาร์ม กำไล…"
+    ? t("header.searchIn", { category: categoryLabel(route.query.category) })
+    : t("header.searchDefault")
 );
 </script>
 
@@ -100,7 +102,7 @@ const searchPlaceholder = computed(() =>
       class="mx-auto flex max-w-[1440px] flex-wrap lg:flex-nowrap items-center gap-x-3 gap-y-2 px-4 lg:px-8 py-2.5 lg:py-3"
     >
       <NuxtLink
-        aria-label="หน้าแรก Pandora with Nonlapan"
+        :aria-label="t('header.homeAria')"
         class="flex min-h-[44px] items-center gap-2.5 rounded-full pr-2 shrink-0"
         to="/"
       >
@@ -154,7 +156,7 @@ const searchPlaceholder = computed(() =>
               class="shrink-0 text-muted dark:text-night-muted"
               size="20"
             />
-            <label for="site-search" class="sr-only">ค้นหาสินค้า</label>
+            <label for="site-search" class="sr-only">{{ t("header.searchLabel") }}</label>
             <input
               id="site-search"
               class="w-full min-w-0 bg-transparent py-2 outline-none focus-visible:outline-none placeholder:text-muted placeholder:dark:text-night-muted"
@@ -168,7 +170,7 @@ const searchPlaceholder = computed(() =>
               type="button"
               @click.stop="clearSearch"
               class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-navy dark:text-night-text hover:bg-mist dark:hover:bg-midnight-surface transition"
-              aria-label="ล้างคำค้นหา"
+              :aria-label="t('header.clearSearch')"
             >
               <UIcon
                 v-if="!isLoading"
@@ -181,20 +183,29 @@ const searchPlaceholder = computed(() =>
         </div>
       </div>
 
-      <nav class="ml-auto lg:ml-0 flex items-center gap-2 shrink-0" aria-label="เมนูหลัก">
+      <nav class="ml-auto lg:ml-0 flex items-center gap-2 shrink-0" :aria-label="t('header.mainNav')">
+        <button
+          type="button"
+          class="flex h-11 min-w-[44px] items-center justify-center rounded-full border border-sky dark:border-midnight-line bg-white dark:bg-transparent px-2.5 text-sm font-semibold tracking-wide text-navy dark:text-night-text hover:border-periwinkle transition active:scale-95"
+          :aria-label="locale === 'th' ? t('lang.toEn') : t('lang.toTh')"
+          :lang="locale === 'th' ? 'en' : 'th'"
+          @click="toggleLocale"
+        >
+          {{ locale === "th" ? "EN" : "TH" }}
+        </button>
         <NuxtLink
           to="/favorites"
           class="flex h-11 min-w-[44px] items-center justify-center gap-2 rounded-full border border-sky dark:border-midnight-line bg-white dark:bg-transparent px-3 lg:px-4 text-sm font-medium text-navy dark:text-night-text hover:border-periwinkle transition active:scale-95"
-          aria-label="รายการโปรด"
+          :aria-label="t('header.favorites')"
         >
           <UIcon name="i-iconamoon-heart" size="20" />
-          <span class="max-sm:hidden">รายการโปรด</span>
+          <span class="max-sm:hidden">{{ t("header.favorites") }}</span>
         </NuxtLink>
         <NuxtLink
           to="/cart"
           class="relative flex h-11 items-center gap-2 rounded-full bg-royal pl-3.5 pr-2.5 text-sm font-medium text-white hover:bg-royal-blue-600 dark:ring-1 dark:ring-periwinkle/60 dark:hover:bg-royal-blue-400 transition active:scale-95"
           :class="cartCountAnimating ? 'cart-icon-shake' : ''"
-          :aria-label="cartCount > 0 ? `ตะกร้า ${cartCount} ชิ้น` : 'ตะกร้า'"
+          :aria-label="cartCount > 0 ? t('cart.navAria', { n: cartCount }) : t('cart.nav')"
         >
           <UIcon
             class="transition-transform duration-200"
@@ -202,7 +213,7 @@ const searchPlaceholder = computed(() =>
             name="i-iconamoon-shopping-bag-bold"
             size="20"
           />
-          <span>ตะกร้า</span>
+          <span>{{ t("cart.nav") }}</span>
           <Transition name="badge">
               <span
                 v-if="cartCount > 0"
@@ -235,7 +246,7 @@ const searchPlaceholder = computed(() =>
   <button
     v-if="cartModal"
     type="button"
-    aria-label="ปิดตะกร้า"
+    :aria-label="t('cart.close')"
     class="hover:bg-mist dark:hover:bg-midnight transition mt-3 lg:mt-4 mx-3 lg:mx-5 items-center justify-center min-w-12 min-h-12 rounded-[2rem] right-0 fixed flex z-50 bg-white dark:bg-midnight-surface border border-gold-line dark:border-midnight-line"
   >
     <UIcon

@@ -4,6 +4,7 @@ import ShopLogo from "~/components/Logos/ShopLogo.vue";
 import { useRouter } from "vue-router";
 
 const router = useRouter();
+const { t } = useLocale();
 const isRedirecting = ref(false);
 
 const shops = computed(() => {
@@ -47,7 +48,7 @@ onMounted(() => {
       />
     </div>
     <p class="mt-6 text-lg font-medium text-muted dark:text-night-muted">
-      กำลังโหลดสินค้า…
+      {{ t("home.loading") }}
     </p>
   </div>
 
@@ -56,7 +57,7 @@ onMounted(() => {
     <h1
       class="font-display-th text-[28px] lg:text-[34px] font-semibold text-navy dark:text-night-text"
     >
-      เลือกร้านค้า
+      {{ t("home.chooseShop") }}
     </h1>
     <div class="mt-10 mb-12 flex flex-wrap justify-center gap-6 lg:gap-10">
       <button
@@ -85,7 +86,7 @@ onMounted(() => {
           />
         </svg>
       </span>
-      ทักแชท Facebook
+      {{ t("common.chatFacebook") }}
     </button>
   </div>
 </template>

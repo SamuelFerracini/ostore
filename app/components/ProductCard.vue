@@ -8,6 +8,8 @@ defineProps({
 const emit = defineEmits(["wishlist-change"]);
 
 const route = useRoute();
+const { t } = useLocale();
+const { productTypeLabel } = useCategoryLabels();
 const showDownloadButton = computed(() => route.query.download === "true");
 const { open: openModal } = useProductModal();
 
@@ -32,10 +34,12 @@ const { confirm } = useConfirm();
 
 const removeFromCart = async (product) => {
   const ok = await confirm({
-    title: "ลบสินค้าออกจากตะกร้า?",
-    message: product.name ? `ต้องการลบ "${product.name}" ออกจากตะกร้าใช่ไหม` : "",
-    confirmLabel: "ลบออก",
-    cancelLabel: "ยกเลิก",
+    title: t("confirm.removeCartTitle"),
+    message: product.name
+      ? t("confirm.removeCartMessage", { name: product.name })
+      : "",
+    confirmLabel: t("common.remove"),
+    cancelLabel: t("common.cancel"),
   });
   if (!ok) return;
   cartStore.dispatch("removeFromCart", product.id);
@@ -69,7 +73,7 @@ const downloadImage = (product, event) => {
 const priceFormat = new Intl.NumberFormat("en-US", {
   maximumFractionDigits: 0,
 });
-const formatPrice = (value) => `${priceFormat.format(Math.round(value))} ฿`;
+const formatPrice = (value) => `${priceFormat.format(Math.round(value))} \u0E3F`;
 
 const isRing = (product) =>
   product.categories?.includes("rings") ||
@@ -84,9 +88,9 @@ const availableSizes = (product) =>
 const comparePrice = (product) => {
   const price = Number(product.price_normalised);
   const market = Number(product.market_thb);
-  if (market && market > price) return { label: "ช็อปไทย", value: market };
+  if (market && market > price) return { label: t("common.thaiShopPrice"), value: market };
   const original = Number(product.originalPrice_normalised);
-  if (original && original > price) return { label: "ปกติ", value: original };
+  if (original && original > price) return { label: t("common.regularPrice"), value: original };
   return null;
 };
 
@@ -100,9 +104,9 @@ const discountPercent = (product) => {
 const metaLine = (product) => {
   if (isRing(product)) {
     const sizes = availableSizes(product);
-    return sizes ? `แหวน · ${sizes} ไซส์` : "แหวน";
+    return sizes ? t("card.ringMeta", { n: sizes }) : t("card.ring");
   }
-  return productTypeLabelTh(product);
+  return productTypeLabel(product);
 };
 
 const onCta = (product) => {
@@ -124,7 +128,7 @@ const onCta = (product) => {
         <button
           type="button"
           class="absolute inset-0 block w-full cursor-pointer"
-          :aria-label="`ดูรายละเอียด ${product.name}`"
+          :aria-label="t('card.viewAria', { name: product.name })"
           @click="openModal(product)"
         >
           <span
@@ -188,7 +192,7 @@ const onCta = (product) => {
           type="button"
           @click.prevent="downloadImage(product, $event)"
           class="absolute top-[22%] right-2 z-20 flex h-11 w-11 items-center justify-center rounded-full bg-white text-navy shadow-[0_2px_8px_rgba(29,43,69,0.16)] hover:scale-105 active:scale-95 transition"
-          aria-label="ดาวน์โหลดรูปสินค้า"
+          :aria-label="t('card.download')"
         >
           <UIcon name="i-iconamoon-download-bold" size="20" />
         </button>
@@ -200,7 +204,7 @@ const onCta = (product) => {
         v-if="product.image2"
         class="mb-1 text-[13px] text-muted dark:text-night-muted"
       >
-        คลิกที่รูปเพื่อดูรูปเพิ่มเติม
+        {{ t("card.clickPhotos") }}
       </p>
       <h3>
         <button
@@ -233,11 +237,11 @@ const onCta = (product) => {
           v-if="isInCart(product.id)"
           type="button"
           class="card-cta card-cta--in-cart"
-          aria-label="ในตะกร้าแล้ว แตะเพื่อเอาออก"
+          :aria-label="t('card.inCartAria')"
           @click="onCta(product)"
         >
           <UIcon name="i-iconamoon-check-bold" size="18" aria-hidden="true" />
-          ในตะกร้าแล้ว
+          {{ t("card.inCart") }}
         </button>
         <button
           v-else-if="isRing(product)"
@@ -245,7 +249,7 @@ const onCta = (product) => {
           class="card-cta card-cta--size"
           @click="onCta(product)"
         >
-          เลือกไซส์
+          {{ t("card.chooseSize") }}
         </button>
         <button
           v-else
@@ -258,7 +262,7 @@ const onCta = (product) => {
             size="18"
             aria-hidden="true"
           />
-          ใส่ตะกร้า
+          {{ t("card.addToCart") }}
         </button>
       </div>
     </div>

@@ -1,47 +1,51 @@
 <script setup>
 const { userDetails, checkoutStatus, handleCheckout } = useCheckout();
 const { cart } = useCart();
+const { t } = useLocale();
+const totalAmount = computed(() =>
+  cart.reduce((total, item) => total + parseFloat(item.variation.node.salePrice), 0).toFixed(2)
+);
 </script>
 
 <template>
   <div class="md:w-96 h-full bg-white dark:bg-midnight-surface border border-gold-line dark:border-midnight-line text-navy dark:text-[#EEF2F8] my-3 mr-3 p-3 max-md:ml-3 rounded-3xl">
-    <div class="font-display-th text-xl font-semibold px-2 mb-3">ชำระเงิน</div>
+    <div class="font-display-th text-xl font-semibold px-2 mb-3">{{ t("checkout.title") }}</div>
     <form @submit.prevent="handleCheckout" class="flex flex-col items-center justify-center">
       <div class="grid grid-cols-2 gap-3 billing w-full">
         <div class="col-span-full">
-          <input required v-model="userDetails.email" placeholder="อีเมล" aria-label="อีเมล" name="email" type="email" class="" />
+          <input required v-model="userDetails.email" :placeholder="t('checkout.email')" :aria-label="t('checkout.email')" name="email" type="email" class="" />
         </div>
         <div class="col-span-1">
-          <input required v-model="userDetails.firstName" placeholder="ชื่อ" aria-label="ชื่อ" name="first-name" type="text" />
+          <input required v-model="userDetails.firstName" :placeholder="t('checkout.firstName')" :aria-label="t('checkout.firstName')" name="first-name" type="text" />
         </div>
         <div class="col-span-1">
-          <input required v-model="userDetails.lastName" placeholder="นามสกุล" aria-label="นามสกุล" name="last-name" type="text" />
+          <input required v-model="userDetails.lastName" :placeholder="t('checkout.lastName')" :aria-label="t('checkout.lastName')" name="last-name" type="text" />
         </div>
         <div class="col-span-1">
-          <input required v-model="userDetails.phone" placeholder="เบอร์โทรศัพท์" aria-label="เบอร์โทรศัพท์" name="phone" type="text" />
+          <input required v-model="userDetails.phone" :placeholder="t('checkout.phone')" :aria-label="t('checkout.phone')" name="phone" type="text" />
         </div>
         <div class="col-span-1">
-          <input required v-model="userDetails.city" placeholder="จังหวัด / เมือง" aria-label="จังหวัด / เมือง" name="city" type="text" />
+          <input required v-model="userDetails.city" :placeholder="t('checkout.city')" :aria-label="t('checkout.city')" name="city" type="text" />
         </div>
         <div class="col-span-full">
-          <textarea required v-model="userDetails.address1" placeholder="ที่อยู่จัดส่ง" aria-label="ที่อยู่จัดส่ง" name="address" rows="2"></textarea>
+          <textarea required v-model="userDetails.address1" :placeholder="t('checkout.address')" :aria-label="t('checkout.address')" name="address" rows="2"></textarea>
         </div>
       </div>
       <div class="text-sm font-semibold p-4 text-muted dark:text-[#B7C3D9]">
-        ยอดชำระรวม {{ cart.reduce((total, item) => total + parseFloat(item.variation.node.salePrice), 0).toFixed(2) }} ฿ สำหรับสินค้า {{ cart.length }} รายการ
+        {{ t("checkout.summary", { amount: totalAmount, count: cart.length, n: cart.length }) }}
       </div>
       <button
         type="submit"
         :disabled="checkoutStatus !== 'order'"
         class="pay-button-bezel w-full h-[54px] rounded-full relative font-semibold text-navy text-lg flex justify-center items-center focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-periwinkle">
         <Transition name="slide-up">
-          <div v-if="checkoutStatus === 'order'" class="absolute">ชำระเงิน {{ cart.reduce((total, item) => total + parseFloat(item.variation.node.salePrice), 0).toFixed(2) }} ฿</div>
+          <div v-if="checkoutStatus === 'order'" class="absolute">{{ t("checkout.pay", { amount: totalAmount }) }}</div>
           <UIcon v-else-if="checkoutStatus === 'processing'" class="absolute" name="i-svg-spinners-90-ring-with-bg" size="22" />
         </Transition>
       </button>
       <div class="text-xs font-medium p-4 flex gap-1 items-end text-muted dark:text-[#B7C3D9]">
         <UIcon name="i-iconamoon-lock-fill" size="18" />
-        <div>การชำระเงินของคุณปลอดภัยด้วย Stripe</div>
+        <div>{{ t("checkout.secure") }}</div>
       </div>
     </form>
   </div>

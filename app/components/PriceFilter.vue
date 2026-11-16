@@ -1,27 +1,28 @@
 <script setup>
 const route = useRoute();
 const router = useRouter();
+const { t } = useLocale();
 
 const minPrice = ref(route.query.minPrice ? Number(route.query.minPrice) : 0);
 const maxPrice = ref(
   route.query.maxPrice ? Number(route.query.maxPrice) : 2000000
 );
 
-const priceRanges = [
-  { label: "ทุกราคา", min: 0, max: 2000000 },
-  { label: "ต่ำกว่า 1,000 ฿", min: 0, max: 1000 },
-  { label: "1,000–2,000 ฿", min: 1000, max: 2000 },
-  { label: "2,000–3,000 ฿", min: 2000, max: 3000 },
-  { label: "3,000–4,000 ฿", min: 3000, max: 4000 },
-  { label: "4,000–6,000 ฿", min: 4000, max: 6000 },
-  { label: "มากกว่า 6,000 ฿", min: 6000, max: 2000000 },
-];
+const priceRanges = computed(() => [
+  { label: t("price.all"), min: 0, max: 2000000 },
+  { label: t("price.under"), min: 0, max: 1000 },
+  { label: "1,000–2,000 \u0E3F", min: 1000, max: 2000 },
+  { label: "2,000–3,000 \u0E3F", min: 2000, max: 3000 },
+  { label: "3,000–4,000 \u0E3F", min: 3000, max: 4000 },
+  { label: "4,000–6,000 \u0E3F", min: 4000, max: 6000 },
+  { label: t("price.over"), min: 6000, max: 2000000 },
+]);
 
 const selectedRange = computed(() => {
-  const range = priceRanges.find(
+  const range = priceRanges.value.find(
     (r) => r.min === minPrice.value && r.max === maxPrice.value
   );
-  return range ? range.label : "กำหนดเอง";
+  return range ? range.label : t("price.custom");
 });
 
 const applyPriceFilter = (min, max) => {
@@ -80,14 +81,14 @@ const isSelected = (range) =>
       @click="isDropdownVisible = !isDropdownVisible"
     >
       <UIcon name="i-iconamoon-discount" size="18" aria-hidden="true" />
-      <span>{{ isActive ? selectedRange : "ช่วงราคา" }}</span>
+      <span>{{ isActive ? selectedRange : t("price.label") }}</span>
       <UIcon name="i-iconamoon-arrow-down-2" size="16" aria-hidden="true" />
     </button>
     <button
       v-if="isActive"
       type="button"
       class="flex h-11 w-11 items-center justify-center rounded-full text-muted hover:bg-mist hover:text-navy dark:text-night-muted dark:hover:bg-midnight-surface dark:hover:text-night-text transition"
-      aria-label="ล้างช่วงราคา"
+      :aria-label="t('price.clear')"
       @click="applyPriceFilter(0, 2000000)"
     >
       <UIcon name="i-iconamoon-close-bold" size="18" />
@@ -97,7 +98,7 @@ const isSelected = (range) =>
       <ul
         v-if="isDropdownVisible"
         role="listbox"
-        aria-label="ช่วงราคา"
+        :aria-label="t('price.label')"
         class="filter-menu right-0 sm:left-0 sm:right-auto"
       >
         <li v-for="range in priceRanges" :key="range.label">

@@ -1,5 +1,6 @@
 <script setup>
 const { wishlist } = useWishlist();
+const { t } = useLocale();
 
 // Only items saved from the product list (products.json shape).
 const items = computed(() =>
@@ -13,10 +14,10 @@ const items = computed(() =>
       <h1
         class="font-display-th text-[26px] lg:text-[34px] font-semibold leading-tight text-navy dark:text-night-text"
       >
-        รายการโปรด
+        {{ t("fav.title") }}
       </h1>
       <p v-if="items.length" class="mt-1 text-[15px] text-muted dark:text-night-muted">
-        {{ items.length }} ชิ้น
+        {{ t("common.items", { n: items.length }) }}
       </p>
     </div>
 
@@ -38,16 +39,16 @@ const items = computed(() =>
       <p
         class="mt-6 font-display-th text-2xl font-semibold text-navy dark:text-night-text"
       >
-        ยังไม่มีรายการโปรด
+        {{ t("fav.empty") }}
       </p>
       <p class="mt-2 text-[15px] text-muted dark:text-night-muted">
-        กดหัวใจที่รูปสินค้าเพื่อเก็บไว้ดูทีหลัง
+        {{ t("fav.emptyHint") }}
       </p>
       <NuxtLink
         to="/products"
         class="mt-6 inline-flex min-h-[46px] items-center rounded-full bg-gold px-6 text-[15px] font-semibold text-navy hover:bg-gold-light transition"
       >
-        เลือกซื้อสินค้า
+        {{ t("common.shopNow") }}
       </NuxtLink>
     </div>
   </div>
