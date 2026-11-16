@@ -98,7 +98,6 @@ export default {
   "modal.save": "Save {amount}",
   "modal.chooseSizeEu": "Choose size (EU) ·",
   "modal.notSelected": "none selected",
-  "modal.ringGuide": "How to measure ring size",
   "modal.sizeSoldOut": "Size {size}, sold out",
   "modal.available": "In stock",
   "modal.soldOut": "Sold out",
