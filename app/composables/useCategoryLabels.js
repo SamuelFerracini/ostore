@@ -1,12 +1,12 @@
 // Order of the category pills in the header. "" means all products.
 export const CATEGORY_PILL_IDS = [
+  { id: "all-sale", sale: true },
   { id: "" },
   { id: "rings" },
   { id: "charms" },
   { id: "bracelets" },
   { id: "necklaces" },
   { id: "earrings" },
-  { id: "all-sale", sale: true },
 ];
 
 const SALE_CATEGORIES = ["all-sale", "clearance"];

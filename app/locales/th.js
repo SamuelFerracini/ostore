@@ -169,7 +169,6 @@ export default {
   "products.search": "ผลการค้นหา “{q}”",
   "products.all": "เครื่องประดับทั้งหมด",
   "products.shopInfo": "ข้อมูลร้าน",
-  "products.authentic": "ของแท้ ช็อปจากออสเตรเลีย",
   "products.included": "ราคารวมกล่องและถุงแล้ว",
   "products.receipt": "ต้องการใบเสร็จ ทักสอบถามได้",
   "products.authenticShort": "ของแท้จากออสเตรเลีย · ราคารวมกล่องและถุงแล้ว",
