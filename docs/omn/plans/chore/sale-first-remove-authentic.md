@@ -28,10 +28,10 @@ The header category pills show Sale last. The products page trust strip shows an
 
 ## Done when
 
-- [ ] Sale is the first pill in the header carousel.
+- [x] Sale is the first pill in the header carousel.
 
-- [ ] The desktop trust strip shows only the two remaining items.
+- [x] The desktop trust strip shows only the two remaining items.
 
-- [ ] `products.authentic` has no remaining references.
+- [x] `products.authentic` has no remaining references.
 
-- [ ] The build or lint passes.
+- [x] The build or lint passes.

@@ -169,7 +169,6 @@ export default {
   "products.search": "Results for “{q}”",
   "products.all": "All jewellery",
   "products.shopInfo": "Shop information",
-  "products.authentic": "Authentic, shopped from Australia",
   "products.included": "Price includes gift box and bag",
   "products.receipt": "Message us if you need a receipt",
   "products.authenticShort": "Authentic from Australia · Gift box and bag included",

@@ -130,13 +130,6 @@ const productsEmpty = computed(
     >
       <li class="flex items-center gap-2.5">
         <svg class="trust-icon" viewBox="0 0 24 24" aria-hidden="true">
-          <path d="M12 3 19 6v5.2c0 4.4-3 7.9-7 9.8-4-1.9-7-5.4-7-9.8V6l7-3Z" />
-          <path d="m9 12 2.2 2.2L15.5 10" />
-        </svg>
-        {{ t("products.authentic") }}
-      </li>
-      <li class="flex items-center gap-2.5">
-        <svg class="trust-icon" viewBox="0 0 24 24" aria-hidden="true">
           <rect x="3.5" y="8" width="17" height="4" rx="1" />
           <path d="M5 12v8h14v-8M12 8v12" />
           <path d="M12 8c-1-2.6-2.6-3.8-4-3.4-1.6.5-1.2 3.4 4 3.4Zm0 0c1-2.6 2.6-3.8 4-3.4 1.6.5 1.2 3.4-4 3.4Z" />
