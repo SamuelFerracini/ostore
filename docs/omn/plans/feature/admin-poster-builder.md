@@ -38,10 +38,10 @@ In admin mode, the admin picks products in the store and gets a ready poster PNG
 
 ## Done when
 
-- [ ] Non-admin users see no change, and `/admin/poster` redirects them to `/`.
+- [x] Non-admin users see no change, and `/admin/poster` redirects them to `/`.
 
-- [ ] An admin can select products across pages, edit the texts, reorder, and download a PNG that matches the preview, with all product images present.
+- [x] An admin can select products across pages, edit the texts, reorder, and download a PNG that matches the preview, with all product images present.
 
 - [x] The image proxy rejects hosts not on the allowlist.
 
-- [ ] `npm run build` passes.
+- [x] `npm run build` passes.
