@@ -4,6 +4,7 @@
   "private": true,
   "type": "module",
   "scripts": {
+    "test": "node --test tests/",
     "build:products": "node scripts/build-product-index.mjs",
     "build": "nuxt build",
     "dev": "nuxt dev",

@@ -43,11 +43,16 @@ const scrollToTop = () => {
   });
 };
 
-onMounted(() => {
-  if (promotionsPaused.value) return;
-  window.addEventListener("scroll", handleScroll);
-  // Validate cart items against the product index
-  cartStore.dispatch("loadCart");
+const sharedCart = useState<any[]>("cart", () => []);
+
+onMounted(async () => {
+  if (!promotionsPaused.value) window.addEventListener("scroll", handleScroll);
+  // Validate cart items against the product index, paused or not. Then copy
+  // the cleaned list into the useCart state (header badge, checkout).
+  await cartStore.dispatch("loadCart");
+  if (cartStore.state.items.length !== sharedCart.value.length) {
+    sharedCart.value = cartStore.state.items;
+  }
 });
 
 onBeforeUnmount(() => {
