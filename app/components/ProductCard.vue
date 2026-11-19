@@ -9,6 +9,7 @@ const emit = defineEmits(["wishlist-change"]);
 
 const route = useRoute();
 const { t } = useLocale();
+const { isAdmin } = useAdmin();
 const showDownloadButton = computed(() => route.query.download === "true");
 const { open: openModal } = useProductModal();
 
@@ -249,7 +250,7 @@ const onCta = (product) => {
         {{ metaLine(product) }}
       </p>
       <a
-        v-if="product.link"
+        v-if="isAdmin && product.link"
         :href="product.link"
         target="_blank"
         rel="noopener noreferrer"
