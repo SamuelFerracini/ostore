@@ -54,10 +54,10 @@ Use Claude in Chrome (load the `anthropic-skills:chrome-browser` skill first) to
 
 Results saved with save_note, containing:
 
-- [ ] Pandora category tree with names + URLs + product counts.
+- [x] Pandora category tree with names + URLs + product counts.
 
-- [ ] Table: category | Pandora count | ostore count | missing.
+- [x] Table: category | Pandora count | ostore count | missing.
 
-- [ ] Root causes with file:line refs.
+- [x] Root causes with file:line refs.
 
-- [ ] Recommended fix plan, split into: (a) scraper changes in pandora-scraper-2, (b) ostore UI/data changes in this repo.
+- [x] Recommended fix plan, split into: (a) scraper changes in pandora-scraper-2, (b) ostore UI/data changes in this repo.
