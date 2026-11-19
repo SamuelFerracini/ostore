@@ -14,10 +14,12 @@
     "deploy": "npm run build && vercel --prod --force --debug"
   },
   "dependencies": {
+    "@fontsource/kanit": "5.2.8",
     "@nuxt/image": "^1.8.1",
     "@nuxt/ui": "^2.18.7",
     "axios": "^1.7.9",
     "dayjs": "^1.11.13",
+    "modern-screenshot": "4.7.0",
     "nuxt": "^3.13.2",
     "swiper": "^11.1.14",
     "vue": "latest",
