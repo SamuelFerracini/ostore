@@ -6,6 +6,7 @@ import "swiper/css/pagination";
 import cartStore from "~~/stores/cart";
 
 const { product, isOpen, close } = useProductModal();
+useProductModalUrlSync();
 const { t } = useLocale();
 
 const dialogEl = ref(null);
