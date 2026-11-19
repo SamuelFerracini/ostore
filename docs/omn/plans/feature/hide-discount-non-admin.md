@@ -41,6 +41,6 @@ Gate each item with `isAdmin` and leave a short code comment saying it is hidden
 
 - [ ] With `?admin=1`, all of them show as before.
 
-- [ ] Build and existing tests pass.
+- [x] Build and existing tests pass.
 
-- [ ] Changes committed on the branch.
+- [x] Changes committed on the branch.
