@@ -1,6 +1,7 @@
 // @ts-nocheck
 import { createStore } from "vuex";
 import { loadProducts } from "../app/composables/store.js";
+import { pruneMissingProducts } from "../app/composables/pruneCart.js";
 
 export interface CartItem {
   id: string;
@@ -32,26 +33,14 @@ const validateCartItems = async (items: CartItem[]): Promise<CartItem[]> => {
   try {
     const productsData = await loadProducts();
 
-    // Create a Set of all valid product IDs for fast lookup
-    const validProductIds = new Set<string>();
-
-    Object.keys(productsData).forEach((shop) => {
-      Object.keys(productsData[shop]).forEach((category) => {
-        productsData[shop][category].forEach((product: any) => {
-          validProductIds.add(product.id);
-        });
-      });
-    });
-
-    // Filter cart items to only include valid products
-    const validItems = items.filter((item) => {
-      const isValid = validProductIds.has(item.id);
-      if (!isValid) {
+    const validItems = pruneMissingProducts(items, productsData);
+    const kept = new Set(validItems);
+    items.forEach((item) => {
+      if (!kept.has(item)) {
         console.warn(
           `Removing invalid product from cart: ${item.name} (ID: ${item.id})`
         );
       }
-      return isValid;
     });
 
     // If items were removed, update localStorage
