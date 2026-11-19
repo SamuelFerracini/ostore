@@ -72,8 +72,8 @@ onBeforeUnmount(() => footerObserver?.disconnect());
     >
       <div class="footer-brand">
         <p class="font-display text-[30px] font-semibold leading-none">
-          Pandora
-          <em class="font-medium text-gold-light">with Nonlapan</em>
+          Nonlapan
+          <em class="font-medium text-gold-light">Pre Order</em>
         </p>
         <div
           v-if="shopId === 'pandora'"

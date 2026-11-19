@@ -126,11 +126,11 @@ const searchPlaceholder = computed(() =>
         <span class="flex flex-col leading-none">
           <span
             class="font-display text-[26px] lg:text-[28px] font-semibold tracking-[0.01em] text-navy dark:text-night-text"
-            >Pandora</span
+            >Nonlapan</span
           >
           <span
             class="font-display italic font-medium text-[15px] -mt-0.5 text-gold-text dark:text-night-gold"
-            >with Nonlapan</span
+            >Pre Order</span
           >
         </span>
       </NuxtLink>
