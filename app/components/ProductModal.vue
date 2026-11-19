@@ -29,14 +29,6 @@ const failedImages = ref(new Set());
 const onImageError = (src) => {
   failedImages.value = new Set(failedImages.value).add(src.split("?")[0]);
 };
-// Same photo can come under different extension/folder: key on file name only.
-const photoKey = (src) =>
-  src
-    .split("?")[0]
-    .split("/")
-    .pop()
-    .replace(/\.[^.]+$/, "")
-    .toLowerCase();
 const images = computed(() => {
   const p = product.value;
   if (!p) return [];
@@ -50,10 +42,13 @@ const images = computed(() => {
   const seen = new Set();
   for (const v of raw) {
     const src = normaliseImage(typeof v === "string" ? v : v?.url ?? v?.src ?? "");
-    if (!src || failedImages.value.has(src.split("?")[0])) continue;
-    const key = photoKey(src);
-    if (seen.has(key)) continue;
-    seen.add(key);
+    const key = src.split("?")[0];
+    // Same photo comes as .jpg (listing) and .png (gallery), and under
+    // main_rect_base vs main_rect_center: dedupe on the file name stem.
+    // A failed copy is skipped before seen.add, so its twin still shows.
+    const stem = key.split("/").pop().replace(/\.[a-z]+$/i, "").toLowerCase();
+    if (!src || seen.has(stem) || failedImages.value.has(key)) continue;
+    seen.add(stem);
     out.push(src);
   }
   return out;
