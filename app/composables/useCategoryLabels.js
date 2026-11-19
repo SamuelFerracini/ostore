@@ -7,6 +7,8 @@ export const CATEGORY_PILL_IDS = [
   { id: "bracelets" },
   { id: "necklaces" },
   { id: "earrings" },
+  { id: "gift-sets" },
+  { id: "other" },
 ];
 
 const SALE_CATEGORIES = ["all-sale", "clearance"];

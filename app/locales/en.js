@@ -27,6 +27,8 @@ export default {
   "cat.rings": "Rings",
   "cat.necklaces": "Necklaces",
   "cat.earrings": "Earrings",
+  "cat.gift-sets": "Gift Sets",
+  "cat.other": "Other",
   "cat.ring": "Ring",
   "cat.categories": "Product categories",
   "confirm.removeCartTitle": "Remove from bag?",

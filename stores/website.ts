@@ -12,6 +12,8 @@ export const PANDORA = {
     { id: "rings", name: "Rings" },
     { id: "necklaces", name: "Necklaces" },
     { id: "earrings", name: "Earrings" },
+    { id: "gift-sets", name: "Gift Sets" },
+    { id: "other", name: "Other" },
     // { id: "engravable", name: "Engravable" },
     // { id: "gifts", name: "Gifts" },
     // { id: "lab-grown-diamonds", name: "Lab-Grown Diamonds" },

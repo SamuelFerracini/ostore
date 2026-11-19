@@ -27,6 +27,8 @@ export default {
   "cat.rings": "แหวน",
   "cat.necklaces": "สร้อยคอ",
   "cat.earrings": "ต่างหู",
+  "cat.gift-sets": "เซ็ตของขวัญ",
+  "cat.other": "อื่นๆ",
   "cat.ring": "แหวน",
   "cat.categories": "หมวดหมู่สินค้า",
   "confirm.removeCartTitle": "ลบสินค้าออกจากตะกร้า?",
