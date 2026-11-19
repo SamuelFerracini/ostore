@@ -28,7 +28,7 @@ Grep `app/` once more (case-insensitive, `pandora with nonlapan`, excluding `nod
 
 ## Done when
 
-- [ ] No "Pandora with Nonlapan" left in `app/` source.
+- [x] No "Pandora with Nonlapan" left in `app/` source.
 
 - [ ] The app builds and existing tests pass.
 
