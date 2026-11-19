@@ -52,10 +52,10 @@ Start the app with the project script that brings the stack up (run_project_scri
 
 ## Done when
 
-- [ ] In admin mode, cards and modal show working AU and TH links. Outside admin mode, they show none.
+- [x] In admin mode, cards and modal show working AU and TH links. Outside admin mode, they show none.
 
-- [ ] TH URL pattern checked on pandora.co.th; results saved with save_note (pattern used, ids tested).
+- [x] TH URL pattern checked on pandora.co.th; results saved with save_note (pattern used, ids tested).
 
-- [ ] `npm run build` passes.
+- [x] `npm run build` passes.
 
-- [ ] Changes committed on the branch.
+- [x] Changes committed on the branch.

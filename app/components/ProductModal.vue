@@ -479,15 +479,29 @@ onBeforeUnmount(() => {
                   />
                 </button>
               </div>
-              <a
-                v-if="isAdmin && product.link"
-                :href="product.link"
-                target="_blank"
-                rel="noopener noreferrer"
-                class="mt-2 block text-center text-sm text-royal dark:text-[#D8B868] underline underline-offset-2"
+              <div
+                v-if="isAdmin && (product.link || product.id)"
+                class="mt-2 flex flex-wrap items-center justify-center gap-x-4 gap-y-1 text-sm"
               >
-                {{ t("modal.viewPandora") }}
-              </a>
+                <a
+                  v-if="product.link"
+                  :href="product.link"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="text-royal dark:text-[#D8B868] underline underline-offset-2"
+                >
+                  {{ t("modal.pandoraAu") }}
+                </a>
+                <a
+                  v-if="product.id"
+                  :href="pandoraThLink(product)"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="text-royal dark:text-[#D8B868] underline underline-offset-2"
+                >
+                  {{ t("modal.pandoraTh") }}
+                </a>
+              </div>
             </div>
           </div>
         </div>
