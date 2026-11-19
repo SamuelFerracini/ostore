@@ -142,7 +142,7 @@ export default {
   "price.clear": "ล้างช่วงราคา",
   "header.searchIn": "ค้นหาใน{category}…",
   "header.searchDefault": "ค้นหาแหวน ชาร์ม กำไล…",
-  "header.homeAria": "หน้าแรก Pandora with Nonlapan",
+  "header.homeAria": "หน้าแรก Nonlapan Pre Order",
   "header.searchLabel": "ค้นหาสินค้า",
   "header.clearSearch": "ล้างคำค้นหา",
   "header.mainNav": "เมนูหลัก",

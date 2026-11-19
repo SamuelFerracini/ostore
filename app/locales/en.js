@@ -142,7 +142,7 @@ export default {
   "price.clear": "Clear price range",
   "header.searchIn": "Search in {category}…",
   "header.searchDefault": "Search rings, charms, bracelets…",
-  "header.homeAria": "Pandora with Nonlapan home",
+  "header.homeAria": "Nonlapan Pre Order home",
   "header.searchLabel": "Search products",
   "header.clearSearch": "Clear search",
   "header.mainNav": "Main menu",
