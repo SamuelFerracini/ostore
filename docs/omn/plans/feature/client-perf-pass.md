@@ -59,8 +59,8 @@ Use the **Claude in Chrome** browser to check the running app: run `npm run dev`
 
 - [x] Backups are outside `public/` and git-ignored.
 
-- [ ] Search, category, price filter, sort, infinite scroll, modal, product page, cart validation, favorites and admin links all work in the browser.
+- [x] Search, category, price filter, sort, infinite scroll, modal, product page, cart validation, favorites and admin links all work in the browser.
 
-- [ ] `npm run build` passes.
+- [x] `npm run build` passes.
 
-- [ ] Commits on the branch, with the plan's checks ticked.
+- [x] Commits on the branch, with the plan's checks ticked.
