@@ -30,6 +30,6 @@ Each distinct photo shows once in the slides and the thumbnails.
 
 ## Done when
 
-- [ ] The "Music Note Mini Charm" modal shows no repeated photos (6 distinct images, not 8).
+- [x] The "Music Note Mini Charm" modal shows no repeated photos (6 distinct images, not 8).
 
-- [ ] `npm run build` passes.
+- [x] `npm run build` passes.
