@@ -17,6 +17,7 @@ export const useAdmin = () => {
   apply(route.query.admin);
   watch(() => route.query.admin, apply);
 
-  const isAdmin = computed(() => cookie.value === "1");
+  // useCookie decodes the stored "1" to the number 1, so compare as a string.
+  const isAdmin = computed(() => String(cookie.value) === "1");
   return { isAdmin };
 };
