@@ -27,12 +27,22 @@ const labelLines = computed(() =>
 );
 const footerText = computed(() => props.footer.trim());
 
+// More rows mean smaller tiles: shrink the price text and gaps with them.
+const density = computed(() => {
+  if (rows.value >= 5) return { label: 22, gap: 16 };
+  if (rows.value === 4) return { label: 24, gap: 20 };
+  if (rows.value === 3) return { label: 28, gap: 24 };
+  return { label: 32, gap: 28 };
+});
+
 const rootStyle = computed(() => ({
   width: `${props.width}px`,
   height: `${props.height}px`,
   "--rows": rows.value,
   "--cols": cols.value,
   "--label-lines": labelLines.value,
+  "--label-size": `${density.value.label}px`,
+  "--gap": `${density.value.gap}px`,
 }));
 </script>
 
@@ -77,8 +87,6 @@ const rootStyle = computed(() => ({
   --blush: #fde3ec;
   --tile-bg: #f7f7f7;
   --pad-x: 64px;
-  --gap: 28px;
-  --label-size: 32px;
   --label-lh: 1.2;
   --label-gap: 14px;
 
@@ -112,7 +120,10 @@ const rootStyle = computed(() => ({
   top: 120px;
 }
 
+/* Text sits above the pink circle when the circle reaches past the grid. */
 .poster__head {
+  position: relative;
+  z-index: 2;
   flex: none;
 }
 .poster__title {
@@ -151,12 +162,14 @@ const rootStyle = computed(() => ({
   );
 }
 
+/* Wrapping flex row, 3 tiles wide, so a short last row stays centred. */
 .poster__grid {
   position: relative;
-  display: grid;
-  grid-template-columns: repeat(var(--cols), var(--tile));
-  gap: var(--gap);
+  display: flex;
+  flex-wrap: wrap;
   justify-content: center;
+  gap: var(--gap);
+  width: calc(var(--cols) * var(--tile) + (var(--cols) - 1) * var(--gap));
 }
 
 /* The soft pink circle sits behind the grid and grows with it. */
@@ -178,6 +191,7 @@ const rootStyle = computed(() => ({
 .poster__item {
   position: relative;
   z-index: 1;
+  width: var(--tile);
   margin: 0;
 }
 .poster__tile {
@@ -191,7 +205,8 @@ const rootStyle = computed(() => ({
   display: block;
   width: 100%;
   height: 100%;
-  object-fit: contain;
+  /* Product shots are 3:4 with empty margin top and bottom: crop that. */
+  object-fit: cover;
 }
 .poster__price {
   min-height: calc(var(--label-size) * var(--label-lh) * var(--label-lines));
@@ -208,6 +223,7 @@ const rootStyle = computed(() => ({
    outline sits outside the letters. */
 .poster__footer {
   position: relative;
+  z-index: 2;
   flex: none;
   font-size: 50px;
   font-weight: 800;
