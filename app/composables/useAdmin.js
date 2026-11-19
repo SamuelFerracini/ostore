@@ -17,7 +17,14 @@ export const useAdmin = () => {
   apply(route.query.admin);
   watch(() => route.query.admin, apply);
 
-  // useCookie decodes the stored "1" to the number 1, so compare as a string.
+  // useCookie JSON-parses "1" into the number 1, so compare as string.
   const isAdmin = computed(() => String(cookie.value) === "1");
   return { isAdmin };
 };
+
+// Pandora Thailand link for a product. Magento search redirects straight to the
+// product page when pandora.co.th sells that SKU. Falls back to the search page.
+export const pandoraThLink = (product) =>
+  product?.id
+    ? `https://www.pandora.co.th/catalogsearch/result/?q=${encodeURIComponent(product.id)}`
+    : "";
