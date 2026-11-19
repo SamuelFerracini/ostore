@@ -34,12 +34,12 @@ When admin mode is on, make it very obvious and give a one-click **Exit admin** 
 
 ## Done when
 
-- [ ] With `?admin=1`, a clear admin bar shows on store pages and `/admin/poster`.
+- [x] With `?admin=1`, a clear admin bar shows on store pages and `/admin/poster`.
 
-- [ ] Clicking **Exit admin** hides the bar and all admin UI, strips `?admin` from the URL, and leaves `/admin/*` for `/`.
+- [x] Clicking **Exit admin** hides the bar and all admin UI, strips `?admin` from the URL, and leaves `/admin/*` for `/`.
 
-- [ ] Reloading after exit stays out of admin mode.
+- [x] Reloading after exit stays out of admin mode.
 
-- [ ] Checked in the browser with Claude in Chrome (desktop and phone width). Use it to open the running dev app and click through the flow. Start the app yourself with the project's dev script; do not wait for the user.
+- [x] Checked in the browser with Claude in Chrome (desktop and phone width). Use it to open the running dev app and click through the flow. Start the app yourself with the project's dev script; do not wait for the user.
 
-- [ ] Build/lint pass.
+- [x] Build/lint pass.
