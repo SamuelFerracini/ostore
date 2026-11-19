@@ -42,8 +42,8 @@ Any cart item whose `id` is not in the product index gets removed from localStor
 
 - [ ] The same is true with promotions paused.
 
-- [ ] A cart item with a number `id` that matches a string ID in the index is kept.
+- [x] A cart item with a number `id` that matches a string ID in the index is kept.
 
 - [ ] If the index fetch fails, the cart stays unchanged.
 
-- [ ] Existing tests pass (`npm test` or the project's test command). Add a unit test for the pruning helper if there is a test setup.
+- [x] Existing tests pass (`npm test` or the project's test command). Add a unit test for the pruning helper if there is a test setup.
