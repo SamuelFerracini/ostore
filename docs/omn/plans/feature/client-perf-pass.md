@@ -57,7 +57,7 @@ Use the **Claude in Chrome** browser to check the running app: run `npm run dev`
 
 - [ ] `countProducts` no longer runs a full second search.
 
-- [ ] Backups are outside `public/` and git-ignored.
+- [x] Backups are outside `public/` and git-ignored.
 
 - [ ] Search, category, price filter, sort, infinite scroll, modal, product page, cart validation, favorites and admin links all work in the browser.
 
