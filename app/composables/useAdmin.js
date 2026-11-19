@@ -22,9 +22,6 @@ export const useAdmin = () => {
   return { isAdmin };
 };
 
-// Pandora Thailand link for a product. Magento search redirects straight to the
-// product page when pandora.co.th sells that SKU. Falls back to the search page.
-export const pandoraThLink = (product) =>
-  product?.id
-    ? `https://www.pandora.co.th/catalogsearch/result/?q=${encodeURIComponent(product.id)}`
-    : "";
+// Pandora Thailand link for a product: the matched pandora.co.th product URL
+// the scraper writes as `th_link`. Empty when TH does not sell that SKU.
+export const pandoraThLink = (product) => product?.th_link || "";

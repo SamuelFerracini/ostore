@@ -493,7 +493,7 @@ onBeforeUnmount(() => {
                   {{ t("modal.pandoraAu") }}
                 </a>
                 <a
-                  v-if="product.id"
+                  v-if="pandoraThLink(product)"
                   :href="pandoraThLink(product)"
                   target="_blank"
                   rel="noopener noreferrer"

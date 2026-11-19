@@ -15,6 +15,7 @@ const toRecord = product => ({
   category: product.category,
   sizes: product.sizes,
   link: product.link,
+  th_link: product.th_link,
   shop: product.shop,
 });
 
