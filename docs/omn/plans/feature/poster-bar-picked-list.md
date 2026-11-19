@@ -40,12 +40,12 @@ Start the app with `npm run dev` in this worktree. Use Claude in Chrome to turn 
 
 ## Done when
 
-- [ ] The poster bar has a button that opens and closes a list of the picked products, in pick order, with thumbnails, names and prices.
+- [x] The poster bar has a button that opens and closes a list of the picked products, in pick order, with thumbnails, names and prices.
 
-- [ ] Removing an item in the panel removes it from the selection, and the card badges update.
+- [x] Removing an item in the panel removes it from the selection, and the card badges update.
 
 - [ ] The panel fits at 375px wide and closes on Escape, an outside click and navigation.
 
-- [ ] Non-admin users see no change.
+- [x] Non-admin users see no change.
 
-- [ ] `npm run build` passes.
+- [x] `npm run build` passes.
