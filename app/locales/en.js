@@ -2,6 +2,9 @@
 export default {
   "lang.toEn": "Switch to English",
   "lang.toTh": "Switch to Thai",
+  "admin.bar": "Admin mode",
+  "admin.exit": "Exit admin",
+  "admin.exitLabel": "Exit admin mode",
   "scroll.top": "Back to top",
   "common.remove": "Remove",
   "common.cancel": "Cancel",
