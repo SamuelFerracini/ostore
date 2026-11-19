@@ -61,10 +61,10 @@ No card ever shows the broken-image icon.
 
 ## Done when
 
-- [ ] PSG2629 shows an image, or the product is removed.
+- [x] PSG2629 shows an image, or the product is removed.
 
-- [ ] Forcing a bad `src` in the browser shows the placeholder, not the broken icon. Test this on a card and in the modal.
+- [x] Forcing a bad `src` in the browser shows the placeholder, not the broken icon. Test this on a card and in the modal.
 
-- [ ] The root cause and the fix are recorded with save_note.
+- [x] The root cause and the fix are recorded with save_note.
 
-- [ ] The change is committed on the branch.
+- [x] The change is committed on the branch.
