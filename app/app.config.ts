@@ -1,5 +1,5 @@
 export default defineAppConfig({
-  siteName: "Pandora with Nonlapan",
+  siteName: "Nonlapan Pre Order",
   ui: {
     primary: "royal-blue",
   },
