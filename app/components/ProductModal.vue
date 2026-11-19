@@ -16,6 +16,17 @@ const swiperRef = ref(null);
 let trigger = null;
 
 // ---- images -------------------------------------------------------------
+// Bare Pandora dw/image URLs often fail; the query string makes them load.
+const PANDORA_IMG_QUERY = "?q=70&sfrm=png&bgcolor=F7F7F7";
+const normaliseImage = (src) =>
+  src && /au\.pandora\.net\/dw\/image/.test(src) && !src.includes("?")
+    ? src + PANDORA_IMG_QUERY
+    : src;
+// image URLs (without query) that failed to load: dropped from slides/thumbs
+const failedImages = ref(new Set());
+const onImageError = (src) => {
+  failedImages.value = new Set(failedImages.value).add(src.split("?")[0]);
+};
 const images = computed(() => {
   const p = product.value;
   if (!p) return [];
@@ -26,9 +37,13 @@ const images = computed(() => {
     ...(Array.isArray(p.images) ? p.images : []),
   ];
   const out = [];
+  const seen = new Set();
   for (const v of raw) {
-    const src = typeof v === "string" ? v : v?.url ?? v?.src ?? "";
-    if (src && !out.includes(src)) out.push(src);
+    const src = normaliseImage(typeof v === "string" ? v : v?.url ?? v?.src ?? "");
+    const key = src.split("?")[0];
+    if (!src || seen.has(key) || failedImages.value.has(key)) continue;
+    seen.add(key);
+    out.push(src);
   }
   return out;
 });
@@ -288,7 +303,7 @@ onBeforeUnmount(() => {
                   swiperRef?.slideTo(i);
                 "
               >
-                <img :src="src" alt="" class="w-full h-full object-cover" loading="lazy" />
+                <img :src="src" alt="" class="w-full h-full object-cover" loading="lazy" @error="onImageError(src)" />
               </button>
             </div>
 
@@ -312,6 +327,7 @@ onBeforeUnmount(() => {
                         :alt="`${product.name} ${i + 1}`"
                         class="w-full h-full object-cover"
                         :loading="i === 0 ? 'eager' : 'lazy'"
+                        @error="onImageError(src)"
                       />
                     </SwiperSlide>
                   </Swiper>

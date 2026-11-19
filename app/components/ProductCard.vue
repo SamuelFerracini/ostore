@@ -16,13 +16,27 @@ const { open: openModal } = useProductModal();
 // product id -> "add" | "remove", while the pulse animation runs
 const animatingItems = ref(new Map());
 const loadedImages = ref(new Set());
+const failedPrimary = ref(new Set());
+const failedHover = ref(new Set());
+const onPrimaryError = (id) => {
+  failedPrimary.value = new Set(failedPrimary.value).add(id);
+};
+const onHoverError = (id) => {
+  failedHover.value = new Set(failedHover.value).add(id);
+};
+const hoverSrc = (product) =>
+  product.hoverImage?.length > 0 && !failedHover.value.has(product.id)
+    ? product.hoverImage
+    : product.primaryImage;
 
 const onImageLoad = (productId) => {
   loadedImages.value.add(productId);
 };
 
 const isImageLoaded = (productId) => {
-  return loadedImages.value.has(productId);
+  return (
+    loadedImages.value.has(productId) && !failedPrimary.value.has(productId)
+  );
 };
 
 const addToCart = (product) => {
@@ -133,26 +147,27 @@ const onCta = (product) => {
         >
           <span
             v-if="!isImageLoaded(product.id)"
-            class="absolute inset-0 z-10 animate-pulse bg-photo flex items-center justify-center"
+            class="absolute inset-0 z-10 bg-photo flex items-center justify-center"
+            :class="{ 'animate-pulse': !failedPrimary.has(product.id) }"
           >
             <UIcon name="i-heroicons-photo" class="text-sky" size="32" />
           </span>
           <NuxtImg
+            v-if="!failedPrimary.has(product.id)"
             alt=""
             loading="lazy"
-            :src="
-              product.hoverImage?.length > 0
-                ? product.hoverImage
-                : product.primaryImage
-            "
+            :src="hoverSrc(product)"
+            @error="onHoverError(product.id)"
             class="absolute inset-0 h-full w-full bg-photo object-cover"
           />
           <NuxtImg
+            v-if="!failedPrimary.has(product.id)"
             :id="`primary-image-${product.id}`"
             :alt="product.name"
             loading="lazy"
             :src="product.primaryImage"
             @load="onImageLoad(product.id)"
+            @error="onPrimaryError(product.id)"
             class="absolute inset-0 h-full w-full bg-photo object-cover transition-opacity duration-300 group-hover:opacity-0"
           />
         </button>
