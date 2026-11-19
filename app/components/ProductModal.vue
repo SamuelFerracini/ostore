@@ -43,8 +43,12 @@ const images = computed(() => {
   for (const v of raw) {
     const src = normaliseImage(typeof v === "string" ? v : v?.url ?? v?.src ?? "");
     const key = src.split("?")[0];
-    if (!src || seen.has(key) || failedImages.value.has(key)) continue;
-    seen.add(key);
+    // Same photo comes as .jpg (listing) and .png (gallery), and under
+    // main_rect_base vs main_rect_center: dedupe on the file name stem.
+    // A failed copy is skipped before seen.add, so its twin still shows.
+    const stem = key.split("/").pop().replace(/\.[a-z]+$/i, "").toLowerCase();
+    if (!src || seen.has(stem) || failedImages.value.has(key)) continue;
+    seen.add(stem);
     out.push(src);
   }
   return out;
