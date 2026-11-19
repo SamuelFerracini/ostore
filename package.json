@@ -5,13 +5,9 @@
   "type": "module",
   "scripts": {
     "build:products": "node scripts/build-product-index.mjs",
-    "prebuild": "npm run build:products",
     "build": "nuxt build",
-    "predev": "npm run build:products",
     "dev": "nuxt dev",
-    "predev:ssl": "npm run build:products",
     "dev:ssl": "nuxt dev --https --ssl-cert localhost.pem --ssl-key localhost-key.pem",
-    "pregenerate": "npm run build:products",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
