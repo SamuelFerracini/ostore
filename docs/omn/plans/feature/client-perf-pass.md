@@ -55,7 +55,7 @@ Use the **Claude in Chrome** browser to check the running app: run `npm run dev`
 
 - [ ] Card images request resized URLs, and hover images load only on hover-capable or hovered cards.
 
-- [ ] `countProducts` no longer runs a full second search.
+- [x] `countProducts` no longer runs a full second search.
 
 - [x] Backups are outside `public/` and git-ignored.
 

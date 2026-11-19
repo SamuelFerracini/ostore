@@ -30,26 +30,18 @@ const heading = computed(() => {
   return t("products.all");
 });
 
-// Count every match, not only the loaded page.
-async function countProducts() {
-  const all = await searchProducts({
-    ...variables.value,
-    page: 1,
-    perPage: Number.MAX_SAFE_INTEGER,
-  });
-  totalCount.value = all.length;
-}
-
 async function fetch() {
   if (isLoading.value) return;
   isLoading.value = true;
 
   try {
-    const response = await searchProducts({
+    const { items, total } = await searchProducts({
       ...variables.value,
       page: page.value,
     });
-    productsData.value.push(...response);
+    productsData.value.push(...items);
+    // Every match, not only the loaded page.
+    totalCount.value = total;
     hasFetched.value = true;
   } finally {
     isLoading.value = false;
@@ -67,7 +59,6 @@ onMounted(async () => {
 
   await loadProducts();
   await fetch();
-  countProducts();
   setupObserver();
 });
 
@@ -81,7 +72,6 @@ watch(
     page.value = 1;
     productsData.value = [];
     fetch();
-    countProducts();
     window.scrollTo(0, 0);
   }
 );

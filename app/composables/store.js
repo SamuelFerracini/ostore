@@ -97,7 +97,7 @@ export async function searchProducts({
   fieldby,
 } = {}) {
   if (!data[shop]) {
-    return [];
+    return { items: [], total: 0 };
   }
 
   let ordered = orderObjectKeys(
@@ -112,7 +112,7 @@ export async function searchProducts({
   }
 
   if (!filteredProducts) {
-    return [];
+    return { items: [], total: 0 };
   }
 
   const uniqueProducts = new Map();
@@ -158,7 +158,11 @@ export async function searchProducts({
   const start = (page - 1) * perPage;
   const end = start + perPage;
 
-  return filteredProducts.slice(start, end);
+  // total counts every match, so callers need no second search to count.
+  return {
+    items: filteredProducts.slice(start, end),
+    total: filteredProducts.length,
+  };
 }
 
 export function listCategories() {
