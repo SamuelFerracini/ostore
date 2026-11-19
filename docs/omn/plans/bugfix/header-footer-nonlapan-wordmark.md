@@ -26,10 +26,10 @@ The header and footer show "Nonlapan" with "Pre Order", matching `app/components
 
 ## Done when
 
-- [ ] Header and footer show "Nonlapan" / "Pre Order".
+- [x] Header and footer show "Nonlapan" / "Pre Order".
 
-- [ ] `grep -rn "with Nonlapan" app` finds nothing.
+- [x] `grep -rn "with Nonlapan" app` finds nothing.
 
-- [ ] Build or typecheck passes.
+- [x] Build or typecheck passes.
 
-- [ ] Changes are committed on this branch.
+- [x] Changes are committed on this branch.
