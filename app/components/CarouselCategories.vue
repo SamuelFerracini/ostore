@@ -14,8 +14,8 @@ const dragThreshold = 10;
 let startX, scrollLeft;
 
 const setCategory = (category) => {
-  if (!isDragging.value && (route.query.category || "") !== category) {
-    router.push({ query: { ...route.query, category: category || undefined } });
+  if (!isDragging.value && !isActive(category)) {
+    router.push({ query: { ...route.query, category } });
   }
 };
 
@@ -24,10 +24,11 @@ const pills = computed(() => {
   const ids = (websiteStore.getters.selectedShop.categories || []).map(
     (c) => c.id
   );
-  return categoryPills.value.filter((pill) => !pill.id || ids.includes(pill.id));
+  return categoryPills.value.filter((pill) => pill.id === ALL_CATEGORY || ids.includes(pill.id));
 });
 
-const isActive = (id) => (route.query.category || "") === id;
+const isActive = (id) =>
+  resolveCategory(route.query, websiteStore.getters.selectedShop) === id;
 
 const initializeDrag = (e) => {
   isDragging.value = false;
@@ -78,7 +79,7 @@ onBeforeUnmount(() => {
       >
         <button
           v-for="pill in pills"
-          :key="pill.id || 'all'"
+          :key="pill.id"
           type="button"
           @click="setCategory(pill.id)"
           :aria-current="isActive(pill.id) ? 'page' : undefined"
