@@ -51,7 +51,7 @@ Use the **Claude in Chrome** browser to check the running app: run `npm run dev`
 
 ## Done when
 
-- [ ] On `/products`, no request goes to `/products.json`. Report the before and after size of the first data download in the final message.
+- [x] On `/products`, no request goes to `/products.json`. Report the before and after size of the first data download in the final message.
 
 - [ ] Card images request resized URLs, and hover images load only on hover-capable or hovered cards.
 

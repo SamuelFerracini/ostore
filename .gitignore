@@ -28,6 +28,10 @@ logs
 #SSL certificate files
 *.pem
 
+# Generated from public/products.json by scripts/build-product-index.mjs
+public/products-index.json
+public/products-detail/
+
 # Local backups of the scraped products.json: kept out of public/ so they do
 # not ship with the site.
 data/backups/

@@ -1,4 +1,4 @@
-import { loadProducts } from "./store.js";
+import { getProductById } from "./store.js";
 
 export const useProductModal = () => {
   const product = useState("productModal", () => null);
@@ -41,14 +41,7 @@ export const useProductModalUrlSync = () => {
     if (product.value?.id === id) return;
     let found = null;
     try {
-      const data = await loadProducts();
-      for (const shop of Object.values(data)) {
-        for (const list of Object.values(shop ?? {})) {
-          found = (list ?? []).find((p) => p.id === id);
-          if (found) break;
-        }
-        if (found) break;
-      }
+      found = await getProductById(id);
     } catch {
       /* treat as not found */
     }

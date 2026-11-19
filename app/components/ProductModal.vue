@@ -4,6 +4,7 @@ import { Pagination } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/pagination";
 import cartStore from "~~/stores/cart";
+import { loadProductDetail } from "~/composables/store.js";
 
 const { product, isOpen, close } = useProductModal();
 useProductModalUrlSync();
@@ -29,6 +30,20 @@ const failedImages = ref(new Set());
 const onImageError = (src) => {
   failedImages.value = new Set(failedImages.value).add(src.split("?")[0]);
 };
+// The index carries only the card images; the gallery comes from
+// public/products-detail/<id>.json, fetched when the modal opens.
+const detailImages = ref([]);
+watch(
+  () => product.value?.id,
+  async (id) => {
+    detailImages.value = [];
+    if (!id || !import.meta.client) return;
+    const detail = await loadProductDetail(id);
+    if (product.value?.id !== id) return;
+    detailImages.value = Array.isArray(detail?.images) ? detail.images : [];
+  },
+  { immediate: true },
+);
 const images = computed(() => {
   const p = product.value;
   if (!p) return [];
@@ -37,6 +52,7 @@ const images = computed(() => {
     p.hoverImage,
     p.image2,
     ...(Array.isArray(p.images) ? p.images : []),
+    ...detailImages.value,
   ];
   const out = [];
   const seen = new Set();

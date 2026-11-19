@@ -1,5 +1,6 @@
 // @ts-nocheck
 import { createStore } from "vuex";
+import { loadProducts } from "../app/composables/store.js";
 
 export interface CartItem {
   id: string;
@@ -22,18 +23,14 @@ const withKey = (item: any): CartItem => ({
   key: item.key ?? cartKey(item.id, item.size),
 });
 
-// Helper function to load and validate cart items against products.json
+// Validate cart items against the shared, cached product index
+// (loadProducts in app/composables/store.js), so the cart adds no fetch of
+// its own.
 const validateCartItems = async (items: CartItem[]): Promise<CartItem[]> => {
   if (items.length === 0) return items;
 
   try {
-    const response = await fetch("/products.json");
-    if (!response.ok) {
-      console.error("Failed to load products.json for validation");
-      return items;
-    }
-
-    const productsData = await response.json();
+    const productsData = await loadProducts();
 
     // Create a Set of all valid product IDs for fast lookup
     const validProductIds = new Set<string>();
@@ -180,7 +177,7 @@ const store = createStore({
 
     async loadCart({ commit, state }) {
       commit("LOAD_CART");
-      // Validate cart items against products.json
+      // Validate cart items against the product index
       const validatedItems = await validateCartItems(state.items);
       if (validatedItems.length !== state.items.length) {
         commit("VALIDATE_CART", validatedItems);
