@@ -95,7 +95,7 @@ const searchPlaceholder = computed(() =>
 
 <template>
   <header
-    class="sticky top-0 z-40 w-full bg-white/95 dark:bg-midnight-surface/95 backdrop-blur-md border-b border-gold-line dark:border-midnight-line"
+    class="sticky top-[var(--admin-bar-h,0px)] z-40 w-full bg-white/95 dark:bg-midnight-surface/95 backdrop-blur-md border-b border-gold-line dark:border-midnight-line"
   >
     <div class="h-1 bg-gold" aria-hidden="true"></div>
     <div

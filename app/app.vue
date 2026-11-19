@@ -59,6 +59,7 @@ onBeforeUnmount(() => {
 <template>
   <PromotionsPaused v-if="promotionsPaused" />
   <template v-else>
+    <AdminBar />
     <AppHeader />
     <main class="pb-[96px] lg:pb-0 min-h-[calc(100vh-220px)]">
       <NuxtPage />
@@ -87,6 +88,10 @@ onBeforeUnmount(() => {
 </template>
 
 <style lang="postcss">
+body.admin-bar-on {
+  --admin-bar-h: 2.25rem;
+}
+
 body {
   @apply bg-ivory text-navy font-sans antialiased dark:bg-midnight dark:text-night-text;
 }

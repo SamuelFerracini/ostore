@@ -2,6 +2,9 @@
 export default {
   "lang.toEn": "เปลี่ยนเป็นภาษาอังกฤษ",
   "lang.toTh": "เปลี่ยนเป็นภาษาไทย",
+  "admin.bar": "โหมดแอดมิน",
+  "admin.exit": "ออกจากแอดมิน",
+  "admin.exitLabel": "ออกจากโหมดแอดมิน",
   "scroll.top": "กลับขึ้นด้านบน",
   "common.remove": "ลบออก",
   "common.cancel": "ยกเลิก",
