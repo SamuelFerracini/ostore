@@ -8,6 +8,7 @@ import cartStore from "~~/stores/cart";
 const { product, isOpen, close } = useProductModal();
 useProductModalUrlSync();
 const { t } = useLocale();
+const { isAdmin } = useAdmin();
 
 const dialogEl = ref(null);
 const closeBtn = ref(null);
@@ -475,7 +476,7 @@ onBeforeUnmount(() => {
                 </button>
               </div>
               <a
-                v-if="product.link"
+                v-if="isAdmin && product.link"
                 :href="product.link"
                 target="_blank"
                 rel="noopener noreferrer"
