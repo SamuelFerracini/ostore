@@ -9,8 +9,6 @@ export const CATEGORY_PILL_IDS = [
   { id: "earrings" },
 ];
 
-const SALE_CATEGORIES = ["all-sale", "clearance"];
-
 // Locale-aware category labels. Call inside setup().
 export const useCategoryLabels = () => {
   const { t } = useLocale();
@@ -21,15 +19,6 @@ export const useCategoryLabels = () => {
     return label === key ? getCategoryName(id) : label;
   };
 
-  // The product type (ring, charm…) of a product, ignoring sale buckets.
-  const productTypeLabel = (product) => {
-    const categories = product?.categories ?? [];
-    const type = categories.find((c) => !SALE_CATEGORIES.includes(c));
-    if (type) return categoryLabel(type);
-    if (categories.length) return categoryLabel(categories[0]);
-    return product?.category ? categoryLabel(product.category) : "";
-  };
-
   const categoryPills = computed(() =>
     CATEGORY_PILL_IDS.map((pill) => ({
       ...pill,
@@ -37,5 +26,5 @@ export const useCategoryLabels = () => {
     })),
   );
 
-  return { categoryLabel, productTypeLabel, categoryPills };
+  return { categoryLabel, categoryPills };
 };

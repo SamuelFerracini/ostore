@@ -26,9 +26,9 @@ Remove the category label from product cards. Keep the ring meta line ("N sizes"
 
 ## Done when
 
-- [ ] Non-ring product cards show no category text and no leftover gap.
+- [x] Non-ring product cards show no category text and no leftover gap.
 
-- [ ] Ring cards still show their sizes line.
+- [x] Ring cards still show their sizes line.
 
 - [ ] App builds and existing tests/lint pass.
 

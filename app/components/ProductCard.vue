@@ -9,7 +9,6 @@ const emit = defineEmits(["wishlist-change"]);
 
 const route = useRoute();
 const { t } = useLocale();
-const { productTypeLabel } = useCategoryLabels();
 const showDownloadButton = computed(() => route.query.download === "true");
 const { open: openModal } = useProductModal();
 
@@ -120,7 +119,7 @@ const metaLine = (product) => {
     const sizes = availableSizes(product);
     return sizes ? t("card.ringMeta", { n: sizes }) : t("card.ring");
   }
-  return productTypeLabel(product);
+  return "";
 };
 
 const onCta = (product) => {
@@ -243,7 +242,10 @@ const onCta = (product) => {
           <s>{{ formatPrice(comparePrice(product).value) }}</s>
         </span>
       </div>
-      <p class="mt-1 text-[13px] text-gold-text dark:text-night-gold">
+      <p
+        v-if="metaLine(product)"
+        class="mt-1 text-[13px] text-gold-text dark:text-night-gold"
+      >
         {{ metaLine(product) }}
       </p>
       <a
