@@ -29,6 +29,14 @@ const failedImages = ref(new Set());
 const onImageError = (src) => {
   failedImages.value = new Set(failedImages.value).add(src.split("?")[0]);
 };
+// Same photo can come under different extension/folder: key on file name only.
+const photoKey = (src) =>
+  src
+    .split("?")[0]
+    .split("/")
+    .pop()
+    .replace(/\.[^.]+$/, "")
+    .toLowerCase();
 const images = computed(() => {
   const p = product.value;
   if (!p) return [];
@@ -42,8 +50,9 @@ const images = computed(() => {
   const seen = new Set();
   for (const v of raw) {
     const src = normaliseImage(typeof v === "string" ? v : v?.url ?? v?.src ?? "");
-    const key = src.split("?")[0];
-    if (!src || seen.has(key) || failedImages.value.has(key)) continue;
+    if (!src || failedImages.value.has(src.split("?")[0])) continue;
+    const key = photoKey(src);
+    if (seen.has(key)) continue;
     seen.add(key);
     out.push(src);
   }
