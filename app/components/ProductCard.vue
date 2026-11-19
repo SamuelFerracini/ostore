@@ -10,6 +10,7 @@ const emit = defineEmits(["wishlist-change"]);
 const route = useRoute();
 const { t } = useLocale();
 const { isAdmin } = useAdmin();
+const poster = usePosterSelection();
 const showDownloadButton = computed(() => route.query.download === "true");
 const { open: openModal } = useProductModal();
 
@@ -137,7 +138,10 @@ const onCta = (product) => {
     class="product-card group"
     :class="animationClass(product.id)"
   >
-    <div class="arch-frame">
+    <div
+      class="arch-frame"
+      :class="{ 'arch-frame--picked': isAdmin && poster.isSelected(product.id) }"
+    >
       <div class="arch-photo select-none">
         <button
           type="button"
@@ -200,6 +204,30 @@ const onCta = (product) => {
             @change="emit('wishlist-change', product)"
           />
         </div>
+
+        <!-- Admin: pick for poster -->
+        <button
+          v-if="isAdmin"
+          type="button"
+          class="poster-pick"
+          :class="{ 'poster-pick--on': poster.isSelected(product.id) }"
+          :aria-pressed="poster.isSelected(product.id)"
+          :aria-label="t('poster.pickAria', { name: product.name })"
+          @click.stop="poster.toggle(product)"
+        >
+          <UIcon
+            :name="
+              poster.isSelected(product.id)
+                ? 'i-heroicons-check-20-solid'
+                : 'i-heroicons-plus-20-solid'
+            "
+            size="20"
+            aria-hidden="true"
+          />
+          <span v-if="poster.isSelected(product.id)" class="poster-pick__n">{{
+            poster.items.value.findIndex((p) => p.id === product.id) + 1
+          }}</span>
+        </button>
 
         <!-- Download Button -->
         <button
@@ -339,6 +367,26 @@ const onCta = (product) => {
 .group:hover .arch-frame {
   @apply border-gold;
   box-shadow: 0 10px 28px rgba(29, 43, 69, 0.1);
+}
+
+.arch-frame--picked,
+.group:hover .arch-frame--picked {
+  @apply border-royal dark:border-periwinkle;
+  box-shadow: 0 0 0 2px theme("colors.royal");
+}
+.dark .arch-frame--picked {
+  box-shadow: 0 0 0 2px theme("colors.periwinkle");
+}
+
+.poster-pick {
+  @apply absolute left-2 z-20 flex h-11 min-w-11 items-center justify-center gap-0.5 rounded-full border border-sky bg-white px-2 text-navy shadow-[0_2px_8px_rgba(29,43,69,0.16)] transition hover:scale-105 active:scale-95;
+  top: 22%;
+}
+.poster-pick--on {
+  @apply border-royal bg-royal text-white;
+}
+.poster-pick__n {
+  @apply pr-1 text-[14px] font-semibold leading-none tabular-nums;
 }
 
 .arch-photo {
