@@ -13,9 +13,13 @@ const loadMore = ref(null);
 const totalCount = ref(null);
 let observer = null;
 
+const category = computed(() =>
+  resolveCategory(route.query, websiteStore.getters.selectedShop)
+);
+
 const variables = computed(() => ({
   search: route.query.q,
-  category: route.query.category,
+  category: category.value === ALL_CATEGORY ? undefined : category.value,
   shop: websiteStore.getters.selectedShop.id,
   perPage: 50,
   minPrice: route.query.minPrice ? Number(route.query.minPrice) : undefined,
@@ -26,8 +30,8 @@ const variables = computed(() => ({
 
 const heading = computed(() => {
   if (route.query.q) return t("products.search", { q: route.query.q });
-  if (route.query.category) return categoryLabel(route.query.category);
-  return t("products.all");
+  if (category.value === ALL_CATEGORY) return t("products.all");
+  return categoryLabel(category.value);
 });
 
 async function fetch() {
