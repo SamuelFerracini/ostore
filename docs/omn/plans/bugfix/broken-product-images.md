@@ -6,6 +6,23 @@
 
 ## Plan
 
+## Added: modal gallery shows duplicate, broken slides
+
+**Repro:** open "Green Murano Glass Mini Charm" (`794773C02`). The modal shows 4 slides. Slides 3 and 4 are broken.
+
+**Root cause (confirmed in Chrome):**
+- Every URL in each product's `images` array (3,907 unique, across all Pandora products) lacks the query string `?q=70&sfrm=png&bgcolor=F7F7F7`.
+- `primaryImage` and `hoverImage` do have that query string.
+- The `images` computed in `app/components/ProductModal.vue` (around lines 19-34) dedupes by exact string, so the bare copies of primary and hover appear as extra slides.
+- Bare Pandora `dw/image/v2` URLs fail often. In a sample of 30, 19 failed. With the query string added, 10 out of 10 loaded.
+
+**Fix:**
+- In `ProductModal.vue`, normalise every source before deduping. If a `au.pandora.net/dw/image` URL has no query string, append `?q=70&sfrm=png&bgcolor=F7F7F7`. Then dedupe on the URL without its query string.
+- Optionally fix the data at the source as well: add the query string to `images` in `public/products.json` with a script, and in the scraper or `scripts/fix_products.js` so the next scrape keeps it.
+- Keep the planned `@error` fallback. A gallery image that still fails is removed from the slides and thumbnails, or shows the placeholder.
+
+**Done when:** `794773C02` shows 2 slides, both loading. A Chrome check over the modal galleries of at least 20 random products finds 0 broken images.
+
 # Fix broken product image on Pandora shop
 
 ## Problem
