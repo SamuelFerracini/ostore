@@ -33,7 +33,8 @@ const search = () => {
 
 async function fetch() {
   try {
-    searchResults.value = await searchProducts({ search: searchQuery.value });
+    const { items } = await searchProducts({ search: searchQuery.value });
+    searchResults.value = items;
   } finally {
     isLoading.value = false;
   }

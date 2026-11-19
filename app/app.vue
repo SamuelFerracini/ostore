@@ -46,7 +46,7 @@ const scrollToTop = () => {
 onMounted(() => {
   if (promotionsPaused.value) return;
   window.addEventListener("scroll", handleScroll);
-  // Validate cart items against products.json
+  // Validate cart items against the product index
   cartStore.dispatch("loadCart");
 });
 

@@ -25,10 +25,29 @@ const onPrimaryError = (id) => {
 const onHoverError = (id) => {
   failedHover.value = new Set(failedHover.value).add(id);
 };
-const hoverSrc = (product) =>
-  product.hoverImage?.length > 0 && !failedHover.value.has(product.id)
-    ? product.hoverImage
-    : product.primaryImage;
+const hasHoverImage = (product) =>
+  product.hoverImage?.length > 0 && !failedHover.value.has(product.id);
+
+// The hover photo is fetched only once a hover-capable pointer enters the
+// card: touch devices never download it. The primary photo fades out only
+// after the hover photo has loaded, so a first hover never shows a blank.
+const canHover = useMediaQuery("(hover: hover)");
+const hoveredCards = ref(new Set());
+const loadedHover = ref(new Set());
+const onCardEnter = (product) => {
+  if (!canHover.value || !hasHoverImage(product)) return;
+  if (hoveredCards.value.has(product.id)) return;
+  hoveredCards.value = new Set(hoveredCards.value).add(product.id);
+};
+const onHoverLoad = (id) => {
+  loadedHover.value = new Set(loadedHover.value).add(id);
+};
+const showHoverImage = (product) =>
+  hoveredCards.value.has(product.id) &&
+  hasHoverImage(product) &&
+  !failedPrimary.value.has(product.id);
+const fadesOnHover = (product) =>
+  showHoverImage(product) && loadedHover.value.has(product.id);
 
 const onImageLoad = (productId) => {
   loadedImages.value.add(productId);
@@ -137,6 +156,7 @@ const onCta = (product) => {
     :key="product.id"
     class="product-card group"
     :class="animationClass(product.id)"
+    @mouseenter="onCardEnter(product)"
   >
     <div
       class="arch-frame"
@@ -157,10 +177,10 @@ const onCta = (product) => {
             <UIcon name="i-heroicons-photo" class="text-sky" size="32" />
           </span>
           <NuxtImg
-            v-if="!failedPrimary.has(product.id)"
+            v-if="showHoverImage(product)"
             alt=""
-            loading="lazy"
-            :src="hoverSrc(product)"
+            :src="resizeImage(product.hoverImage, CARD_IMAGE)"
+            @load="onHoverLoad(product.id)"
             @error="onHoverError(product.id)"
             class="absolute inset-0 h-full w-full bg-photo object-cover"
           />
@@ -169,10 +189,11 @@ const onCta = (product) => {
             :id="`primary-image-${product.id}`"
             :alt="product.name"
             loading="lazy"
-            :src="product.primaryImage"
+            :src="resizeImage(product.primaryImage, CARD_IMAGE)"
             @load="onImageLoad(product.id)"
             @error="onPrimaryError(product.id)"
-            class="absolute inset-0 h-full w-full bg-photo object-cover transition-opacity duration-300 group-hover:opacity-0"
+            class="absolute inset-0 h-full w-full bg-photo object-cover transition-opacity duration-300"
+            :class="{ 'group-hover:opacity-0': fadesOnHover(product) }"
           />
         </button>
 

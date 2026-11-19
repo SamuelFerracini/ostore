@@ -1,24 +1,68 @@
 import website from "../stores/website.ts";
 
 let data = {};
+let productsById = new Map();
+let loading = null;
+const details = new Map();
 
-export async function loadProducts() {
-  console.log("Loading products...");
+// Fetch public/products-index.json once (built by
+// scripts/build-product-index.mjs) and expand it to the old
+// { [shop]: { [category]: Product[] } } shape. Categories hold references to
+// one shared object per product, so all-sale costs no extra copies.
+// Concurrent callers share the same request.
+export function loadProducts() {
+  if (Object.keys(data).length > 0) return Promise.resolve(data);
+  if (loading) return loading;
 
-  if (Object.keys(data).length > 0) {
+  loading = (async () => {
+    const response = await fetch("/products-index.json");
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+
+    const index = await response.json();
+    const byId = new Map(Object.entries(index.products ?? {}));
+    const expanded = {};
+    for (const [shop, categories] of Object.entries(index.shops ?? {})) {
+      expanded[shop] = {};
+      for (const [category, ids] of Object.entries(categories ?? {})) {
+        expanded[shop][category] = ids.map((id) => byId.get(id)).filter(Boolean);
+      }
+    }
+    productsById = byId;
+    data = expanded;
     return data;
+  })().finally(() => {
+    loading = null;
+  });
+
+  return loading;
+}
+
+// Product from the index by id, or null. Loads the index if needed.
+export async function getProductById(id) {
+  if (id == null) return null;
+  await loadProducts();
+  return productsById.get(String(id)) ?? null;
+}
+
+// Detail data for one product (gallery images), fetched on demand from
+// public/products-detail/<id>.json and cached. Resolves to {} when missing.
+export function loadProductDetail(id) {
+  if (id == null || id === "") return Promise.resolve({});
+  const key = String(id);
+  if (!details.has(key)) {
+    const request = fetch(`/products-detail/${encodeURIComponent(key)}.json`)
+      .then((res) => (res.ok ? res.json() : {}))
+      .catch(() => ({}));
+    details.set(key, request);
+    // Do not cache failures: a later open can retry.
+    request.then((detail) => {
+      if (!detail || Object.keys(detail).length === 0) details.delete(key);
+    });
   }
-
-  const url = `/products.json`;
-  const response = await fetch(url);
-
-  if (!response.ok) {
-    throw new Error(`HTTP error! Status: ${response.status}`);
-  }
-
-  data = await response.json();
-
-  return data;
+  return details.get(key);
 }
 
 function orderObjectKeys(obj, order) {
@@ -53,7 +97,7 @@ export async function searchProducts({
   fieldby,
 } = {}) {
   if (!data[shop]) {
-    return [];
+    return { items: [], total: 0 };
   }
 
   let ordered = orderObjectKeys(
@@ -68,7 +112,7 @@ export async function searchProducts({
   }
 
   if (!filteredProducts) {
-    return [];
+    return { items: [], total: 0 };
   }
 
   const uniqueProducts = new Map();
@@ -114,7 +158,11 @@ export async function searchProducts({
   const start = (page - 1) * perPage;
   const end = start + perPage;
 
-  return filteredProducts.slice(start, end);
+  // total counts every match, so callers need no second search to count.
+  return {
+    items: filteredProducts.slice(start, end),
+    total: filteredProducts.length,
+  };
 }
 
 export function listCategories() {
@@ -144,8 +192,4 @@ export function getCategory(id) {
 
 export function getCategoryName(id) {
   return getCategory(id)?.name ?? id;
-}
-
-export function getProduct(slug, sku) {
-  return {};
 }
