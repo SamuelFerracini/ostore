@@ -165,7 +165,10 @@ const rootStyle = computed(() => ({
   top: 50%;
   left: 50%;
   z-index: 0;
-  width: calc(max(3 * var(--tile) + 2 * var(--gap), var(--rows) * (var(--tile) + var(--label-h) + var(--gap))) * 1.06);
+  width: max(
+    calc((3 * var(--tile) + 2 * var(--gap)) * 1.06),
+    calc(var(--rows) * (var(--tile) + var(--label-h) + var(--gap)) * 1.06)
+  );
   aspect-ratio: 1;
   border-radius: 50%;
   background: var(--blush);
