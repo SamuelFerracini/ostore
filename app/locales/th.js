@@ -174,4 +174,9 @@ export default {
   "products.included": "ราคารวมกล่องและถุงแล้ว",
   "products.receipt": "ต้องการใบเสร็จ ทักสอบถามได้",
   "products.authenticShort": "ของแท้จากออสเตรเลีย · ราคารวมกล่องและถุงแล้ว",
+  "poster.pickAria": "เลือก {name} ลงโปสเตอร์",
+  "poster.barAria": "สินค้าที่เลือกลงโปสเตอร์",
+  "poster.count": "โปสเตอร์ ({n})",
+  "poster.clear": "ล้าง",
+  "poster.open": "สร้างโปสเตอร์",
 };

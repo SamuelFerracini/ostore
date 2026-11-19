@@ -174,4 +174,9 @@ export default {
   "products.included": "Price includes gift box and bag",
   "products.receipt": "Message us if you need a receipt",
   "products.authenticShort": "Authentic from Australia · Gift box and bag included",
+  "poster.pickAria": "Add {name} to the poster",
+  "poster.barAria": "Poster selection",
+  "poster.count": "Poster ({n})",
+  "poster.clear": "Clear",
+  "poster.open": "Build poster",
 };
