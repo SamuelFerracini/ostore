@@ -249,21 +249,43 @@ const onCta = (product) => {
       >
         {{ metaLine(product) }}
       </p>
-      <a
-        v-if="isAdmin && product.link"
-        :href="product.link"
-        target="_blank"
-        rel="noopener noreferrer"
-        class="mt-1 inline-flex items-center gap-1 self-start text-[13px] text-royal dark:text-[#D8B868] underline underline-offset-2"
-        @click.stop
+      <div
+        v-if="isAdmin && (product.link || product.id)"
+        class="mt-1 flex flex-wrap items-center gap-x-3 gap-y-0.5 self-start text-[12px] sm:text-[13px]"
       >
-        {{ t("modal.viewPandora") }}
-        <UIcon
-          name="i-heroicons-arrow-top-right-on-square"
-          size="14"
-          aria-hidden="true"
-        />
-      </a>
+        <a
+          v-if="product.link"
+          :href="product.link"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="inline-flex items-center gap-1 text-royal dark:text-[#D8B868] underline underline-offset-2"
+          @click.stop
+        >
+          {{ t("modal.pandoraAu") }}
+          <UIcon
+            name="i-heroicons-arrow-top-right-on-square"
+            size="14"
+            class="max-sm:hidden"
+            aria-hidden="true"
+          />
+        </a>
+        <a
+          v-if="product.id"
+          :href="pandoraThLink(product)"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="inline-flex items-center gap-1 text-royal dark:text-[#D8B868] underline underline-offset-2"
+          @click.stop
+        >
+          {{ t("modal.pandoraTh") }}
+          <UIcon
+            name="i-heroicons-arrow-top-right-on-square"
+            size="14"
+            class="max-sm:hidden"
+            aria-hidden="true"
+          />
+        </a>
+      </div>
 
       <div class="mt-auto pt-3.5">
         <button
