@@ -1,10 +1,18 @@
 import pkg from "./package.json";
 import storefrontConfig from "./storefront.config.js";
+import { buildProductIndex } from "./scripts/build-product-index.mjs";
 
 export default defineNuxtConfig({
   devtools: { enabled: false },
 
   modules: ["@vueuse/nuxt", "@nuxt/ui", "@nuxt/image"],
+
+  // The app loads public/products-index.json and public/products-detail/,
+  // generated from the scraped public/products.json. Build them on every
+  // dev, build and generate, so a plain `nuxt dev` works too.
+  hooks: {
+    "build:before": () => buildProductIndex(),
+  },
 
   // Follow the OS on first visit; the footer toggle stores an explicit choice.
   colorMode: { preference: "system", fallback: "light" },

@@ -9,11 +9,12 @@
 //                                     opens.
 //
 // public/products.json stays the scraper output and this script's input; the
-// app never fetches it. Run with `npm run build:products` (also runs before
-// dev, build and generate).
+// app never fetches it. nuxt.config.ts runs buildProductIndex() on every
+// `nuxt dev`, `nuxt build` and `nuxt generate`, however they are started; run
+// `npm run build:products` by hand after a new scrape while dev is running.
 import fs from "node:fs";
 import path from "node:path";
-import { fileURLToPath } from "node:url";
+import { fileURLToPath, pathToFileURL } from "node:url";
 
 const root = path.join(path.dirname(fileURLToPath(import.meta.url)), "..");
 const SOURCE = path.join(root, "public/products.json");
@@ -55,52 +56,59 @@ const pick = (product, fields) => {
   return out;
 };
 
-const raw = JSON.parse(fs.readFileSync(SOURCE, "utf8"));
+export function buildProductIndex({ log = console.log } = {}) {
+  const raw = JSON.parse(fs.readFileSync(SOURCE, "utf8"));
 
-const products = {};
-const details = new Map();
-const shops = {};
-let entries = 0;
+  const products = {};
+  const details = new Map();
+  const shops = {};
+  let entries = 0;
 
-for (const [shop, categories] of Object.entries(raw)) {
-  shops[shop] = {};
-  for (const [category, list] of Object.entries(categories ?? {})) {
-    if (!Array.isArray(list)) continue;
-    const ids = [];
-    const seen = new Set();
-    for (const product of list) {
-      entries++;
-      const id = product?.id;
-      if (id == null || id === "") continue;
-      if (!SAFE_ID.test(String(id))) {
-        throw new Error(`Unsafe product id for a file name: ${JSON.stringify(id)}`);
+  for (const [shop, categories] of Object.entries(raw)) {
+    shops[shop] = {};
+    for (const [category, list] of Object.entries(categories ?? {})) {
+      if (!Array.isArray(list)) continue;
+      const ids = [];
+      const seen = new Set();
+      for (const product of list) {
+        entries++;
+        const id = product?.id;
+        if (id == null || id === "") continue;
+        if (!SAFE_ID.test(String(id))) {
+          throw new Error(`Unsafe product id for a file name: ${JSON.stringify(id)}`);
+        }
+        // Same product id is the same product across categories (all-sale
+        // repeats the others): store it once, first copy wins, matching the
+        // first-match dedupe in searchProducts.
+        if (!products[id]) {
+          products[id] = pick(product, INDEX_FIELDS);
+          details.set(id, pick(product, DETAIL_FIELDS));
+        }
+        if (!seen.has(id)) {
+          seen.add(id);
+          ids.push(id);
+        }
       }
-      // Same product id is the same product across categories (all-sale
-      // repeats the others): store it once, first copy wins, matching the
-      // first-match dedupe in searchProducts.
-      if (!products[id]) {
-        products[id] = pick(product, INDEX_FIELDS);
-        details.set(id, pick(product, DETAIL_FIELDS));
-      }
-      if (!seen.has(id)) {
-        seen.add(id);
-        ids.push(id);
-      }
+      shops[shop][category] = ids;
     }
-    shops[shop][category] = ids;
   }
+
+  fs.writeFileSync(INDEX, JSON.stringify({ products, shops }));
+
+  fs.rmSync(DETAIL_DIR, { recursive: true, force: true });
+  fs.mkdirSync(DETAIL_DIR, { recursive: true });
+  for (const [id, detail] of details) {
+    fs.writeFileSync(path.join(DETAIL_DIR, `${id}.json`), JSON.stringify(detail));
+  }
+
+  const kb = (file) => `${(fs.statSync(file).size / 1024).toFixed(0)} KB`;
+  log(
+    `products index: ${entries} entries -> ${Object.keys(products).length} products, ` +
+      `${kb(SOURCE)} -> ${kb(INDEX)}; ${details.size} detail files`,
+  );
 }
 
-fs.writeFileSync(INDEX, JSON.stringify({ products, shops }));
-
-fs.rmSync(DETAIL_DIR, { recursive: true, force: true });
-fs.mkdirSync(DETAIL_DIR, { recursive: true });
-for (const [id, detail] of details) {
-  fs.writeFileSync(path.join(DETAIL_DIR, `${id}.json`), JSON.stringify(detail));
+// CLI: node scripts/build-product-index.mjs
+if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
+  buildProductIndex();
 }
-
-const kb = (file) => `${(fs.statSync(file).size / 1024).toFixed(0)} KB`;
-console.log(
-  `products index: ${entries} entries -> ${Object.keys(products).length} products, ` +
-    `${kb(SOURCE)} -> ${kb(INDEX)}; ${details.size} detail files`,
-);
