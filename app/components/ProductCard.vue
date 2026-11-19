@@ -231,6 +231,21 @@ const onCta = (product) => {
       <p class="mt-1 text-[13px] text-gold-text dark:text-night-gold">
         {{ metaLine(product) }}
       </p>
+      <a
+        v-if="product.link"
+        :href="product.link"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="mt-1 inline-flex items-center gap-1 self-start text-[13px] text-royal dark:text-[#D8B868] underline underline-offset-2"
+        @click.stop
+      >
+        {{ t("modal.viewPandora") }}
+        <UIcon
+          name="i-heroicons-arrow-top-right-on-square"
+          size="14"
+          aria-hidden="true"
+        />
+      </a>
 
       <div class="mt-auto pt-3.5">
         <button
