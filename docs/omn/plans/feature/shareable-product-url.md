@@ -53,4 +53,4 @@ When a product modal is open, the URL carries the product id, for example `/prod
 
 - [ ] Back/Forward behaves sanely, and nothing loops or flickers.
 
-- [ ] `npm run build` passes.
+- [x] `npm run build` passes.
