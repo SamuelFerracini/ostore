@@ -2,6 +2,7 @@
 import cartStore from "~~/stores/cart";
 
 const { t, tIn } = useLocale();
+const { isAdmin } = useAdmin();
 
 const FB_URL = "https://www.facebook.com/share/1AmvwsRi18/?mibextid=wwXIfr";
 
@@ -170,7 +171,8 @@ const focusRing =
                   {{ t("common.size", { size: item.size }) }}
                 </span>
                 <span>{{ fmt(item.price_normalised) }} {{ t("cart.perPiece") }}</span>
-                <span v-if="referencePrice(item)">
+                <!-- Hidden for customers on purpose (admins only). Remove isAdmin to turn back on. -->
+                <span v-if="isAdmin && referencePrice(item)">
                   {{ referencePrice(item).label }}
                   <s>{{ fmt(referencePrice(item).value) }} &#3647;</s>
                 </span>
@@ -255,8 +257,9 @@ const focusRing =
               </div>
             </dl>
 
+            <!-- Hidden for customers on purpose (admins only). Remove isAdmin to turn back on. -->
             <div
-              v-if="savings > 0"
+              v-if="isAdmin && savings > 0"
               class="mt-4 flex items-center gap-2 rounded-xl bg-gold-soft dark:bg-night-gold/15 text-[#6E5418] dark:text-[#E2C783] px-3 py-2 text-sm"
             >
               <svg width="14" height="14" viewBox="0 0 24 24" class="shrink-0 fill-gold dark:fill-night-gold" aria-hidden="true">
