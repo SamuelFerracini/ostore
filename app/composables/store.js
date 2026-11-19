@@ -193,7 +193,3 @@ export function getCategory(id) {
 export function getCategoryName(id) {
   return getCategory(id)?.name ?? id;
 }
-
-export function getProduct(slug, sku) {
-  return {};
-}
