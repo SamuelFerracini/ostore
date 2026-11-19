@@ -38,4 +38,4 @@ Opening `/products` with no `category` query selects and loads the **All Sales**
 
 - [ ] A shop without `all-sale` still opens on all products.
 
-- [ ] `npm run build` (or the project's lint or typecheck) passes.
+- [x] `npm run build` (or the project's lint or typecheck) passes.
