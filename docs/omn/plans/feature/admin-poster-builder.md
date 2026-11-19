@@ -42,6 +42,6 @@ In admin mode, the admin picks products in the store and gets a ready poster PNG
 
 - [ ] An admin can select products across pages, edit the texts, reorder, and download a PNG that matches the preview, with all product images present.
 
-- [ ] The image proxy rejects hosts not on the allowlist.
+- [x] The image proxy rejects hosts not on the allowlist.
 
 - [ ] `npm run build` passes.
