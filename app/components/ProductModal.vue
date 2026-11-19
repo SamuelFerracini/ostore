@@ -325,7 +325,7 @@ onBeforeUnmount(() => {
                   swiperRef?.slideTo(i);
                 "
               >
-                <img :src="src" alt="" class="w-full h-full object-cover" loading="lazy" @error="onImageError(src)" />
+                <img :src="resizeImage(src, MODAL_THUMB_IMAGE)" alt="" class="w-full h-full object-cover" loading="lazy" @error="onImageError(src)" />
               </button>
             </div>
 
@@ -345,7 +345,7 @@ onBeforeUnmount(() => {
                   >
                     <SwiperSlide v-for="(src, i) in images" :key="src">
                       <img
-                        :src="src"
+                        :src="resizeImage(src, MODAL_IMAGE)"
                         :alt="`${product.name} ${i + 1}`"
                         class="w-full h-full object-cover"
                         :loading="i === 0 ? 'eager' : 'lazy'"

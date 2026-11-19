@@ -160,7 +160,7 @@ const onCta = (product) => {
             v-if="!failedPrimary.has(product.id)"
             alt=""
             loading="lazy"
-            :src="hoverSrc(product)"
+            :src="resizeImage(hoverSrc(product), CARD_IMAGE)"
             @error="onHoverError(product.id)"
             class="absolute inset-0 h-full w-full bg-photo object-cover"
           />
@@ -169,7 +169,7 @@ const onCta = (product) => {
             :id="`primary-image-${product.id}`"
             :alt="product.name"
             loading="lazy"
-            :src="product.primaryImage"
+            :src="resizeImage(product.primaryImage, CARD_IMAGE)"
             @load="onImageLoad(product.id)"
             @error="onPrimaryError(product.id)"
             class="absolute inset-0 h-full w-full bg-photo object-cover transition-opacity duration-300 group-hover:opacity-0"
