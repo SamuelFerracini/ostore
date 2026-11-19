@@ -44,4 +44,4 @@ Show a small "View on Pandora" text link on every product card that has a `link`
 
 - [ ] Clicking the link does not open the product modal.
 
-- [ ] `npm run build` (or the project's type check/lint) passes.
+- [x] `npm run build` (or the project's type check/lint) passes.
