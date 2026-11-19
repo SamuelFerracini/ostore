@@ -31,10 +31,10 @@ Show the header crown as the tab icon.
 
 ## Done when
 
-- [ ] `public/favicon.svg`, `public/favicon.ico`, `public/apple-touch-icon.png` exist and show the crown.
+- [x] `public/favicon.svg`, `public/favicon.ico`, `public/apple-touch-icon.png` exist and show the crown.
 
-- [ ] `nuxt.config.ts` links them.
+- [x] `nuxt.config.ts` links them.
 
-- [ ] `npm run build` passes.
+- [x] `npm run build` passes.
 
-- [ ] Changes committed on this branch.
+- [x] Changes committed on this branch.
