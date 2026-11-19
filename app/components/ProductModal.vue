@@ -379,8 +379,9 @@ onBeforeUnmount(() => {
                     </span>
                   </template>
 
+                  <!-- Hidden for customers on purpose (admins only). Remove isAdmin to turn back on. -->
                   <span
-                    v-if="percent > 0"
+                    v-if="isAdmin && percent > 0"
                     class="absolute top-4 left-4 z-10 rounded-full bg-gold px-3 py-1 text-sm font-semibold text-navy"
                   >
                     −{{ percent }}%
@@ -406,12 +407,14 @@ onBeforeUnmount(() => {
               <p class="mt-4 text-[28px] font-semibold text-royal dark:text-[#EEF2F8]">
                 {{ fmt(price) }}
               </p>
-              <p v-if="reference" class="text-sm text-muted dark:text-[#9AA8C2]">
+              <!-- Hidden for customers on purpose (admins only). Remove isAdmin to turn back on. -->
+              <p v-if="isAdmin && reference" class="text-sm text-muted dark:text-[#9AA8C2]">
                 {{ reference.label }}
                 <s>{{ fmt(reference.value) }}</s>
               </p>
+              <!-- Hidden for customers on purpose (admins only). Remove isAdmin to turn back on. -->
               <p
-                v-if="saving > 0"
+                v-if="isAdmin && saving > 0"
                 class="mt-3 inline-flex items-center gap-1.5 rounded-full bg-gold-soft dark:bg-midnight px-3 py-1 text-sm font-medium text-[#6E5418] dark:text-[#D8B868]"
               >
                 <svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><path d="M6 0l1.7 4.2L12 4.6 8.7 7.5 9.7 12 6 9.6 2.3 12l1-4.5L0 4.6l4.3-.4z" fill="#C5A253" /></svg>

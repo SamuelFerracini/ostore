@@ -213,8 +213,9 @@ const onCta = (product) => {
           <path d="M12 0c.6 6.4 5 11.4 12 12-7 .6-11.4 5-12 12-.6-7-5-11.4-12-12 7-.6 11.4-5.6 12-12Z" />
         </svg>
 
+        <!-- Hidden for customers on purpose (admins only). Remove isAdmin to turn back on. -->
         <span
-          v-if="discountPercent(product) > 0"
+          v-if="isAdmin && discountPercent(product) > 0"
           class="absolute bottom-2.5 left-2.5 z-20 rounded-full bg-gold px-2.5 py-1 text-[13px] font-semibold leading-none text-navy"
           >−{{ discountPercent(product) }}%</span
         >
@@ -284,8 +285,9 @@ const onCta = (product) => {
         <span class="text-[18px] font-semibold text-royal dark:text-night-price"
           >{{ formatPrice(product.price_normalised) }}</span
         >
+        <!-- Hidden for customers on purpose (admins only). Remove isAdmin to turn back on. -->
         <span
-          v-if="comparePrice(product)"
+          v-if="isAdmin && comparePrice(product)"
           class="text-[13px] text-muted dark:text-night-muted"
         >
           {{ comparePrice(product).label }}
