@@ -54491,12 +54491,13 @@
         "originalPrice": "$268.00",
         "salePrice": "$201.00",
         "discount": null,
-        "primaryImage": "https://au.pandora.net/dw/image/v2/BKNF_PRD/on/demandware.static/-/Sites-pandora-master-catalog/default/dw83a369b2/productimages/main_rect_base/PSG2629_RGB.jpg?q=70&sfrm=png&bgcolor=F7F7F7",
+        "primaryImage": "https://au.pandora.net/dw/image/v2/BKNF_PRD/on/demandware.static/-/Sites-pandora-master-catalog/default/dw9485a70d/productimages/main_rect_base/164950C01_RGB.png?q=70&sfrm=png&bgcolor=F7F7F7",
         "hoverImage": "",
         "sizes": [],
         "scrapedAt": "2026-11-19T07:41:23.092Z",
         "images": [
-          "https://au.pandora.net/dw/image/v2/BKNF_PRD/on/demandware.static/-/Sites-pandora-master-catalog/default/dw83a369b2/productimages/main_rect_base/PSG2629_RGB.jpg"
+          "https://au.pandora.net/dw/image/v2/BKNF_PRD/on/demandware.static/-/Sites-pandora-master-catalog/default/dw9485a70d/productimages/main_rect_base/164950C01_RGB.png",
+          "https://au.pandora.net/dw/image/v2/BKNF_PRD/on/demandware.static/-/Sites-pandora-master-catalog/default/dw5b53867b/productimages/main_rect_base/135027C01_RGB.png"
         ],
         "categories": [
           "rings"
