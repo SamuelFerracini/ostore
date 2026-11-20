@@ -1,22 +1,7 @@
 <script setup>
 import websiteStore from "~~/stores/website";
 
-const colorMode = useColorMode();
 const { t } = useLocale();
-
-const toggleDark = () => {
-  colorMode.preference = colorMode.value === "dark" ? "light" : "dark";
-};
-
-const colorModeIcon = computed(() =>
-  colorMode.value === "dark"
-    ? "i-iconamoon-mode-dark-fill"
-    : "i-iconamoon-mode-light-fill"
-);
-
-const colorModeLabel = computed(() =>
-  colorMode.value === "dark" ? t("footer.lightMode") : t("footer.darkMode")
-);
 
 const facebookUrl = "https://www.facebook.com/nonlapan.ssw";
 const shopId = computed(() => websiteStore.getters.selectedShop.id);
@@ -93,14 +78,6 @@ onBeforeUnmount(() => footerObserver?.disconnect());
       </div>
 
       <div class="footer-actions">
-        <button
-          type="button"
-          @click="toggleDark"
-          class="flex h-11 w-11 items-center justify-center rounded-full border border-white/25 text-white/90 hover:border-gold-light hover:text-gold-light transition active:scale-95"
-          :aria-label="colorModeLabel"
-        >
-          <ClientOnly><UIcon :name="colorModeIcon" size="20" /></ClientOnly>
-        </button>
         <a
           :href="facebookUrl"
           target="_blank"
@@ -143,14 +120,6 @@ onBeforeUnmount(() => footerObserver?.disconnect());
     >
       <p>{{ t("footer.line3") }}</p>
     </div>
-    <button
-      type="button"
-      @click="toggleDark"
-      class="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-white/25 text-white/90 active:scale-95 transition"
-      :aria-label="colorModeLabel"
-    >
-      <ClientOnly><UIcon :name="colorModeIcon" size="20" /></ClientOnly>
-    </button>
     <a
       :href="facebookUrl"
       target="_blank"
