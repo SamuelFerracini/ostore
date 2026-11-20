@@ -256,7 +256,7 @@ const onCta = (product) => {
           v-if="showDownloadButton"
           type="button"
           @click.prevent="downloadImage(product, $event)"
-          class="absolute top-[22%] right-2 z-20 flex h-11 w-11 items-center justify-center rounded-full bg-white text-navy shadow-[0_2px_8px_rgba(29,43,69,0.16)] hover:scale-105 active:scale-95 transition"
+          class="absolute top-[22%] right-2 z-20 flex h-11 w-11 items-center justify-center rounded-full bg-white text-navy shadow-[0_2px_8px_rgba(46,36,40,0.16)] hover:scale-105 active:scale-95 transition"
           :aria-label="t('card.download')"
         >
           <UIcon name="i-iconamoon-download-bold" size="20" />
@@ -309,7 +309,7 @@ const onCta = (product) => {
           :href="product.link"
           target="_blank"
           rel="noopener noreferrer"
-          class="inline-flex items-center gap-1 text-royal dark:text-[#D8B868] underline underline-offset-2"
+          class="inline-flex items-center gap-1 text-royal dark:text-night-price underline underline-offset-2"
           @click.stop
         >
           {{ t("modal.pandoraAu") }}
@@ -325,7 +325,7 @@ const onCta = (product) => {
           :href="pandoraThLink(product)"
           target="_blank"
           rel="noopener noreferrer"
-          class="inline-flex items-center gap-1 text-royal dark:text-[#D8B868] underline underline-offset-2"
+          class="inline-flex items-center gap-1 text-royal dark:text-night-price underline underline-offset-2"
           @click.stop
         >
           {{ t("modal.pandoraTh") }}
@@ -381,7 +381,7 @@ const onCta = (product) => {
 }
 
 .arch-frame {
-  @apply bg-white border border-gold-arch dark:bg-midnight-surface dark:border-gold/35;
+  @apply bg-white border border-gold-arch dark:bg-midnight-surface dark:border-[#4A3A33];
   padding: 6px;
   border-radius: 50% 50% 18px 18px / 26% 26% 18px 18px;
   transition: border-color 0.3s ease, box-shadow 0.3s ease;
@@ -389,7 +389,7 @@ const onCta = (product) => {
 
 .group:hover .arch-frame {
   @apply border-gold;
-  box-shadow: 0 10px 28px rgba(29, 43, 69, 0.1);
+  box-shadow: 0 10px 28px rgba(46, 36, 40, 0.1);
 }
 
 .arch-frame--picked,
@@ -402,7 +402,7 @@ const onCta = (product) => {
 }
 
 .poster-pick {
-  @apply absolute left-2 z-20 flex h-11 min-w-11 items-center justify-center gap-0.5 rounded-full border border-sky bg-white px-2 text-navy shadow-[0_2px_8px_rgba(29,43,69,0.16)] transition hover:scale-105 active:scale-95;
+  @apply absolute left-2 z-20 flex h-11 min-w-11 items-center justify-center gap-0.5 rounded-full border border-sky bg-white px-2 text-navy shadow-[0_2px_8px_rgba(46,36,40,0.16)] transition hover:scale-105 active:scale-95;
   top: 22%;
 }
 .poster-pick--on {
@@ -505,20 +505,20 @@ const onCta = (product) => {
 @keyframes glowGold {
   0%,
   100% {
-    box-shadow: 0 0 0 0 rgba(197, 162, 83, 0);
+    box-shadow: 0 0 0 0 rgba(201, 160, 106, 0);
   }
   50% {
-    box-shadow: 0 0 22px 4px rgba(197, 162, 83, 0.45);
+    box-shadow: 0 0 22px 4px rgba(201, 160, 106, 0.45);
   }
 }
 
 @keyframes glowRoyal {
   0%,
   100% {
-    box-shadow: 0 0 0 0 rgba(43, 76, 126, 0);
+    box-shadow: 0 0 0 0 rgba(181, 84, 110, 0);
   }
   50% {
-    box-shadow: 0 0 22px 4px rgba(43, 76, 126, 0.35);
+    box-shadow: 0 0 22px 4px rgba(181, 84, 110, 0.35);
   }
 }
 

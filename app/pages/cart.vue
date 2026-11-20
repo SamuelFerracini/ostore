@@ -138,7 +138,7 @@ const focusRing =
           >
             <!-- Arched thumbnail -->
             <div
-              class="w-24 h-[124px] shrink-0 border border-gold-arch dark:border-gold/40 p-[3px]"
+              class="w-24 h-[124px] shrink-0 border border-gold-arch dark:border-[#4A3A33] p-[3px]"
               style="border-radius: 50% 50% 12px 12px / 30% 30% 12px 12px"
             >
               <div
@@ -260,7 +260,7 @@ const focusRing =
             <!-- Hidden for customers on purpose (admins only). Remove isAdmin to turn back on. -->
             <div
               v-if="isAdmin && savings > 0"
-              class="mt-4 flex items-center gap-2 rounded-xl bg-gold-soft dark:bg-night-gold/15 text-[#6E5418] dark:text-[#E2C783] px-3 py-2 text-sm"
+              class="mt-4 flex items-center gap-2 rounded-xl bg-gold-soft dark:bg-night-gold/15 text-gold-text dark:text-night-price px-3 py-2 text-sm"
             >
               <svg width="14" height="14" viewBox="0 0 24 24" class="shrink-0 fill-gold dark:fill-night-gold" aria-hidden="true">
                 <path d="M12 2l2.9 6.6 7.1.6-5.4 4.7 1.6 7L12 17.3 5.8 21l1.6-7L2 9.2l7.1-.6z" />

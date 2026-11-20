@@ -271,10 +271,10 @@ onBeforeUnmount(() => {
           role="dialog"
           aria-modal="true"
           aria-labelledby="pm-title"
-          class="pm-dialog relative flex flex-col md:flex-row bg-white dark:bg-midnight-surface text-navy dark:text-[#EEF2F8] w-full h-[calc(100dvh-40px)] rounded-t-[28px] md:rounded-[28px] md:w-[min(1120px,calc(100vw-48px))] md:h-[min(740px,calc(100dvh-48px))] overflow-hidden shadow-2xl font-sans"
+          class="pm-dialog relative flex flex-col md:flex-row bg-white dark:bg-midnight-surface text-navy dark:text-night-text w-full h-[calc(100dvh-40px)] rounded-t-[28px] md:rounded-[28px] md:w-[min(1120px,calc(100vw-48px))] md:h-[min(740px,calc(100dvh-48px))] overflow-hidden shadow-2xl font-sans"
         >
           <div
-            class="absolute inset-x-0 top-0 h-1 bg-gold dark:bg-[#D8B868] z-30"
+            class="absolute inset-x-0 top-0 h-1 bg-gold dark:bg-night-price z-30"
           />
 
           <!-- phone grabber -->
@@ -289,7 +289,7 @@ onBeforeUnmount(() => {
             ref="closeBtn"
             type="button"
             :aria-label="t('modal.close')"
-            class="absolute top-4 right-4 z-40 h-10 w-10 rounded-full bg-white/90 dark:bg-midnight text-navy dark:text-[#EEF2F8] border border-gold-line dark:border-midnight-line flex items-center justify-center hover:bg-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-royal dark:focus-visible:outline-[#D8B868]"
+            class="absolute top-4 right-4 z-40 h-10 w-10 rounded-full bg-white/90 dark:bg-midnight text-navy dark:text-night-text border border-gold-line dark:border-midnight-line flex items-center justify-center hover:bg-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-royal dark:focus-visible:outline-night-price"
             @click="close"
           >
             <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
@@ -315,7 +315,7 @@ onBeforeUnmount(() => {
                 class="shrink-0 w-[88px] h-[110px] rounded-xl overflow-hidden border-2 bg-photo focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-royal"
                 :class="
                   i === activeIndex
-                    ? 'border-gold dark:border-[#D8B868]'
+                    ? 'border-gold dark:border-night-price'
                     : 'border-gold-line dark:border-midnight-line'
                 "
                 :aria-label="t('modal.photoN', { n: i + 1 })"
@@ -394,7 +394,7 @@ onBeforeUnmount(() => {
           <!-- ============ details ============ -->
           <div class="flex-1 min-h-0 flex flex-col md:w-[42%]">
             <div class="flex-1 overflow-y-auto px-5 pt-5 md:px-9 md:pt-10 pb-4">
-              <p class="text-sm font-medium text-gold-text dark:text-[#D8B868]">
+              <p class="text-sm font-medium text-gold-text dark:text-night-price">
                 {{ categoryLabel }}
               </p>
               <h2
@@ -404,20 +404,20 @@ onBeforeUnmount(() => {
                 {{ product.name }}
               </h2>
 
-              <p class="mt-4 text-[28px] font-semibold text-royal dark:text-[#EEF2F8]">
+              <p class="mt-4 text-[28px] font-semibold text-royal dark:text-night-text">
                 {{ fmt(price) }}
               </p>
               <!-- Hidden for customers on purpose (admins only). Remove isAdmin to turn back on. -->
-              <p v-if="isAdmin && reference" class="text-sm text-muted dark:text-[#9AA8C2]">
+              <p v-if="isAdmin && reference" class="text-sm text-muted dark:text-night-muted">
                 {{ reference.label }}
                 <s>{{ fmt(reference.value) }}</s>
               </p>
               <!-- Hidden for customers on purpose (admins only). Remove isAdmin to turn back on. -->
               <p
                 v-if="isAdmin && saving > 0"
-                class="mt-3 inline-flex items-center gap-1.5 rounded-full bg-gold-soft dark:bg-midnight px-3 py-1 text-sm font-medium text-[#6E5418] dark:text-[#D8B868]"
+                class="mt-3 inline-flex items-center gap-1.5 rounded-full bg-gold-soft dark:bg-midnight px-3 py-1 text-sm font-medium text-gold-text dark:text-night-price"
               >
-                <svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><path d="M6 0l1.7 4.2L12 4.6 8.7 7.5 9.7 12 6 9.6 2.3 12l1-4.5L0 4.6l4.3-.4z" fill="#C5A253" /></svg>
+                <svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><path d="M6 0l1.7 4.2L12 4.6 8.7 7.5 9.7 12 6 9.6 2.3 12l1-4.5L0 4.6l4.3-.4z" fill="#C9A06A" /></svg>
                 {{ t("modal.save", { amount: fmt(saving) }) }}
               </p>
 
@@ -436,22 +436,22 @@ onBeforeUnmount(() => {
                     :disabled="s.available === false"
                     :aria-pressed="selectedSize === s.value"
                     :aria-label="s.available === false ? t('modal.sizeSoldOut', { size: s.value }) : t('common.size', { size: s.value })"
-                    class="h-[50px] min-w-0 rounded-xl border text-sm font-medium focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-royal dark:focus-visible:outline-[#D8B868]"
+                    class="h-[50px] min-w-0 rounded-xl border text-sm font-medium focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-royal dark:focus-visible:outline-night-price"
                     :class="
                       s.available === false
-                        ? 'bg-[#F2F2EF] text-[#7B8599] line-through border-transparent cursor-not-allowed dark:bg-midnight dark:text-[#6C7893]'
+                        ? 'bg-mist text-muted line-through border-transparent cursor-not-allowed dark:bg-midnight dark:text-night-muted'
                         : selectedSize === s.value
-                          ? 'bg-royal text-white border-royal dark:bg-[#D8B868] dark:text-navy dark:border-[#D8B868]'
-                          : 'bg-white text-navy border-sky hover:border-royal dark:bg-midnight-surface dark:text-[#EEF2F8] dark:border-midnight-line'
+                          ? 'bg-royal text-white border-royal dark:bg-night-price dark:text-navy dark:border-night-price'
+                          : 'bg-white text-navy border-sky hover:border-royal dark:bg-midnight-surface dark:text-night-text dark:border-midnight-line'
                     "
                     @click="selectedSize = s.value"
                   >
                     {{ s.value }}
                   </button>
                 </div>
-                <div class="mt-3 flex gap-4 text-xs text-muted dark:text-[#9AA8C2]">
+                <div class="mt-3 flex gap-4 text-xs text-muted dark:text-night-muted">
                   <span class="inline-flex items-center gap-1.5"><i class="h-3 w-3 rounded border border-sky bg-white" />{{ t("modal.available") }}</span>
-                  <span class="inline-flex items-center gap-1.5"><i class="h-3 w-3 rounded bg-[#F2F2EF]" />{{ t("modal.soldOut") }}</span>
+                  <span class="inline-flex items-center gap-1.5"><i class="h-3 w-3 rounded bg-mist" />{{ t("modal.soldOut") }}</span>
                 </div>
               </fieldset>
 
@@ -477,8 +477,8 @@ onBeforeUnmount(() => {
                     inCart
                       ? 'bg-royal text-white'
                       : ctaDisabled
-                        ? 'bg-[#EDE3C9] cursor-not-allowed dark:bg-midnight dark:text-[#9AA8C2]'
-                        : 'bg-gold hover:bg-gold-light dark:bg-[#D8B868]'
+                        ? 'bg-gold-line cursor-not-allowed dark:bg-midnight dark:text-night-muted'
+                        : 'bg-gold hover:bg-gold-light dark:bg-night-price'
                   "
                   @click="onCta"
                 >
@@ -507,7 +507,7 @@ onBeforeUnmount(() => {
                   :href="product.link"
                   target="_blank"
                   rel="noopener noreferrer"
-                  class="text-royal dark:text-[#D8B868] underline underline-offset-2"
+                  class="text-royal dark:text-night-price underline underline-offset-2"
                 >
                   {{ t("modal.pandoraAu") }}
                 </a>
@@ -516,7 +516,7 @@ onBeforeUnmount(() => {
                   :href="pandoraThLink(product)"
                   target="_blank"
                   rel="noopener noreferrer"
-                  class="text-royal dark:text-[#D8B868] underline underline-offset-2"
+                  class="text-royal dark:text-night-price underline underline-offset-2"
                 >
                   {{ t("modal.pandoraTh") }}
                 </a>
@@ -537,7 +537,7 @@ onBeforeUnmount(() => {
   border-radius: 50% 50% 18px 18px / 25% 25% 18px 18px;
 }
 :deep(.swiper-pagination-bullet-active) {
-  background: #c5a253;
+  background: #c9a06a;
 }
 @media (min-width: 768px) {
   :deep(.swiper-pagination) {

@@ -82,10 +82,10 @@ const rootStyle = computed(() => ({
 
 <style scoped>
 .poster {
-  --ink: #2b1a2e;
-  --rose: #d6336c;
-  --blush: #fde3ec;
-  --tile-bg: #f7f7f7;
+  --ink: #2e2428;
+  --rose: #b5546e;
+  --blush: #fbe8ec;
+  --tile-bg: #fdf1f3;
   --pad-x: 64px;
   --label-lh: 1.2;
   --label-gap: 14px;
@@ -114,7 +114,7 @@ const rootStyle = computed(() => ({
   font-size: 24px;
   font-weight: 400;
   line-height: 1.2;
-  color: #7a6577;
+  color: #7a6a70;
 }
 .poster--story .poster__credit {
   top: 120px;

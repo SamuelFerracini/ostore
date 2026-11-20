@@ -46,7 +46,7 @@ onBeforeUnmount(() => footerObserver?.disconnect());
       target="_blank"
       rel="noopener noreferrer"
       :aria-label="t('footer.chatAria')"
-      class="max-lg:hidden fixed bottom-6 right-6 z-40 inline-flex min-h-[48px] items-center gap-3 rounded-full bg-navy pl-1.5 pr-5 text-[15px] font-medium text-gold-light shadow-[0_8px_24px_rgba(29,43,69,0.28)] ring-1 ring-gold/60 transition hover:bg-navy/90 active:scale-95 dark:ring-gold/40 dark:shadow-[0_8px_24px_rgba(0,0,0,0.55)]"
+      class="max-lg:hidden fixed bottom-6 right-6 z-40 inline-flex min-h-[48px] items-center gap-3 rounded-full bg-navy pl-1.5 pr-5 text-[15px] font-medium text-gold-light shadow-[0_8px_24px_rgba(46,36,40,0.28)] ring-1 ring-gold/60 transition hover:bg-navy/90 active:scale-95 dark:ring-gold/40 dark:shadow-[0_8px_24px_rgba(0,0,0,0.55)]"
     >
       <span
         class="flex h-9 w-9 items-center justify-center rounded-full bg-gold text-navy"
@@ -155,7 +155,7 @@ onBeforeUnmount(() => footerObserver?.disconnect());
       :href="facebookUrl"
       target="_blank"
       rel="noopener noreferrer"
-      class="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-gold text-navy shadow-[0_0_0_3px_rgba(226,199,131,0.25)] active:scale-95 transition"
+      class="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-gold text-navy shadow-[0_0_0_3px_rgba(224,188,138,0.25)] active:scale-95 transition"
       :aria-label="t('footer.chatAria')"
     >
       <svg viewBox="0 0 24 24" class="h-6 w-6" fill="currentColor" aria-hidden="true">

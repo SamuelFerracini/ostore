@@ -470,7 +470,7 @@ const download = async () => {
   @apply flex w-full justify-center;
 }
 .preview-box {
-  @apply relative overflow-hidden rounded-md shadow-[0_18px_50px_rgba(29,43,69,0.18)] ring-1 ring-gold-line dark:ring-midnight-line;
+  @apply relative overflow-hidden rounded-md shadow-[0_18px_50px_rgba(46,36,40,0.18)] ring-1 ring-gold-line dark:ring-midnight-line;
 }
 .preview-scale {
   @apply absolute left-0 top-0;

@@ -31,7 +31,7 @@ const cancelBtn = ref(null);
       role="alertdialog"
       aria-labelledby="confirm-dialog-title"
       aria-describedby="confirm-dialog-message"
-      class="p-6 text-navy dark:text-[#EEF2F8] font-sans"
+      class="p-6 text-navy dark:text-night-text font-sans"
     >
       <h2
         id="confirm-dialog-title"
@@ -42,7 +42,7 @@ const cancelBtn = ref(null);
       <p
         v-if="state.message"
         id="confirm-dialog-message"
-        class="mt-2 text-[15px] text-muted dark:text-[#B7C3D9] break-words"
+        class="mt-2 text-[15px] text-muted dark:text-night-muted break-words"
       >
         {{ state.message }}
       </p>
@@ -50,14 +50,14 @@ const cancelBtn = ref(null);
         <button
           ref="cancelBtn"
           type="button"
-          class="flex-1 min-h-[44px] rounded-full border border-gold-line dark:border-midnight-line font-semibold text-navy dark:text-[#EEF2F8] transition hover:bg-mist dark:hover:bg-midnight active:scale-[0.98] focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-periwinkle"
+          class="flex-1 min-h-[44px] rounded-full border border-gold-line dark:border-midnight-line font-semibold text-navy dark:text-night-text transition hover:bg-mist dark:hover:bg-midnight active:scale-[0.98] focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-periwinkle"
           @click="settle(false)"
         >
           {{ state.cancelLabel }}
         </button>
         <button
           type="button"
-          class="flex-1 min-h-[44px] rounded-full bg-gold dark:bg-[#D8B868] font-semibold text-navy transition hover:brightness-105 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-periwinkle"
+          class="flex-1 min-h-[44px] rounded-full bg-gold dark:bg-night-price font-semibold text-navy transition hover:brightness-105 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-periwinkle"
           @click="settle(true)"
         >
           {{ state.confirmLabel }}
