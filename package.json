@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "test": "node --test tests/",
+    "admin:hash": "node scripts/admin-hash.mjs",
     "build:products": "node scripts/build-product-index.mjs",
     "build": "nuxt build",
     "dev": "nuxt dev",

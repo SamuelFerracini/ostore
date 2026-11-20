@@ -43,3 +43,14 @@ Don't hesitate to get in touch if you have any questions or suggestions:
 
 Email: zckhtln@icloud.com</br>
 Twitter: [@ZHatlen](https://twitter.com/ZHatlen)
+
+## Admin mode
+
+Admin mode turns on only with a password, at `/admin`. The repo stores just a salted SHA-256 hash of it, never the password.
+
+Set or rotate the password:
+
+1. Run `npm run admin:hash`. Type the password at the hidden prompt (or pipe it on stdin). It prints a hash.
+2. Paste the hash into `adminPasswordHash` in `storefront.config.js`, then deploy.
+
+While `adminPasswordHash` is empty, admin mode cannot be turned on. Rotating the password logs out every old admin cookie. `?admin=0` or the admin bar exit button turns admin mode off.

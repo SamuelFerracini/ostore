@@ -72,6 +72,7 @@ export default defineNuxtConfig({
     public: {
       version: pkg.version,
       promotionsPaused: storefrontConfig.promotionsPaused,
+      adminPasswordHash: storefrontConfig.adminPasswordHash,
       public: {
         NUXT_API_URL: process.env.NUXT_API_URL,
       },

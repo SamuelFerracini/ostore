@@ -1,10 +1,12 @@
-// Admin-only pages: send everyone else to the home page. Mirrors useAdmin:
-// ?admin=1 / ?admin=0 win over the ostore_admin cookie.
+// Admin-only pages: send everyone else to the home page. Admin only when the
+// ostore_admin cookie holds the password (see useAdmin); ?admin=0 forces off.
+import { isAdminValue } from "~/composables/adminAuth";
+
 export default defineNuxtRouteMiddleware((to) => {
   const raw = to.query.admin;
   const q = Array.isArray(raw) ? raw[0] : raw;
-  const cookie = useCookie("ostore_admin");
-  // useCookie decodes "1" to the number 1, so compare as a string.
-  const isAdmin = q === "1" || (q !== "0" && String(cookie.value) === "1");
+  const cookie = useAdminCookie();
+  const hash = useRuntimeConfig().public.adminPasswordHash;
+  const isAdmin = q !== "0" && isAdminValue(cookie.value, hash);
   if (!isAdmin) return navigateTo("/");
 });
