@@ -312,7 +312,7 @@ onBeforeUnmount(() => {
                 v-for="(src, i) in images"
                 :key="src"
                 type="button"
-                class="shrink-0 w-[88px] h-[110px] rounded-xl overflow-hidden border-2 bg-photo focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-royal"
+                class="relative shrink-0 w-[88px] h-[110px] rounded-xl overflow-hidden border-2 bg-photo focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-royal"
                 :class="
                   i === activeIndex
                     ? 'border-gold dark:border-[#D8B868]'
@@ -326,6 +326,7 @@ onBeforeUnmount(() => {
                 "
               >
                 <img :src="resizeImage(src, MODAL_THUMB_IMAGE)" alt="" class="w-full h-full object-cover" loading="lazy" @error="onImageError(src)" />
+                <ImageWatermark size="sm" />
               </button>
             </div>
 
