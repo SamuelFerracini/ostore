@@ -374,7 +374,7 @@ onBeforeUnmount(() => {
                       <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true"><path d="M7 3l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" /></svg>
                     </button>
                     <span
-                      class="hidden md:block absolute bottom-4 left-1/2 -translate-x-1/2 z-10 rounded-full bg-white/90 px-3 py-1 text-xs text-navy"
+                      class="hidden md:block absolute bottom-4 right-4 z-10 rounded-full bg-white/90 px-3 py-1 text-xs text-navy"
                       aria-live="polite"
                     >
                       {{ activeIndex + 1 }} / {{ images.length }}

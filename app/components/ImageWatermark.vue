@@ -53,8 +53,8 @@ defineProps({
   --wm-pad: 4px;
 }
 .wm--lg {
-  --wm-font: 16px;
-  --wm-logo: 20px;
+  --wm-font: 13px;
+  --wm-logo: 16px;
   --wm-pad: 12px;
 }
 .wm__tile {
