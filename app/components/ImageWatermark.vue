@@ -1,5 +1,5 @@
 <script setup>
-// Visible-only watermark: a diagonal tile of logo + Facebook handle laid over
+// Visible-only watermark: logo + Facebook handle badge in the bottom-left of
 // a product image. It never touches the image file. Place it inside a
 // `relative overflow-hidden` container, after the image.
 defineProps({
@@ -9,18 +9,14 @@ defineProps({
     validator: (v) => ["sm", "md", "lg"].includes(v),
   },
 });
-
-const TILES = 24;
 </script>
 
 <template>
   <div class="wm" :class="`wm--${size}`" aria-hidden="true">
-    <div class="wm__tiles">
-      <span v-for="n in TILES" :key="n" class="wm__tile">
-        <img src="/logo.png" alt="" class="wm__logo" draggable="false" />
-        <span>fb.com/nonlapan.ssw</span>
-      </span>
-    </div>
+    <span class="wm__tile">
+      <img src="/logo.png" alt="" class="wm__logo" draggable="false" />
+      <span>fb.com/nonlapan.ssw</span>
+    </span>
   </div>
 </template>
 
@@ -28,7 +24,7 @@ const TILES = 24;
 .wm {
   --wm-font: 11px;
   --wm-logo: 14px;
-  --wm-gap: 26px;
+  --wm-pad: 8px;
   position: absolute;
   inset: 0;
   z-index: 5;
@@ -39,25 +35,17 @@ const TILES = 24;
 .wm--sm {
   --wm-font: 5px;
   --wm-logo: 7px;
-  --wm-gap: 10px;
+  --wm-pad: 4px;
 }
 .wm--lg {
   --wm-font: 16px;
   --wm-logo: 20px;
-  --wm-gap: 40px;
-}
-.wm__tiles {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 190%;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: var(--wm-gap) calc(var(--wm-gap) * 0.9);
-  transform: translate(-50%, -50%) rotate(-30deg);
+  --wm-pad: 12px;
 }
 .wm__tile {
+  position: absolute;
+  left: var(--wm-pad);
+  bottom: var(--wm-pad);
   display: inline-flex;
   align-items: center;
   gap: calc(var(--wm-font) * 0.4);
