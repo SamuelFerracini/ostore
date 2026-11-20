@@ -196,6 +196,7 @@ const onCta = (product) => {
             :class="{ 'group-hover:opacity-0': fadesOnHover(product) }"
           />
         </button>
+        <ImageWatermark size="md" />
 
         <!-- Sparkles -->
         <svg

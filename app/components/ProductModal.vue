@@ -353,6 +353,7 @@ onBeforeUnmount(() => {
                       />
                     </SwiperSlide>
                   </Swiper>
+                  <ImageWatermark size="lg" />
 
                   <template v-if="images.length > 1">
                     <button

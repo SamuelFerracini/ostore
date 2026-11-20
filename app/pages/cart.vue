@@ -142,7 +142,7 @@ const focusRing =
               style="border-radius: 50% 50% 12px 12px / 30% 30% 12px 12px"
             >
               <div
-                class="w-full h-full bg-photo overflow-hidden"
+                class="relative w-full h-full bg-photo overflow-hidden"
                 style="border-radius: 50% 50% 9px 9px / 30% 30% 9px 9px"
               >
                 <NuxtImg
@@ -150,6 +150,7 @@ const focusRing =
                   :alt="item.name"
                   class="w-full h-full object-cover"
                 />
+                <ImageWatermark size="sm" />
               </div>
             </div>
 
