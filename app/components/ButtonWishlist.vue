@@ -34,7 +34,7 @@ const toggle = async () => {
     @click.stop.prevent="toggle"
     :aria-pressed="active"
     :aria-label="active ? t('wish.removeAria') : t('wish.addAria')"
-    class="flex h-11 w-11 items-center justify-center rounded-full bg-white shadow-[0_2px_8px_rgba(29,43,69,0.16)] border border-gold-line/70 transition hover:scale-105 active:scale-95"
+    class="flex h-11 w-11 items-center justify-center rounded-full bg-white shadow-[0_2px_8px_rgba(46,36,40,0.16)] border border-gold-line/70 transition hover:scale-105 active:scale-95"
   >
     <UIcon
       :name="active ? 'i-iconamoon-heart-fill' : 'i-iconamoon-heart'"

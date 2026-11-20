@@ -194,6 +194,7 @@ const searchPlaceholder = computed(() =>
         >
           {{ locale === "th" ? "EN" : "TH" }}
         </button>
+        <ColorModeToggle />
         <NuxtLink
           to="/favorites"
           class="flex h-11 min-w-[44px] items-center justify-center gap-2 rounded-full border border-sky dark:border-midnight-line bg-white dark:bg-transparent px-3 lg:px-4 text-sm font-medium text-navy dark:text-night-text hover:border-periwinkle transition active:scale-95"

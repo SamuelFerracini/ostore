@@ -1,22 +1,7 @@
 <script setup>
 import websiteStore from "~~/stores/website";
 
-const colorMode = useColorMode();
 const { t } = useLocale();
-
-const toggleDark = () => {
-  colorMode.preference = colorMode.value === "dark" ? "light" : "dark";
-};
-
-const colorModeIcon = computed(() =>
-  colorMode.value === "dark"
-    ? "i-iconamoon-mode-dark-fill"
-    : "i-iconamoon-mode-light-fill"
-);
-
-const colorModeLabel = computed(() =>
-  colorMode.value === "dark" ? t("footer.lightMode") : t("footer.darkMode")
-);
 
 const facebookUrl = "https://www.facebook.com/nonlapan.ssw";
 const shopId = computed(() => websiteStore.getters.selectedShop.id);
@@ -46,7 +31,7 @@ onBeforeUnmount(() => footerObserver?.disconnect());
       target="_blank"
       rel="noopener noreferrer"
       :aria-label="t('footer.chatAria')"
-      class="max-lg:hidden fixed bottom-6 right-6 z-40 inline-flex min-h-[48px] items-center gap-3 rounded-full bg-navy pl-1.5 pr-5 text-[15px] font-medium text-gold-light shadow-[0_8px_24px_rgba(29,43,69,0.28)] ring-1 ring-gold/60 transition hover:bg-navy/90 active:scale-95 dark:ring-gold/40 dark:shadow-[0_8px_24px_rgba(0,0,0,0.55)]"
+      class="max-lg:hidden fixed bottom-6 right-6 z-40 inline-flex min-h-[48px] items-center gap-3 rounded-full bg-navy pl-1.5 pr-5 text-[15px] font-medium text-gold-light shadow-[0_8px_24px_rgba(46,36,40,0.28)] ring-1 ring-gold/60 transition hover:bg-navy/90 active:scale-95 dark:ring-gold/40 dark:shadow-[0_8px_24px_rgba(0,0,0,0.55)]"
     >
       <span
         class="flex h-9 w-9 items-center justify-center rounded-full bg-gold text-navy"
@@ -93,14 +78,6 @@ onBeforeUnmount(() => footerObserver?.disconnect());
       </div>
 
       <div class="footer-actions">
-        <button
-          type="button"
-          @click="toggleDark"
-          class="flex h-11 w-11 items-center justify-center rounded-full border border-white/25 text-white/90 hover:border-gold-light hover:text-gold-light transition active:scale-95"
-          :aria-label="colorModeLabel"
-        >
-          <ClientOnly><UIcon :name="colorModeIcon" size="20" /></ClientOnly>
-        </button>
         <a
           :href="facebookUrl"
           target="_blank"
@@ -143,19 +120,11 @@ onBeforeUnmount(() => footerObserver?.disconnect());
     >
       <p>{{ t("footer.line3") }}</p>
     </div>
-    <button
-      type="button"
-      @click="toggleDark"
-      class="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-white/25 text-white/90 active:scale-95 transition"
-      :aria-label="colorModeLabel"
-    >
-      <ClientOnly><UIcon :name="colorModeIcon" size="20" /></ClientOnly>
-    </button>
     <a
       :href="facebookUrl"
       target="_blank"
       rel="noopener noreferrer"
-      class="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-gold text-navy shadow-[0_0_0_3px_rgba(226,199,131,0.25)] active:scale-95 transition"
+      class="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-gold text-navy shadow-[0_0_0_3px_rgba(224,188,138,0.25)] active:scale-95 transition"
       :aria-label="t('footer.chatAria')"
     >
       <svg viewBox="0 0 24 24" class="h-6 w-6" fill="currentColor" aria-hidden="true">

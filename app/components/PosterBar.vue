@@ -102,7 +102,7 @@ watch(visible, (v) => {
 
 <style lang="postcss" scoped>
 .poster-bar {
-  @apply fixed z-50 flex items-center gap-1 rounded-full bg-navy p-1.5 pl-4 text-white shadow-[0_10px_30px_rgba(29,43,69,0.3)] dark:bg-midnight-surface dark:ring-1 dark:ring-midnight-line;
+  @apply fixed z-50 flex items-center gap-1 rounded-full bg-navy p-1.5 pl-4 text-white shadow-[0_10px_30px_rgba(46,36,40,0.3)] dark:bg-midnight-surface dark:ring-1 dark:ring-midnight-line;
   /* Mobile: above the bottom nav, clear of the scroll-to-top button. */
   left: 1rem;
   bottom: calc(76px + env(safe-area-inset-bottom));
@@ -135,7 +135,7 @@ watch(visible, (v) => {
 
 /* Panel sits above the bar, never wider than the screen minus 16px gutters. */
 .poster-panel {
-  @apply absolute rounded-2xl bg-navy p-2 text-white shadow-[0_10px_30px_rgba(29,43,69,0.3)] ring-1 ring-gold/30 dark:bg-midnight-surface dark:ring-midnight-line;
+  @apply absolute rounded-2xl bg-navy p-2 text-white shadow-[0_10px_30px_rgba(46,36,40,0.3)] ring-1 ring-gold/30 dark:bg-midnight-surface dark:ring-midnight-line;
   left: 0;
   bottom: calc(100% + 10px);
   width: min(22rem, calc(100vw - 2rem));

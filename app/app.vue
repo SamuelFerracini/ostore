@@ -79,7 +79,7 @@ onBeforeUnmount(() => {
       <button
         v-if="showScrollToTop"
         @click="scrollToTop"
-        class="fixed bottom-24 lg:bottom-24 right-4 lg:right-6 z-50 flex items-center justify-center w-12 h-12 rounded-full bg-white dark:bg-midnight-surface border border-gold-line dark:border-midnight-line shadow-[0_6px_18px_rgba(29,43,69,0.14)] hover:border-gold transition-all active:scale-95"
+        class="fixed bottom-24 lg:bottom-24 right-4 lg:right-6 z-50 flex items-center justify-center w-12 h-12 rounded-full bg-white dark:bg-midnight-surface border border-gold-line dark:border-midnight-line shadow-[0_6px_18px_rgba(46,36,40,0.14)] hover:border-gold transition-all active:scale-95"
         :aria-label="t('scroll.top')"
       >
         <UIcon
@@ -130,7 +130,7 @@ body {
   @apply border-royal bg-mist text-royal dark:border-periwinkle dark:bg-midnight dark:text-night-price;
 }
 .filter-menu {
-  @apply absolute top-full z-30 mt-2 w-56 rounded-2xl border border-gold-line bg-white p-1.5 shadow-[0_12px_32px_rgba(29,43,69,0.14)] dark:border-midnight-line dark:bg-midnight-surface;
+  @apply absolute top-full z-30 mt-2 w-56 rounded-2xl border border-gold-line bg-white p-1.5 shadow-[0_12px_32px_rgba(46,36,40,0.14)] dark:border-midnight-line dark:bg-midnight-surface;
 }
 .filter-option {
   @apply flex min-h-[44px] w-full items-center justify-between gap-2 rounded-xl px-3 text-left text-[15px] text-navy transition hover:bg-mist dark:text-night-text dark:hover:bg-midnight;
