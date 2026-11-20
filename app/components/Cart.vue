@@ -54,7 +54,7 @@ const removeFromCart = async (item) => {
                 style="border-radius: 50% 50% 10px 10px / 30% 30% 10px 10px"
               >
                 <div
-                  class="w-full h-full bg-photo overflow-hidden"
+                  class="relative w-full h-full bg-photo overflow-hidden"
                   style="border-radius: 50% 50% 8px 8px / 30% 30% 8px 8px"
                 >
                   <NuxtImg
@@ -62,6 +62,7 @@ const removeFromCart = async (item) => {
                     :alt="item.name"
                     class="w-full h-full object-cover"
                   />
+                  <ImageWatermark size="sm" />
                 </div>
               </div>
               <div class="flex-1 min-w-0">
