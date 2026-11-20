@@ -1,5 +1,5 @@
 <script setup>
-// Visible-only watermark: logo + Facebook handle badge in the bottom-left of
+// Visible-only watermark: crown logo + Facebook handle badge in the bottom-left of
 // a product image. It never touches the image file. Place it inside a
 // `relative overflow-hidden` container, after the image.
 defineProps({
@@ -14,7 +14,22 @@ defineProps({
 <template>
   <div class="wm" :class="`wm--${size}`" aria-hidden="true">
     <span class="wm__tile">
-      <img src="/logo.png" alt="" class="wm__logo" draggable="false" />
+      <svg
+        class="wm__logo"
+        viewBox="0 -8 48 48"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2.8"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <path d="M5 27c9-3.5 29-3.5 38 0" />
+        <path d="M6 27 9 13l7 7.5L24 7l8 13.5 7-7.5 3 14" />
+        <circle cx="24" cy="4.2" r="1.9" />
+        <circle cx="9" cy="11" r="1.4" />
+        <circle cx="39" cy="11" r="1.4" />
+        <path d="m24 16 2 3-2 3-2-3Z" />
+      </svg>
       <span>fb.com/nonlapan.ssw</span>
     </span>
   </div>
@@ -53,13 +68,15 @@ defineProps({
   font-weight: 600;
   line-height: 1;
   white-space: nowrap;
-  color: rgba(255, 255, 255, 0.5);
-  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.45);
+  padding: calc(var(--wm-font) * 0.35) calc(var(--wm-font) * 0.6);
+  border-radius: 999px;
+  color: #fff;
+  background: rgba(17, 24, 39, 0.72);
 }
 .wm__logo {
   width: var(--wm-logo);
   height: auto;
-  opacity: 0.55;
-  filter: brightness(0) invert(1) drop-shadow(0 1px 2px rgba(0, 0, 0, 0.5));
+  flex: none;
+  color: #d8b868;
 }
 </style>
